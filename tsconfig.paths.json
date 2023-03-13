@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./app",
+    "paths": {
+      "@app/*": ["*"],
+      "@shared/*": ["src/Shared/Domain/Utils/*"],
+      "@exceptions/*": ["src/Shared/Domain/Exceptions/*"],
+      "@token/*": ["src/Shared/Domain/Services/Token/*"],
+      "@auth-middleware/*": ["api/Admin/Shared/MIddleware/*"],
+      "@acl-admin/*": ["api/Admin/Shared/MIddleware/*"],
+      "@acl-my-scan-source/*": ["api/MyScanSource/Shared/MIddleware/*"],
+      "@db-models/*": ["database/Models/*"],
+      "@admin/*": ["api/Admin/*"],
+      "@my-scan-source/*": ["api/MyScanSource/*"],
+      "@cache/*": ["src/Shared/Infrastructure/Cache/*"],
+      "@admin-base-controller/*": ["api/Admin/Shared/Controllers/*"],
+      "@my-scan-source-base-controller/*": [
+        "api/MyScanSource/Shared/Controllers/*"
+      ]
+    }
+  }
+}
