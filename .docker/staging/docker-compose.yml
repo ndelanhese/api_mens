@@ -1,8 +1,8 @@
 version: '3.5'
 
 services:
-    scansource_database:
-        container_name: scansource_database
+    mens_database:
+        container_name: mens_database
         build:
             context: ../../
             dockerfile: .docker/staging/postgres/Dockerfile
@@ -18,8 +18,8 @@ services:
         restart: on-failure
         tty: true
 
-    scansource_redis:
-        container_name: scansource_redis
+    mens_redis:
+        container_name: mens_redis
         build:
             context: ../../
             dockerfile: .docker/local/redis/Dockerfile
@@ -29,8 +29,8 @@ services:
         restart: on-failure
         tty: true
 
-    scansource_api:
-        container_name: scansource_api
+    mens_api:
+        container_name: mens_api
         build:
             context: ../../
             dockerfile: .docker/staging/node/Dockerfile
@@ -42,14 +42,14 @@ services:
             NODE_OPTIONS: ${NODE_OPTIONS}
         ports:
             - "${API_PORT}:3333"
-        working_dir: /var/www/scansource-api
+        working_dir: /var/www/mens-api
         volumes:
-            - ../../:/var/www/scansource-api
+            - ../../:/var/www/mens-api
         tty: true
         links:
-            - scansource_database
-            - scansource_redis
+            - mens_database
+            - mens_redis
 
 networks:
   default:
-    name: scansource_network
+    name: mens_network

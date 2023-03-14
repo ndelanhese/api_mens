@@ -4,7 +4,7 @@ import {
   IJwtConfig,
   IToken,
   IUserAdminDataToken,
-  IUserMyScanSourceDataToken,
+  IUserMyMensDataToken,
 } from './Token.types';
 
 export default class Token {
@@ -45,9 +45,7 @@ export default class Token {
     return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
   }
 
-  public static deserializeMyScanSourceToken(
-    token: string,
-  ): IUserMyScanSourceDataToken {
+  public static deserializeMyMensToken(token: string): IUserMyMensDataToken {
     return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
   }
 }

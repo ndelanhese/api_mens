@@ -1,4 +1,4 @@
-# Development Scan Source
+# Development Mens
 
 ## Softwares required
 
@@ -77,8 +77,8 @@ $ make start
 Add the following redirects on `/etc/hosts` file.
 
 ```bash
-# scansource-api
-127.0.0.1       api.scansource.local
+# mens-api
+127.0.0.1       api.mens.local
 ```
 
 ### 7. Migrate and seeders project:

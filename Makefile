@@ -29,23 +29,23 @@ RC=\033[0m
 # └─────────────────────────────────────────────────────────────────────────────┘
 .PHONY: api-build
 api-build:
-	@docker exec scansource_api bash -c "npm run build"
+	@docker exec mens_api bash -c "npm run build"
 
 .PHONY: api-dev
 api-dev:
-	@docker exec -it scansource_api bash -c "npm run dev"
+	@docker exec -it mens_api bash -c "npm run dev"
 
 .PHONY: api-exec
 api-exec:
-	@docker exec -it scansource_api bash
+	@docker exec -it mens_api bash
 
 .PHONY: api-install
 api-install:
-	@docker exec -it scansource_api bash -c "npm install"
+	@docker exec -it mens_api bash -c "npm install"
 
 .PHONY: redis-exec
 redis-exec:
-	@docker exec -it scansource_redis bash 
+	@docker exec -it mens_redis bash 
   
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐

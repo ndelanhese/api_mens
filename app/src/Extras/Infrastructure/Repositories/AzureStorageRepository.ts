@@ -12,10 +12,10 @@ export default class AzureStorage {
   createAzureStorage = async (media: Buffer, key: string): Promise<string> => {
     const uploadOptions = {
       metadata: {
-        owner: 'scan-source-admin',
+        owner: 'mens-admin',
       },
       tags: {
-        createdBy: 'scan-source-admin',
+        createdBy: 'mens-admin',
         createdWith: 'e-code',
         createdOn: new Date().toDateString(),
       },

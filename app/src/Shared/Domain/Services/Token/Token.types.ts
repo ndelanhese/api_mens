@@ -21,7 +21,7 @@ export interface IUserAdminDataToken {
   id: number;
 }
 
-export interface IUserMyScanSourceDataToken {
+export interface IUserMyMensDataToken {
   userCode: string;
   resale: string;
   login: string;

@@ -1,8 +1,8 @@
 version: '3.5'
 
 services:
-    scansource_server:
-        container_name: scansource_server
+    mens_server:
+        container_name: mens_server
         build:
             context: ../../
             dockerfile: .docker/local/nginx/Dockerfile
@@ -11,14 +11,14 @@ services:
         volumes:
             - ./nginx/logs/:/var/log/server
             - ./nginx/sites-enabled/:/etc/nginx/sites-enabled
-            - ../../:/var/www/scansource-api
+            - ../../:/var/www/mens-api
         restart: unless-stopped
         tty: true
         depends_on:
-            - scansource_api
+            - mens_api
 
-    scansource_database:
-        container_name: scansource_database
+    mens_database:
+        container_name: mens_database
         build:
             context: ../../
             dockerfile: .docker/local/postgres/Dockerfile
@@ -34,8 +34,8 @@ services:
         restart: on-failure
         tty: true
 
-    scansource_redis:
-        container_name: scansource_redis
+    mens_redis:
+        container_name: mens_redis
         build:
             context: ../../
             dockerfile: .docker/local/redis/Dockerfile
@@ -45,8 +45,8 @@ services:
         restart: on-failure
         tty: true
 
-    scansource_api:
-        container_name: scansource_api
+    mens_api:
+        container_name: mens_api
         build:
             context: ../../
             dockerfile: .docker/local/node/Dockerfile
@@ -60,14 +60,14 @@ services:
             - ../../.env
         ports:
             - "${API_PORT}:3333"
-        working_dir: /var/www/scansource-api
+        working_dir: /var/www/mens-api
         volumes:
-            - ../../:/var/www/scansource-api
+            - ../../:/var/www/mens-api
         tty: true
         links:
-            - scansource_database
-            - scansource_redis
+            - mens_database
+            - mens_redis
 
 networks:
   default:
-    name: scansource_network
+    name: mens_network
