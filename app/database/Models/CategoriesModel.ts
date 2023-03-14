@@ -12,6 +12,7 @@ export default class CategoriesModel extends Model<
   InferCreationAttributes<CategoriesModel>
 > {
   public id!: CreationOptional<number>;
+  public name!: string;
 }
 
 CategoriesModel.init(
@@ -20,6 +21,10 @@ CategoriesModel.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {

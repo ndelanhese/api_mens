@@ -12,6 +12,12 @@ export default class AddressesModel extends Model<
   InferCreationAttributes<AddressesModel>
 > {
   public id!: CreationOptional<number>;
+  public address!: string;
+  public number!: string;
+  public district!: string;
+  public postal_code!: number;
+  public city!: string;
+  public state!: string;
 }
 
 AddressesModel.init(
@@ -20,6 +26,30 @@ AddressesModel.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    number: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    district: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    postal_code: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    state: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {

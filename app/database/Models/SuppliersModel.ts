@@ -12,6 +12,10 @@ export default class SuppliersModel extends Model<
   InferCreationAttributes<SuppliersModel>
 > {
   public id!: CreationOptional<number>;
+  public contact_name!: string;
+  public corporate_name!: string;
+  public cnpj!: number;
+  public status!: CreationOptional<string>;
 }
 
 SuppliersModel.init(
@@ -20,6 +24,24 @@ SuppliersModel.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+    },
+    contact_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    corporate_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    cnpj: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: 'ativo',
     },
   },
   {

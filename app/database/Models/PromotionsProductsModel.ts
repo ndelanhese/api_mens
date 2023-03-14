@@ -12,6 +12,8 @@ export default class PromotionsProductsModel extends Model<
   InferCreationAttributes<PromotionsProductsModel>
 > {
   public id!: CreationOptional<number>;
+  public promotion_id!: number;
+  public product_id!: number;
 }
 
 PromotionsProductsModel.init(
@@ -20,6 +22,26 @@ PromotionsProductsModel.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+    },
+    promotion_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: {
+          tableName: 'promotions',
+        },
+        key: 'id',
+      },
+    },
+    product_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: {
+          tableName: 'products',
+        },
+        key: 'id',
+      },
     },
   },
   {

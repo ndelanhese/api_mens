@@ -11,7 +11,7 @@ module.exports = {
       installment: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        default: 1,
+        defaultValue: 1,
       },
       sale_id: {
         type: Sequelize.INTEGER,

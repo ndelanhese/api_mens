@@ -12,6 +12,7 @@ export default class BrandsModel extends Model<
   InferCreationAttributes<BrandsModel>
 > {
   public id!: CreationOptional<number>;
+  public name!: string;
 }
 
 BrandsModel.init(
@@ -20,6 +21,10 @@ BrandsModel.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {

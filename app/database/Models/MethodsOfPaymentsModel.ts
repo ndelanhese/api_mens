@@ -12,6 +12,7 @@ export default class MethodsOfPaymentsModel extends Model<
   InferCreationAttributes<MethodsOfPaymentsModel>
 > {
   public id!: CreationOptional<number>;
+  public name!: string;
 }
 
 MethodsOfPaymentsModel.init(
@@ -20,6 +21,11 @@ MethodsOfPaymentsModel.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
     },
   },
   {

@@ -12,6 +12,7 @@ export default class PromotionsCategoriesModel extends Model<
   InferCreationAttributes<PromotionsCategoriesModel>
 > {
   public id!: CreationOptional<number>;
+  public name!: string;
 }
 
 PromotionsCategoriesModel.init(
@@ -20,6 +21,10 @@ PromotionsCategoriesModel.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {
