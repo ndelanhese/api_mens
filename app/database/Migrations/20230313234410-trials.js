@@ -30,6 +30,8 @@ module.exports = {
           },
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       employee_id: {
         type: Sequelize.INTEGER,
@@ -40,6 +42,8 @@ module.exports = {
           },
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       user_id: {
         type: Sequelize.INTEGER,
@@ -50,6 +54,8 @@ module.exports = {
           },
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       createdAt: {
         type: Sequelize.DATE,

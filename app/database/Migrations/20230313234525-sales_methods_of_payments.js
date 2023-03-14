@@ -22,6 +22,8 @@ module.exports = {
           },
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       method_id: {
         type: Sequelize.INTEGER,
@@ -32,6 +34,8 @@ module.exports = {
           },
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       createdAt: {
         type: Sequelize.DATE,

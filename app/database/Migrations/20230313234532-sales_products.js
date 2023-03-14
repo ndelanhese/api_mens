@@ -33,6 +33,8 @@ module.exports = {
           },
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       product_id: {
         type: Sequelize.INTEGER,
@@ -43,6 +45,8 @@ module.exports = {
           },
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       createdAt: {
         type: Sequelize.DATE,
