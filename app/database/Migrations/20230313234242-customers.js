@@ -8,6 +8,32 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      cpf: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        unique: true,
+      },
+      rg: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      birth_date: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      phone: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      status: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        default: 'ativo',
+      },
       createdAt: {
         type: Sequelize.DATE,
       },

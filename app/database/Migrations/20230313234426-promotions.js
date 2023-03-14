@@ -1,6 +1,6 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('orders', {
+    await queryInterface.createTable('promotions', {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -8,45 +8,36 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
-      date: {
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      discount_amount: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      discount_type: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      initial_date: {
         type: Sequelize.DATE,
-        allowNull: false,
-      },
-      observation: {
-        type: Sequelize.STRING,
         allowNull: true,
       },
-      status: {
-        type: Sequelize.STRING,
+      final_date: {
+        type: Sequelize.DATE,
         allowNull: true,
-        default: 'realizada',
       },
-      customer_id: {
+      promotion_category_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: {
-            tableName: 'customers',
-          },
-          key: 'id',
-        },
-      },
-      employee_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: {
-            tableName: 'employees',
-          },
-          key: 'id',
-        },
-      },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: {
-            tableName: 'users',
+            tableName: 'promotions_categories',
           },
           key: 'id',
         },
@@ -63,6 +54,6 @@ module.exports = {
     });
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('orders');
+    await queryInterface.dropTable('promotions');
   },
 };

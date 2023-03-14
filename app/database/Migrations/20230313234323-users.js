@@ -8,6 +8,35 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
+      user: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      status: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        default: 'ativo',
+      },
+      employee_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'employees',
+          },
+          key: 'id',
+        },
+      },
       createdAt: {
         type: Sequelize.DATE,
       },

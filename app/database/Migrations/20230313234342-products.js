@@ -8,6 +8,34 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      purchase_price: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      price: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      size: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      color: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      quantity: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       createdAt: {
         type: Sequelize.DATE,
       },

@@ -8,6 +8,30 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
+      address: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      number: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      district: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      postal_code: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      city: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      state: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       createdAt: {
         type: Sequelize.DATE,
       },

@@ -8,6 +8,26 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
+      promotion_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'promotions',
+          },
+          key: 'id',
+        },
+      },
+      product_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'products',
+          },
+          key: 'id',
+        },
+      },
       createdAt: {
         type: Sequelize.DATE,
       },

@@ -8,6 +8,31 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
+      installment: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        default: 1,
+      },
+      sale_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'sales',
+          },
+          key: 'id',
+        },
+      },
+      method_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'methods_of_payments',
+          },
+          key: 'id',
+        },
+      },
       createdAt: {
         type: Sequelize.DATE,
       },

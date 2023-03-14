@@ -8,6 +8,24 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
+      contact_name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      corporate_name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      cnpj: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        unique: true,
+      },
+      status: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        default: 'ativo',
+      },
       createdAt: {
         type: Sequelize.DATE,
       },

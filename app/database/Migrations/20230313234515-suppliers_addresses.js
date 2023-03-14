@@ -8,6 +8,26 @@ module.exports = {
         primaryKey: true,
         unique: true,
       },
+      supplier_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'suppliers',
+          },
+          key: 'id',
+        },
+      },
+      address_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'addresses',
+          },
+          key: 'id',
+        },
+      },
       createdAt: {
         type: Sequelize.DATE,
       },
