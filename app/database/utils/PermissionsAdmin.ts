@@ -8,12 +8,12 @@ export const permissionsAdmin = () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-     permissions.push({
-       permission_id: i,
-       user_id: 2,
-       createdAt: new Date(),
-       updatedAt: new Date(),
-     });
+    permissions.push({
+      permission_id: i,
+      user_id: 2,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
   }
   return permissions;
 };

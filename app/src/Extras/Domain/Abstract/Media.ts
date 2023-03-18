@@ -1,7 +1,7 @@
 import { getTime } from '@shared/Date';
 
 export default abstract class Media {
-  private static id: number = 0;
+  private static id = 0;
   protected name: string;
   protected mimeType: string;
   protected size: number;
@@ -47,7 +47,7 @@ export default abstract class Media {
     const slugName = name
       .toLocaleLowerCase()
       .replace(`.${extension}`, '')
-      .replace(/[^a-zA-Z0-9]+/g, '-')
+      .replace(/[^a-zA-Z0-9]+/g, '-');
 
     return `${slugName}-${getTime()}.${extension}`;
   }

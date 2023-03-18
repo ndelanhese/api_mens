@@ -5,6 +5,7 @@ import {
   InferCreationAttributes,
   CreationOptional,
 } from 'sequelize';
+
 import { sequelize } from '.';
 
 export default class EmployeesAddressesModel extends Model<

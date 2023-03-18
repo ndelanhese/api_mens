@@ -3,13 +3,31 @@
     "node": true,
     "es6": true
   },
-  "extends": ["eslint:recommended", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2016,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "prettier", "react"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts"]
+      }
+    }
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "import",
+    "eslint-plugin-prettier"
+  ],
+
   "rules": {
     "prettier/prettier": [
       "error",
@@ -18,12 +36,44 @@
         "singleQuote": true,
         "tabWidth": 2,
         "trailingComma": "all",
-        "useTabs": false
+        "useTabs": false,
+        "arrowParens": "avoid",
+        "endOfLine": "auto"
       }
     ],
-    "no-console": "off",
-    "no-unused-vars": "off",
-    "no-undef": "off",
-    "no-empty": "off"
+    "no-use-before-define": "off",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-alert": "error",
+    "no-restricted-imports": "off",
+    "no-unused-vars": "error",
+    "no-undef": "error",
+    "no-empty": "error",
+    "@typescript-eslint/no-empty-function": "error",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "variable",
+        "format": ["camelCase", "UPPER_CASE", "PascalCase", "snake_case"]
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": ["external", "internal", "parent", "sibling", "index"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "pathGroups": [
+          {
+            "pattern": "@/**",
+            "group": "internal"
+          }
+        ]
+      }
+    ]
   }
 }

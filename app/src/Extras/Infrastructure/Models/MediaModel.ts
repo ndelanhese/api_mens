@@ -1,6 +1,8 @@
-import HttpError from '@exceptions/HttpError';
 import MediaModel from '@db-models/MediasModel';
+import HttpError from '@exceptions/HttpError';
+
 import Media from '../../Domain/Entities/Media';
+
 import { IMedia } from './MediaModel.types';
 
 export default class MediasModel {

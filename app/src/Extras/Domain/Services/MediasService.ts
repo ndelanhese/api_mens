@@ -1,8 +1,10 @@
-import fileUpload from 'express-fileupload';
 import HttpError from '@exceptions/HttpError';
-import Media from '../Entities/Media';
-import DisksService from './DisksService';
+import fileUpload from 'express-fileupload';
+
 import MediaRepository from '../../Infrastructure/Repositories/MediaRepository';
+import Media from '../Entities/Media';
+
+import DisksService from './DisksService';
 
 export default class MediasService {
   public async createMedia(

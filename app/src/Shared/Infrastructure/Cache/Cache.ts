@@ -1,6 +1,5 @@
 import HttpError from '@exceptions/HttpError';
-
-import * as redis from 'redis';
+import redis from 'redis';
 
 export const createCacheClient = () => {
   const host = process.env.REDIS_HOST;
@@ -15,7 +14,7 @@ export const createCacheClient = () => {
     password,
   });
 
-  client.on('error', (err) => {
+  client.on('error', err => {
     throw new HttpError(500, `Erro no servidor ${err}`);
   });
   client.connect();
@@ -23,9 +22,9 @@ export const createCacheClient = () => {
 };
 
 export const createCache = async (
-  client: any,
+  client: redis.RedisClientType,
   key: string,
-  data: any,
+  data: redis.RedisClientType,
 ): Promise<boolean> => {
   const SEVEN_MINUTES_IN_SECONDS = 420;
   try {
@@ -40,7 +39,7 @@ export const createCache = async (
 };
 
 export const getCache = async (
-  client: any,
+  client: redis.RedisClientType,
   key: string,
 ): Promise<object | boolean> => {
   try {
@@ -51,7 +50,9 @@ export const getCache = async (
   }
 };
 
-export const flushCache = async (client: any): Promise<boolean> => {
+export const flushCache = async (
+  client: redis.RedisClientType,
+): Promise<boolean> => {
   try {
     const cache = await client.flushAll();
     return cache === 'OK' ? true : false;
@@ -61,7 +62,7 @@ export const flushCache = async (client: any): Promise<boolean> => {
 };
 
 export const deleteCache = async (
-  client: any,
+  client: redis.RedisClientType,
   keyPath: string,
 ): Promise<void> => {
   const keysFromPath = await keys(client, keyPath);
@@ -70,6 +71,9 @@ export const deleteCache = async (
   }
 };
 
-const keys = async (client: any, keyPath: string): Promise<string[]> => {
+const keys = async (
+  client: redis.RedisClientType,
+  keyPath: string,
+): Promise<string[]> => {
   return await client.keys(`*${keyPath}*`);
 };

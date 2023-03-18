@@ -1,5 +1,6 @@
 import HttpError from '@exceptions/HttpError';
 import nodemailer from 'nodemailer';
+
 import { emailData } from './emailInterface';
 
 export default class EmailService {
@@ -28,7 +29,7 @@ export default class EmailService {
   }
 
   private sendMail(mailOptions: emailData) {
-    this.createTransporter().sendMail(mailOptions, (error) => {
+    this.createTransporter().sendMail(mailOptions, error => {
       if (error) throw new HttpError(500, 'Erro ao enviar e-mail');
     });
   }

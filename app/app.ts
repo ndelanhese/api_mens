@@ -1,9 +1,10 @@
+import * as Sentry from '@sentry/node';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 import express, { Express } from 'express';
 import fileUpload from 'express-fileupload';
-import bodyParser from 'body-parser';
-import * as Sentry from '@sentry/node';
+
 import sentryConfig from './config/sentry';
-import cors from 'cors';
 
 export default class App {
   private app: Express;
@@ -30,7 +31,6 @@ export default class App {
 
     this.app.use(Sentry.Handlers.requestHandler());
 
-    
     // Test route
     this.app.post('/ping', (req, res) => {
       return res.status(200).json('pong');

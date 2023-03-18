@@ -1,8 +1,8 @@
-export const getUpperString = (value: any): string => {
+export const getUpperString = (value: string): string => {
   return String(value).toUpperCase().trim();
 };
 
-export const getLowerString = (value: any): string => {
+export const getLowerString = (value: string): string => {
   return String(value).toLowerCase().trim();
 };
 
@@ -31,7 +31,7 @@ export const nameLabel = (name: string): string => {
   const label = name
     .toLowerCase()
     .replace(regexOnlyLetters, ' ')
-    .replace(regexFirstLetterUpperCase, (match) => match.toUpperCase());
+    .replace(regexFirstLetterUpperCase, match => match.toUpperCase());
 
   return label;
 };

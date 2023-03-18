@@ -1,5 +1,6 @@
-import jwt, { Algorithm, JwtPayload, Secret } from 'jsonwebtoken';
 import HttpError from '@exceptions/HttpError';
+import jwt, { Algorithm, JwtPayload, Secret } from 'jsonwebtoken';
+
 import {
   IJwtConfig,
   IToken,

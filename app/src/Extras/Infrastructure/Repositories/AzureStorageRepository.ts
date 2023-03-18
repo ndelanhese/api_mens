@@ -1,4 +1,5 @@
 import { BlobServiceClient } from '@azure/storage-blob';
+
 import Media from '../../Domain/Entities/Media';
 
 export default class AzureStorage {

@@ -11,7 +11,7 @@ export default class Manufacturer {
     const slug = name
       .toLowerCase()
       .replace(regexOnlyLetters, ' ')
-      .replace(regexFirstLetterUpperCase, (match) => match.toUpperCase());
+      .replace(regexFirstLetterUpperCase, match => match.toUpperCase());
 
     return slug;
   }

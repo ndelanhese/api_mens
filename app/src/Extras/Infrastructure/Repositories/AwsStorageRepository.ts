@@ -1,5 +1,6 @@
-import aws from 'aws-sdk';
 import HttpError from '@exceptions/HttpError';
+import aws from 'aws-sdk';
+
 import Media from '../../Domain/Entities/Media';
 
 export default class AwsStorage {
