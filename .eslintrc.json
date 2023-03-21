@@ -45,17 +45,26 @@
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "no-alert": "error",
     "no-restricted-imports": "off",
-    "no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "InputData$"
+      }
+    ],
     "no-undef": "error",
     "no-empty": "error",
     "@typescript-eslint/no-empty-function": "error",
-    "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/naming-convention": [
+    "@typescript-eslint/ban-types": [
       "error",
       {
-        "selector": "variable",
-        "format": ["camelCase", "UPPER_CASE", "PascalCase", "snake_case"]
+        "types": {
+          "{}": false,
+          "object": false,
+          "Function": true,
+          "Object": false
+        }
       }
     ],
     "import/order": [
@@ -66,13 +75,7 @@
         "alphabetize": {
           "order": "asc",
           "caseInsensitive": true
-        },
-        "pathGroups": [
-          {
-            "pattern": "@/**",
-            "group": "internal"
-          }
-        ]
+        }
       }
     ]
   }

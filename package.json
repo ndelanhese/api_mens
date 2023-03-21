@@ -22,7 +22,8 @@
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "eslint . --ext .js,.ts --fix",
     "prettier": "prettier ./app --write",
-    "format": "npm run prettier && npm run lint:fix"
+    "format": "npm run prettier && npm run lint:fix",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
