@@ -7,7 +7,8 @@
       "@exceptions/*": ["src/Shared/Domain/Exceptions/*"],
       "@token/*": ["src/Shared/Domain/Services/Token/*"],
       "@db-models/*": ["database/Models/*"],
-      "@cache/*": ["src/Shared/Infrastructure/Cache/*"]
+      "@cache/*": ["src/Shared/Infrastructure/Cache/*"],
+      "@security/*": ["api/Shared/MIddleware/*"]
     }
   }
 }

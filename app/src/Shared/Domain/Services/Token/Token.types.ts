@@ -20,15 +20,3 @@ export interface IUserAdminDataToken {
   email: string;
   id: number;
 }
-
-export interface IUserMyMensDataToken {
-  userCode: string;
-  resale: string;
-  login: string;
-  company: string;
-  companyCode: string;
-  cnpj: string;
-  email: string;
-  token: string;
-  name: string;
-}

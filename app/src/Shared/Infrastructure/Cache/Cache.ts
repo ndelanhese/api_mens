@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import HttpError from '@exceptions/HttpError';
-import redis from 'redis';
+import * as redis from 'redis';
 
 export const createCacheClient = () => {
   const host = process.env.REDIS_HOST;
@@ -22,9 +23,9 @@ export const createCacheClient = () => {
 };
 
 export const createCache = async (
-  client: redis.RedisClientType,
+  client: any,
   key: string,
-  data: redis.RedisClientType,
+  data: any,
 ): Promise<boolean> => {
   const SEVEN_MINUTES_IN_SECONDS = 420;
   try {
@@ -39,7 +40,7 @@ export const createCache = async (
 };
 
 export const getCache = async (
-  client: redis.RedisClientType,
+  client: any,
   key: string,
 ): Promise<object | boolean> => {
   try {
@@ -50,9 +51,7 @@ export const getCache = async (
   }
 };
 
-export const flushCache = async (
-  client: redis.RedisClientType,
-): Promise<boolean> => {
+export const flushCache = async (client: any): Promise<boolean> => {
   try {
     const cache = await client.flushAll();
     return cache === 'OK' ? true : false;
@@ -62,7 +61,7 @@ export const flushCache = async (
 };
 
 export const deleteCache = async (
-  client: redis.RedisClientType,
+  client: any,
   keyPath: string,
 ): Promise<void> => {
   const keysFromPath = await keys(client, keyPath);
@@ -71,9 +70,6 @@ export const deleteCache = async (
   }
 };
 
-const keys = async (
-  client: redis.RedisClientType,
-  keyPath: string,
-): Promise<string[]> => {
+const keys = async (client: any, keyPath: string): Promise<string[]> => {
   return await client.keys(`*${keyPath}*`);
 };
