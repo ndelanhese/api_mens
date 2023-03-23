@@ -1,8 +1,11 @@
 export default class DefaultError extends Error {
-  public previous?: Error;
+  public stack?: string;
 
-  constructor(message: string, previous?: Error) {
+  constructor(message: string, stack?: Error | unknown) {
     super(message);
-    this.previous = previous;
+    this.stack = this.verifyUnknownError(stack);
+  }
+  private verifyUnknownError(error: Error | unknown) {
+    if (error instanceof Error) return error.stack;
   }
 }
