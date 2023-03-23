@@ -5,6 +5,7 @@ import express, { Express } from 'express';
 import fileUpload from 'express-fileupload';
 
 import sentryConfig from './config/sentry';
+import routes from './routes';
 
 export default class App {
   private app: Express;
@@ -31,10 +32,7 @@ export default class App {
 
     this.app.use(Sentry.Handlers.requestHandler());
 
-    // Test route
-    this.app.post('/ping', (req, res) => {
-      return res.status(200).json('pong');
-    });
+    this.app.use('/', routes);
 
     this.app.use(Sentry.Handlers.errorHandler());
   }
