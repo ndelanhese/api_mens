@@ -13,11 +13,8 @@ export default class PermissionsModel extends Model<
   InferCreationAttributes<PermissionsModel>
 > {
   public id!: CreationOptional<number>;
-
   public name!: string;
-
   public description!: string;
-
   public group!: string;
 }
 

@@ -14,10 +14,10 @@ export default class CustomerModel extends Model<
 > {
   public id!: CreationOptional<number>;
   public name!: string;
-  public cpf!: number;
-  public rg!: number;
+  public cpf!: string;
+  public rg!: CreationOptional<string>;
   public birth_date!: Date;
-  public phone!: number;
+  public phone!: string;
   public status!: CreationOptional<string>;
 }
 
@@ -33,20 +33,20 @@ CustomerModel.init(
       allowNull: false,
     },
     cpf: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
     rg: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     birth_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
     phone: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     status: {

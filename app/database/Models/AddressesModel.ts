@@ -16,7 +16,7 @@ export default class AddressesModel extends Model<
   public address!: string;
   public number!: string;
   public district!: string;
-  public postal_code!: number;
+  public postal_code!: string;
   public city!: string;
   public state!: string;
 }
@@ -41,7 +41,7 @@ AddressesModel.init(
       allowNull: false,
     },
     postal_code: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     city: {

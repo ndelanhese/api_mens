@@ -19,7 +19,7 @@ module.exports = {
       },
       rg: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       birth_date: {
         type: Sequelize.DATE,

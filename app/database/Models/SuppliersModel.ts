@@ -15,7 +15,7 @@ export default class SuppliersModel extends Model<
   public id!: CreationOptional<number>;
   public contact_name!: string;
   public corporate_name!: string;
-  public cnpj!: number;
+  public cnpj!: string;
   public status!: CreationOptional<string>;
 }
 
@@ -35,7 +35,7 @@ SuppliersModel.init(
       allowNull: false,
     },
     cnpj: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },

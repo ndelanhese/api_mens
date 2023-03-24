@@ -13,9 +13,7 @@ export default class UsersRolesModel extends Model<
   InferCreationAttributes<UsersRolesModel>
 > {
   public id!: CreationOptional<number>;
-
   public role_id!: number;
-
   public user_id!: number;
 }
 

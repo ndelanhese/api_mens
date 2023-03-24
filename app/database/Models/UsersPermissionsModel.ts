@@ -13,9 +13,7 @@ export default class UsersPermissionsModel extends Model<
   InferCreationAttributes<UsersPermissionsModel>
 > {
   public id!: CreationOptional<number>;
-
   public permission_id!: number;
-
   public user_id!: number;
 }
 
