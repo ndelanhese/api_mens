@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false,
       },
       discount_amount: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: true,
       },
       discount_type: {

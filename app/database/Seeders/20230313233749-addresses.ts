@@ -1,7 +1,23 @@
+import getDate from '@app/src/Shared/Domain/Utils/Date';
 import { QueryInterface } from 'sequelize';
 
 export async function up(queryInterface: QueryInterface) {
-  await queryInterface.bulkInsert('addresses', [], {});
+  await queryInterface.bulkInsert(
+    'addresses',
+    [
+      {
+        address: 'Rua Lídio Eleutério Souza',
+        number: '780',
+        district: 'Jardim Imperial',
+        postal_code: '87580000',
+        city: 'Alto Piquiri',
+        state: 'Paraná',
+        createdAt: getDate(),
+        updatedAt: getDate(),
+      },
+    ],
+    {},
+  );
 }
 export async function down(queryInterface: QueryInterface) {
   await queryInterface.bulkDelete('addresses', {});

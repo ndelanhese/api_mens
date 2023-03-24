@@ -44,15 +44,17 @@ api-install:
 	@docker exec -it mens_api bash -c "npm install"
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │ Redis commands                                                              │
+# │ REDIS commands                                                                │
 # └─────────────────────────────────────────────────────────────────────────────┘
+
 .PHONY: redis-exec
 redis-exec:
 	@docker exec -it mens_redis bash 
-  
+
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │ DB commands                                                                 │
+# │ DATABASE commands                                                                │
 # └─────────────────────────────────────────────────────────────────────────────┘
+
 .PHONY: db-reset
 db-reset:
 	@docker exec -it mens_api bash -c "npm run db:reset"
@@ -91,5 +93,7 @@ help:
 	@echo "${CG}   api-exec            ${RC}Enter inside the api container"
 	@echo "${CG}   api-install         ${RC}Install api dependencies"
 	@echo "${CG}   redis-exec             ${RC}Enter inside the redis container"
-	@echo "${CG}   db-reset             ${RC}Resete database"
+	@echo ""
+	@echo "${CY}DB commands${RC}"
+	@echo "${CG}   db-reset             ${RC}Reset database"
 	@echo ""

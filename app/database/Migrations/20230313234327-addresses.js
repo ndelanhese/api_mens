@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
       },
       postal_code: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       city: {

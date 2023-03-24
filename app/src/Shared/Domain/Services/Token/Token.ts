@@ -1,12 +1,7 @@
 import HttpError from '@exceptions/HttpError';
 import jwt, { Algorithm, JwtPayload, Secret } from 'jsonwebtoken';
 
-import {
-  IJwtConfig,
-  IToken,
-  IUserAdminDataToken,
-  IUserMyMensDataToken,
-} from './Token.types';
+import { IJwtConfig, IToken, IUserAdminDataToken } from './Token.types';
 
 export default class Token {
   private secret: Secret;
@@ -43,10 +38,6 @@ export default class Token {
   }
 
   public static deserializeAdminToken(token: string): IUserAdminDataToken {
-    return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-  }
-
-  public static deserializeMyMensToken(token: string): IUserMyMensDataToken {
     return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
   }
 }

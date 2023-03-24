@@ -3,11 +3,16 @@ import { QueryInterface } from 'sequelize';
 
 export async function up(queryInterface: QueryInterface) {
   await queryInterface.bulkInsert(
-    'suppliers_addresses',
+    'employees',
     [
       {
-        supplier_id: 1,
-        address_id: 1,
+        name: 'Nathan Henrique P. Delanhese',
+        cpf: '12228019909',
+        rg: '147395183',
+        birth_date: getDate('2002-06-19'),
+        phone: '44997294087',
+        pis_pasep: '72617742410',
+        admission_date: getDate(),
         createdAt: getDate(),
         updatedAt: getDate(),
       },
@@ -16,5 +21,5 @@ export async function up(queryInterface: QueryInterface) {
   );
 }
 export async function down(queryInterface: QueryInterface) {
-  await queryInterface.bulkDelete('suppliers_addresses', {});
+  await queryInterface.bulkDelete('employees', {});
 }

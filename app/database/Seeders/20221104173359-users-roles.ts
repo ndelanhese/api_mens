@@ -1,3 +1,4 @@
+import getDate from '@app/src/Shared/Domain/Utils/Date';
 import { QueryInterface } from 'sequelize';
 
 export async function up(queryInterface: QueryInterface) {
@@ -7,14 +8,14 @@ export async function up(queryInterface: QueryInterface) {
       {
         role_id: 1,
         user_id: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: getDate(),
+        updatedAt: getDate(),
       },
       {
-        role_id: 1,
-        user_id: 2,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        role_id: 2,
+        user_id: 1,
+        createdAt: getDate(),
+        updatedAt: getDate(),
       },
     ],
     {},

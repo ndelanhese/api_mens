@@ -13,12 +13,12 @@ module.exports = {
         allowNull: false,
       },
       cpf: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
         unique: true,
       },
       rg: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       birth_date: {
@@ -26,7 +26,7 @@ module.exports = {
         allowNull: false,
       },
       phone: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       status: {
