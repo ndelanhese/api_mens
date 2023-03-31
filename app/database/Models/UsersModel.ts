@@ -6,6 +6,12 @@ import {
   CreationOptional,
 } from 'sequelize';
 
+import PermissionsModel from './PermissionsModel';
+import RolesModel from './RolesModel';
+import RolesPermissionsModel from './RolesPermissionsModel';
+import UsersPermissionsModel from './UsersPermissionsModel';
+import UsersRolesModel from './UsersRolesModel';
+
 import { sequelize } from '.';
 
 export default class UsersModel extends Model<
@@ -17,6 +23,7 @@ export default class UsersModel extends Model<
   public email!: string;
   public password!: string;
   public status!: CreationOptional<string>;
+  public employee_id!: number;
 }
 
 UsersModel.init(
@@ -45,9 +52,49 @@ UsersModel.init(
       allowNull: true,
       defaultValue: 'ativo',
     },
+    employee_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: {
+          tableName: 'employees',
+        },
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
   },
   {
     sequelize,
     tableName: 'users',
   },
 );
+
+UsersModel.hasMany(UsersRolesModel, {
+  foreignKey: 'user_id',
+  as: 'users_roles',
+});
+
+UsersModel.hasMany(UsersPermissionsModel, {
+  foreignKey: 'user_id',
+  as: 'users_permissions',
+});
+
+RolesPermissionsModel.hasMany(RolesModel, {
+  foreignKey: 'id',
+});
+
+UsersRolesModel.belongsTo(RolesModel, {
+  foreignKey: 'id',
+});
+
+RolesModel.hasMany(RolesPermissionsModel, {
+  as: 'permissions',
+  foreignKey: 'role_id',
+});
+
+PermissionsModel.hasMany(RolesPermissionsModel, {
+  as: 'permissions',
+  foreignKey: 'permission_id',
+});

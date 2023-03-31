@@ -6,6 +6,11 @@ import {
   CreationOptional,
 } from 'sequelize';
 
+import PermissionsModel from './PermissionsModel';
+import RolesPermissionsModel from './RolesPermissionsModel';
+import UsersModel from './UsersModel';
+import UsersRolesModel from './UsersRolesModel';
+
 import { sequelize } from '.';
 
 export default class RolesModel extends Model<

@@ -1,24 +1,27 @@
-import usersRolesModel from '@db-models/UsersRolesModel';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import RoleModel from '@db-models/RolesModel';
+import UserRoleModel from '@db-models/UsersRolesModel';
 import HttpError from '@exceptions/HttpError';
-import NotFountHttpError from '@exceptions/NotFountHttpError';
+import NotAuthorizedHttpError from '@exceptions/NotAuthorizedHttpError';
 
 import { IUserRolesReturn } from './UserRolesModel.types';
 
 export default class UserRolesModel {
-  public async listRolesPermissionsByUser(
-    id: number,
-  ): Promise<IUserRolesReturn[]> {
+  public async listRolesByUser(id: number): Promise<IUserRolesReturn[]> {
     try {
-      const userRoles = await usersRolesModel.findAll({
+      const userRoles: any = await UserRoleModel.findAll({
         where: { user_id: id },
         attributes: ['role_id'],
+        include: {
+          model: RoleModel,
+          attributes: ['name', 'description'],
+        },
       });
-      if (!userRoles) {
-        throw new NotFountHttpError();
-      }
+      if (userRoles.length === 0) throw new NotAuthorizedHttpError();
       return userRoles;
     } catch (error) {
-      throw new HttpError(500, 'Erro ao buscar papéis do usuário.', error);
+      console.error(error);
+      throw new HttpError(500, 'Erro no Servidor.');
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Options, Sequelize } from 'sequelize';
 
 import config from '../config/config';
+
 import 'dotenv/config';
 
 const env = process.env.NODE_ENV || 'development';

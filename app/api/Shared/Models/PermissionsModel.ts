@@ -1,22 +1,31 @@
-import permissionsModel from '@db-models/PermissionsModel';
+import permissionModel from '@db-models/PermissionsModel';
 import HttpError from '@exceptions/HttpError';
-import NotFoundHttpError from '@exceptions/NotFountHttpError';
 
 import { IPermission } from './PermissionsModel.types';
 
 export default class PermissionsModel {
   public async getPermissionsById(id: number[]): Promise<IPermission[]> {
     try {
-      const permission = await permissionsModel.findAll({
+      const permission = await permissionModel.findAll({
         attributes: ['id', 'name', 'description', 'group'],
         where: { id },
       });
-      if (!permission) {
-        throw new NotFoundHttpError();
+      if (permission) {
+        return permission;
       }
-      return permission;
+      throw new HttpError(500, 'Erro no Servidor.');
     } catch (error) {
-      throw new HttpError(500, 'Erro ao buscar permissão.', error);
+      throw new HttpError(500, 'Erro no Servidor.');
+    }
+  }
+
+  public async getPermissions(): Promise<IPermission[]> {
+    try {
+      return await permissionModel.findAll({
+        attributes: ['id', 'name', 'description', 'group'],
+      });
+    } catch (error) {
+      throw new HttpError(500, 'Erro no Servidor.');
     }
   }
 }

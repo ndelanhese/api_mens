@@ -1,5 +1,15 @@
+export interface ILogin {
+  token: string;
+  userData: {
+    id: number;
+    name: string;
+    email: string;
+  };
+  expiresIn: Date;
+}
 export interface IUserRolesReturn {
-  role_id: number;
+  id: number;
+  name: string;
 }
 
 export interface IUserPermissions {
@@ -9,12 +19,6 @@ export interface IUserPermissions {
 }
 
 export interface IPermissions {
-  id: number;
-  name: string;
-  description: string;
-}
-
-export interface IPermissionsReturn {
   id: number;
   name: string;
   description: string;

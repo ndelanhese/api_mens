@@ -1,3 +1,4 @@
+import checkPermission from '@acl/AclMiddleware';
 import Token from '@app/src/Shared/Domain/Services/Token/Token';
 import { IUserAdminDataToken } from '@app/src/Shared/Domain/Services/Token/Token.types';
 import { getNameFromURL } from '@app/src/Shared/Domain/Utils/String';
@@ -9,7 +10,6 @@ import {
   flushCache,
 } from '@cache/Cache';
 import HttpError from '@exceptions/NotAuthorizedHttpError';
-import checkPermission from '@security/AclMiddleware';
 import { Request } from 'express';
 
 export default class BaseController {

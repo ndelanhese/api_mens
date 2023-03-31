@@ -1,10 +1,10 @@
 import HttpError from '@exceptions/NotAuthorizedHttpError';
 
-import { IPermissionsReturn } from '../Controllers/UserController.types';
-import UserController from '../Controllers/UserPermissionsController';
+import AclService from '../Services/AclService';
+import { IPermissionsReturn } from '../Services/User.types';
 
 const checkPermission = async (authorization: string, permName: string) => {
-  const userController = new UserController();
+  const userController = new AclService();
   const userPermission = await userController.getProfilePermissions(
     authorization,
   );
@@ -12,7 +12,8 @@ const checkPermission = async (authorization: string, permName: string) => {
   if (typeof userPermission === 'string') {
     const permissionsArray: IPermissionsReturn[] = JSON.parse(userPermission);
     const hasPermission = permissionsArray.find(
-      permission => permission.name === permName,
+      permission =>
+        permission.name === permName || permission.name === 'superadmin',
     );
     if (!hasPermission) {
       throw new HttpError();
@@ -21,7 +22,8 @@ const checkPermission = async (authorization: string, permName: string) => {
   }
 
   const hasPermission = userPermission.find(
-    permission => permission.name === permName,
+    permission =>
+      permission.name === permName || permission.name === 'superadmin',
   );
   if (!hasPermission) {
     throw new HttpError();

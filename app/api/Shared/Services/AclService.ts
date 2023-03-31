@@ -13,9 +13,9 @@ import {
   IPermissionsReturn,
   IUserPermissions,
   IUserRolesReturn,
-} from './UserController.types';
+} from './User.types';
 
-export default class UserController {
+export default class AclService {
   public async getProfilePermissions(
     authorization: string,
   ): Promise<IPermissionsReturn[] | string> {
@@ -28,26 +28,32 @@ export default class UserController {
       );
       if (cache) return JSON.stringify(cache);
       const userRoles = (await this.getRolesByUser(id)) || [];
+      const isSuperAdmin = userRoles.find(role => role.name === 'superadmin');
+      if (isSuperAdmin) {
+        const permissions = await this.getPermissions();
+        if (!permissions) return [];
+        await createCache(
+          cacheClient,
+          `admin-profile-${authorization}`,
+          permissions,
+        );
+        return userRoles;
+      }
       const userPermissions = (await this.getPermissionsByUser(id)) || [];
       const permissionsByRoleId = userPermissions.map(
         permissions => permissions.permission_id || 0,
       );
-
-      const rolesId = userRoles.map(role => role.role_id);
-      const permissionsRoles = await this.getPermissionsByRole(rolesId);
-
+      const rolesIds = userRoles.map(role => role.id);
+      const permissionsRoles = await this.getPermissionsByRole(rolesIds);
       const permissionsRolesAndPermissions = permissionsRoles?.concat(
         permissionsByRoleId.filter(permission => permission !== 0),
       );
       const permissions = [...new Set(permissionsRolesAndPermissions)];
-
       const permissionWithName = await this.getPermissionsById(permissions);
-
       if (!permissionWithName) {
         throw new HttpErrorNotAuthorized();
       }
-
-      createCache(
+      await createCache(
         cacheClient,
         `admin-profile-${authorization}`,
         permissionWithName,
@@ -63,7 +69,12 @@ export default class UserController {
   ): Promise<IUserRolesReturn[] | undefined> {
     try {
       const userRolesModel = new UserRolesModel();
-      return await userRolesModel.listRolesPermissionsByUser(userId);
+      const roles = await userRolesModel.listRolesByUser(userId);
+      return roles.map(role => ({
+        id: role.role_id,
+        name: role.RoleModel.name,
+        description: role.RoleModel.description,
+      }));
     } catch (error) {
       if (error instanceof HttpError) {
         throw new HttpError(error.statusCode, error.message);
@@ -109,14 +120,28 @@ export default class UserController {
       const permissionReturn = await permissionsModel.getPermissionsById(
         permissionsId,
       );
-      const permissionsArray = permissionReturn.map(permission => {
-        return {
-          id: permission.id,
-          name: permission.name,
-          description: permission.description,
-        };
-      });
-      return permissionsArray;
+      return permissionReturn.map(permission => ({
+        id: permission.id,
+        name: permission.name,
+        description: permission.description,
+      }));
+    } catch (error) {
+      if (error instanceof HttpError) {
+        throw new HttpError(error.statusCode, error.message);
+      }
+    }
+  }
+
+  private async getPermissions() {
+    try {
+      const permissionsModel = new PermissionsModel();
+      const permissionReturn = await permissionsModel.getPermissions();
+      return permissionReturn.map(permission => ({
+        id: permission.id,
+        name: permission.name,
+        description: permission.description,
+        group: permission.group,
+      }));
     } catch (error) {
       if (error instanceof HttpError) {
         throw new HttpError(error.statusCode, error.message);

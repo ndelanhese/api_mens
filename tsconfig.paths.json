@@ -8,7 +8,9 @@
       "@token/*": ["src/Shared/Domain/Services/Token/*"],
       "@db-models/*": ["database/Models/*"],
       "@cache/*": ["src/Shared/Infrastructure/Cache/*"],
-      "@security/*": ["api/Shared/MIddleware/*"]
+      "@auth-middleware/*": ["api/Shared/MIddleware/*"],
+      "@acl/*": ["api/Shared/MIddleware/*"],
+      "@base-controller/*": ["api/Shared/Controllers/*"]
     }
   }
 }
