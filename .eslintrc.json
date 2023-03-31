@@ -46,7 +46,7 @@
     "no-alert": "error",
     "no-restricted-imports": "off",
     "@typescript-eslint/no-unused-vars": [
-      "warn",
+      "error",
       {
         "argsIgnorePattern": "^_",
         "varsIgnorePattern": "InputData$"
