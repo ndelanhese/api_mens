@@ -3,7 +3,8 @@
   "typeRoots": ["./env.d.ts"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
-
+    "typeRoots": ["./env.d.ts", "./node_modules/@types"],
+    "types": ["node"],
     /* Language and Environment */
     "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
 
@@ -34,5 +35,6 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "dist", "src_old", "jest.config.ts"]
+  "exclude": ["node_modules", "dist", "src_old", "jest.config.ts"],
+  "include": ["app/**/*", "env.d.ts"]
 }

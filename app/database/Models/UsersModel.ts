@@ -81,12 +81,12 @@ UsersModel.hasMany(UsersPermissionsModel, {
   as: 'users_permissions',
 });
 
-RolesPermissionsModel.hasMany(RolesModel, {
-  foreignKey: 'id',
+RolesPermissionsModel.belongsTo(RolesModel, {
+  foreignKey: 'role_id',
 });
 
 UsersRolesModel.belongsTo(RolesModel, {
-  foreignKey: 'id',
+  foreignKey: 'role_id',
 });
 
 RolesModel.hasMany(RolesPermissionsModel, {

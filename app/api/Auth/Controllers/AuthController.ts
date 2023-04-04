@@ -73,7 +73,7 @@ export default class AuthController extends BaseController {
     try {
       const { authorization } = req.headers;
       const { id } = this.getUser(authorization);
-      const cache = await this.getCache(`admin-profile-${authorization}`);
+      const cache = await this.getCache(`admin-users-profile-${authorization}`);
       if (cache)
         return res.status(200).json({
           data: cache,
@@ -83,7 +83,10 @@ export default class AuthController extends BaseController {
       if (isSuperAdmin) {
         const permissions = await this.getPermissions();
         if (!permissions) return res.status(200).json({ data: [] });
-        await this.createCache(`admin-profile-${authorization}`, permissions);
+        await this.createCache(
+          `admin-users-profile-${authorization}`,
+          permissions,
+        );
         res.status(200).json({
           data: permissions,
         });
@@ -108,7 +111,7 @@ export default class AuthController extends BaseController {
       }
 
       await this.createCache(
-        `admin-profile-${authorization}`,
+        `admin-users-profile-${authorization}`,
         permissionWithName,
       );
       return res.status(200).json({

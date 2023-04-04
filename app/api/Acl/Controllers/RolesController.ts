@@ -69,6 +69,7 @@ export default class RolesController extends BaseController {
       const roleAction = new CreateRoleAction();
       const roleId = (await roleAction.execute(roleInputData)).getId();
       await this.deleteCache('roles');
+      await this.deleteCache('users');
       return res.status(200).json(roleId);
     } catch (error) {
       if (error instanceof HttpError) {
@@ -87,6 +88,7 @@ export default class RolesController extends BaseController {
       const roleAction = new DeleteRoleAction();
       await roleAction.execute(roleInputData);
       await this.deleteCache('roles');
+      await this.deleteCache('users');
       return res.status(200).json('Papel deletado com sucesso.');
     } catch (error) {
       if (error instanceof HttpError) {
@@ -110,6 +112,7 @@ export default class RolesController extends BaseController {
         currentRoleInputData,
       );
       await this.deleteCache('roles');
+      await this.deleteCache('users');
       return res.status(200).json(role);
     } catch (error) {
       if (error instanceof HttpError) {
