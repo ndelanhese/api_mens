@@ -1,5 +1,9 @@
 node_modules/
 dist/
 test/
-.docker/
+docs/
 Makefile
+tsconfig.json
+.eslintrc.json
+.docker/
+.husky/
