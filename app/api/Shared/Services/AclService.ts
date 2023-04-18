@@ -24,7 +24,7 @@ export default class AclService {
       const { id } = Token.deserializeAdminToken(authorization);
       const cache = await getCache(
         cacheClient,
-        `admin-profile-${authorization}`,
+        `admin-users-profile-${authorization}`,
       );
       if (cache) return JSON.stringify(cache);
       const userRoles = (await this.getRolesByUser(id)) || [];
@@ -34,7 +34,7 @@ export default class AclService {
         if (!permissions) return [];
         await createCache(
           cacheClient,
-          `admin-profile-${authorization}`,
+          `admin-users-profile-${authorization}`,
           permissions,
         );
         return userRoles;
@@ -55,7 +55,7 @@ export default class AclService {
       }
       await createCache(
         cacheClient,
-        `admin-profile-${authorization}`,
+        `admin-users-profile-${authorization}`,
         permissionWithName,
       );
       return permissionWithName;
