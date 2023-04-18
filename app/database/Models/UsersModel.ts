@@ -6,6 +6,7 @@ import {
   CreationOptional,
 } from 'sequelize';
 
+import EmployeeModel from './EmployeesModel';
 import PermissionsModel from './PermissionsModel';
 import RolesModel from './RolesModel';
 import RolesPermissionsModel from './RolesPermissionsModel';
@@ -24,6 +25,7 @@ export default class UsersModel extends Model<
   public password!: string;
   public status!: CreationOptional<string>;
   public employee_id!: number;
+  public deletedAt!: CreationOptional<Date | null>;
 }
 
 UsersModel.init(
@@ -64,12 +66,27 @@ UsersModel.init(
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
     },
+    deletedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     sequelize,
     tableName: 'users',
   },
 );
+
+EmployeeModel.hasOne(UsersModel, {
+  foreignKey: 'employee_id',
+
+  as: 'employee',
+});
+
+UsersModel.belongsTo(EmployeeModel, {
+  foreignKey: 'employee_id',
+  as: 'employee',
+});
 
 UsersModel.hasMany(UsersRolesModel, {
   foreignKey: 'user_id',
