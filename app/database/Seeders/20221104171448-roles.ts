@@ -6,14 +6,8 @@ export async function up(queryInterface: QueryInterface) {
     'roles',
     [
       {
-        name: 'superAdmin',
+        name: 'superadmin',
         description: 'Super Administrador',
-        createdAt: getDate(),
-        updatedAt: getDate(),
-      },
-      {
-        name: 'user',
-        description: 'Usuário do sistema',
         createdAt: getDate(),
         updatedAt: getDate(),
       },

@@ -72,8 +72,8 @@ export default class AclService {
       const roles = await userRolesModel.listRolesByUser(userId);
       return roles.map(role => ({
         id: role.role_id,
-        name: role.RoleModel.name,
-        description: role.RoleModel.description,
+        name: role.RolesModel.name,
+        description: role.RolesModel.description,
       }));
     } catch (error) {
       if (error instanceof HttpError) {

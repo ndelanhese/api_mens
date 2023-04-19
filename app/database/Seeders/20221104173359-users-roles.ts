@@ -11,12 +11,6 @@ export async function up(queryInterface: QueryInterface) {
         createdAt: getDate(),
         updatedAt: getDate(),
       },
-      {
-        role_id: 2,
-        user_id: 1,
-        createdAt: getDate(),
-        updatedAt: getDate(),
-      },
     ],
     {},
   );

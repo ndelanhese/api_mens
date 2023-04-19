@@ -38,9 +38,9 @@ export default class UsersRoute {
     this.usersRoute.get('/:id', getUser);
     this.usersRoute.post('/', createUserMiddleware, createUser);
     this.usersRoute.delete('/:id', deleteUserMiddleware, deleteUser);
-    this.usersRoute.patch('/:id/restore', restoreUserMiddleware, restoreUser);
+    this.usersRoute.patch('/:id', restoreUserMiddleware, restoreUser);
     this.usersRoute.put(
-      '/:id/roles',
+      '/:id/roles-permissions',
       updateRolesAndPermissionMiddleware,
       updateRolesAndPermission,
     );

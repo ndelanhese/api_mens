@@ -13,7 +13,7 @@ export default class UserModel {
         attributes: {
           exclude: ['password'],
         },
-        order: [['id', 'DESC']],
+        order: [['id', 'ASC']],
       });
       if (users.length > 0) {
         return {

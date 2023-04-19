@@ -13,7 +13,7 @@ export default class RolePermissions {
       });
       return rolesPermissions;
     } catch (error) {
-      throw new HttpError(500, 'Erro no Servidor.');
+      throw new HttpError(500, 'Erro ao buscar permissões do papel.', error);
     }
   }
 }

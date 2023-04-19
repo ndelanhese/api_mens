@@ -11,7 +11,7 @@ export default class UserPermissionModel {
       });
       return userPermissions;
     } catch (error) {
-      throw new HttpError(500, 'Erro no Servidor.');
+      throw new HttpError(500, 'Erro ao buscar permissões do usuário.', error);
     }
   }
 }

@@ -74,6 +74,8 @@ UsersModel.init(
   {
     sequelize,
     tableName: 'users',
+    timestamps: true,
+    paranoid: true,
   },
 );
 

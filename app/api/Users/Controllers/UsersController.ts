@@ -29,7 +29,7 @@ export default class UsersController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'users_read');
+      await this.verifyPermission(req, 'users_read');
       const cache = await this.getCache('users');
       if (cache) return res.status(200).json(cache);
       const users = await this.usersModel.findAll();
@@ -47,7 +47,7 @@ export default class UsersController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'users_read');
+      await this.verifyPermission(req, 'users_read');
       const { id } = req.params;
       const cache = await this.getCache(`users-${id}`);
       if (cache) return res.status(200).json(cache);
@@ -68,7 +68,7 @@ export default class UsersController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'deleted_users_read');
+      await this.verifyPermission(req, 'deleted_users_read');
       const cache = await this.getCache('deleted-users');
       if (cache) return res.status(200).json(cache);
       const users = await this.usersModel.getUsersDeleted();
@@ -88,7 +88,7 @@ export default class UsersController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'users_create');
+      await this.verifyPermission(req, 'users_create');
       const userInputData = CreateUserFactory.fromRequest(req);
       const userAction = new CreateUserAction();
       const userId = (await userAction.execute(userInputData)).getId();
@@ -106,7 +106,7 @@ export default class UsersController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'users_delete');
+      await this.verifyPermission(req, 'users_delete');
       const userInputData = DeleteUserFactory.fromRequest(req);
       const userAction = new DeleteUserAction();
       await userAction.execute(userInputData);
@@ -123,7 +123,7 @@ export default class UsersController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'restore_users');
+      await this.verifyPermission(req, 'restore_users');
       const userInputData = RestoreUserFactory.fromRequest(req);
       const userAction = new RestoreUserAction();
       await userAction.execute(userInputData);
@@ -140,7 +140,7 @@ export default class UsersController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'users_update');
+      await this.verifyPermission(req, 'users_update');
       const userInputData = UpdateRolesAndPermissionsFactory.fromRequest(req);
       const userAction = new UpdateRolesAndPermissionsAction();
       await userAction.execute(userInputData);
@@ -159,7 +159,7 @@ export default class UsersController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'users_update');
+      await this.verifyPermission(req, 'users_update');
       const userInputData = UpdateUserFactory.fromRequest(req);
       const userAction = new UpdateUserAction();
       const currentUser = await this.usersModel.getUser(userInputData.id);

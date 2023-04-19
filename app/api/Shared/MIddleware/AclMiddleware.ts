@@ -4,10 +4,8 @@ import AclService from '../Services/AclService';
 import { IPermissionsReturn } from '../Services/User.types';
 
 const checkPermission = async (authorization: string, permName: string) => {
-  const userController = new AclService();
-  const userPermission = await userController.getProfilePermissions(
-    authorization,
-  );
+  const aclService = new AclService();
+  const userPermission = await aclService.getProfilePermissions(authorization);
 
   if (typeof userPermission === 'string') {
     const permissionsArray: IPermissionsReturn[] = JSON.parse(userPermission);

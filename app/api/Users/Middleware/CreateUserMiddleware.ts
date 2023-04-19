@@ -8,12 +8,11 @@ const createUserMiddleware = (
   next: NextFunction,
 ) => {
   const createSchema = joi.object({
-    first_name: joi.string().min(3).required(),
-    last_name: joi.string().min(3).required(),
-    phone_number: joi.string().min(9).required(),
+    user: joi.string().min(3).required(),
     email: joi.string().email().required(),
     password: joi.string().min(6).required(),
     status: joi.string().valid('active', 'inactive').required(),
+    employee_id: joi.number().required(),
   });
   const { error } = createSchema.validate(req.body, { messages });
   if (error) {
