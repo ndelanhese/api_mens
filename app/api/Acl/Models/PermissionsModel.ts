@@ -12,7 +12,7 @@ export default class PermissionModel {
       }
       return [];
     } catch (error) {
-      throw new HttpError(500, 'Erro no Servidor.');
+      throw new HttpError(500, 'Erro ao buscar permissões.', error);
     }
   }
 }

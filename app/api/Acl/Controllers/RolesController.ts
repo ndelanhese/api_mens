@@ -10,6 +10,8 @@ import DeleteRoleFactory from '../Factories/DeleteRoleFactory';
 import UpdateRoleFactory from '../Factories/UpdateRoleFactory';
 import RolesModel from '../Models/RolesModel';
 
+import { IPermissionsArray } from './RolesController.types';
+
 export default class RolesController extends BaseController {
   private rolesModel: RolesModel;
 
@@ -50,8 +52,14 @@ export default class RolesController extends BaseController {
         return res.status(200).json(cache);
       }
       const role = await this.rolesModel.getRoleById(Number(id));
-      await this.createCache(`admin-roles-${id}`, role);
-      return res.status(200).json(role);
+      const roleData = {
+        id: role.id,
+        name: role.name,
+        description: role.description,
+        permissions: this.preparePermissionsArray(role.permissions),
+      };
+      await this.createCache(`admin-roles-${id}`, roleData);
+      return res.status(200).json(roleData);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -119,5 +127,12 @@ export default class RolesController extends BaseController {
         return res.status(error.statusCode).send({ message: error.message });
       }
     }
+  }
+
+  private preparePermissionsArray(permissions: IPermissionsArray[]) {
+    const permissionsId = permissions.map(
+      permissions => permissions.permission_id,
+    );
+    return permissionsId;
   }
 }

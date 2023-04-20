@@ -8,7 +8,7 @@ import { IPermission, IGroup } from './PermissionsController.types';
 
 export default class PermissionsController extends BaseController {
   private permissionsModel: PermissionsModel;
-  private test = process.env.DB_HOST;
+
   constructor() {
     super();
     this.permissionsModel = new PermissionsModel();
