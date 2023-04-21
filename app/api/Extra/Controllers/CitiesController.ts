@@ -37,9 +37,12 @@ export default class StatesController extends BaseController {
   ) {
     const municipalityData = municipalities.map(municipality => ({
       name: municipality.nome,
+      isMunicipality: true,
     }));
     const districtsData = districts.map(district => ({
-      name: `${district.nome} - ${district.municipio.nome}`,
+      name: district.nome,
+      name_with_municipality: `${district.nome} - ${district.municipio.nome}`,
+      isMunicipality: false,
     }));
     return municipalityData.concat(districtsData);
   }
