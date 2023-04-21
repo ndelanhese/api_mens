@@ -104,7 +104,7 @@ help:
 	@echo -e "${CG}   api-dev             ${RC}Start a development server"
 	@echo -e "${CG}   api-exec            ${RC}Enter inside the api container"
 	@echo -e "${CG}   api-install         ${RC}Install api dependencies"
-	@echo -e "${CG}   api-logs            ${RC}View api logs"
+	@echo -e "${CG}   api-log            ${RC}View api logs"
 	@echo -e "${CG}   redis-exec          ${RC}Enter inside the redis container"
 	@echo  ""
 	@echo -e "${CY}DB commands${RC}"
