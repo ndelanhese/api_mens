@@ -1,8 +1,8 @@
 import HttpError from '@exceptions/HttpError';
 import fileUpload from 'express-fileupload';
 
-import MediaRepository from '../../Infrastructure/Repositories/MediaRepository';
-import Media from '../Entities/Media';
+import Media from '../../Domain/Entities/Media';
+import MediaRepository from '../Repositories/MediaRepository';
 
 import DisksService from './DisksService';
 

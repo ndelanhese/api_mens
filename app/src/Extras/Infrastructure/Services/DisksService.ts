@@ -1,7 +1,7 @@
-import AwsStorage from '../../Infrastructure/Repositories/AwsStorageRepository';
-import AzureStorage from '../../Infrastructure/Repositories/AzureStorageRepository';
-import LocalStorage from '../../Infrastructure/Repositories/LocalStorageRepository';
-import Media from '../Entities/Media';
+import Media from '../../Domain/Entities/Media';
+import AwsStorage from '../Repositories/AwsStorageRepository';
+import AzureStorage from '../Repositories/AzureStorageRepository';
+import LocalStorage from '../Repositories/LocalStorageRepository';
 
 export default class DisksService {
   private disk: string;
