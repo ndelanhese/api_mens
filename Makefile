@@ -59,6 +59,14 @@ redis-exec:
 db-reset:
 	@docker exec -it mens_api bash -c "npm run db:reset"
 
+.PHONY: db-seed-all
+db-seed-all:
+	@docker exec -it mens_api bash -c "npm run build && npm run db:seed:all"
+
+.PHONY: db-migrate
+db-migrate:
+	@docker exec -it mens_api bash -c "npm run build && npm run db:migrate"
+
 # ┌─────────────────────────────────────────────────────────────────────────────┐
 # │ Infra commands                                                              │
 # └─────────────────────────────────────────────────────────────────────────────┘
@@ -79,21 +87,23 @@ stop:
 # └─────────────────────────────────────────────────────────────────────────────┘
 help:
 	@echo ""
-	@echo "${CY}Usage${RC}"
-	@echo "   make ${CG}<command>${RC}"
-	@echo ""
-	@echo "${CY}Infra commands${RC}"
-	@echo "${CG}   build   ${RC}Build all containers"
-	@echo "${CG}   start   ${RC}Start all containers"
-	@echo "${CG}   stop    ${RC}Stop all containers"
-	@echo ""
-	@echo "${CY}API commands${RC}"
-	@echo "${CG}   api-build           ${RC}Build api distribution files"
-	@echo "${CG}   api-dev             ${RC}Start a development server"
-	@echo "${CG}   api-exec            ${RC}Enter inside the api container"
-	@echo "${CG}   api-install         ${RC}Install api dependencies"
-	@echo "${CG}   redis-exec             ${RC}Enter inside the redis container"
-	@echo ""
-	@echo "${CY}DB commands${RC}"
-	@echo "${CG}   db-reset             ${RC}Reset database"
+	@echo -e "${CY}Usage${RC}"
+	@echo -e "   make ${CG}<command>${RC}"
+	@echo  ""
+	@echo -e "${CY}Infra commands${RC}"
+	@echo -e "${CG}   build               ${RC}Build all containers"
+	@echo -e "${CG}   start               ${RC}Start all containers"
+	@echo -e "${CG}   stop                ${RC}Stop all containers"
+	@echo  ""
+	@echo -e "${CY}API commands${RC}"
+	@echo -e "${CG}   api-build           ${RC}Build api distribution files"
+	@echo -e "${CG}   api-dev             ${RC}Start a development server"
+	@echo -e "${CG}   api-exec            ${RC}Enter inside the api container"
+	@echo -e "${CG}   api-install         ${RC}Install api dependencies"
+	@echo -e "${CG}   redis-exec          ${RC}Enter inside the redis container"
+	@echo  ""
+	@echo -e "${CY}DB commands${RC}"
+	@echo -e "${CG}   db-reset            ${RC}Reset database"
+	@echo -e "${CG}   db-seed-all         ${RC}Run build and all pending seeds"
+	@echo -e "${CG}   db-migrate          ${RC}Run build and all pending migrates"
 	@echo ""

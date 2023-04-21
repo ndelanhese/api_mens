@@ -59,8 +59,8 @@ export default class AclService {
         permissionWithName,
       );
       return permissionWithName;
-    } catch {
-      throw new HttpErrorNotAuthorized();
+    } catch (error) {
+      throw new HttpErrorNotAuthorized(error);
     }
   }
 

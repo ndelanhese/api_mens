@@ -48,6 +48,7 @@ export default class AuthController extends BaseController {
           };
           const { token } = this.jwt.generateToken(userData);
           const expiresIn = getNextDay();
+          await this.deleteCache('users');
           return res.status(200).json({
             token,
             user_data: {
