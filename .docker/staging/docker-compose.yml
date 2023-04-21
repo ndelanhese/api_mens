@@ -1,4 +1,4 @@
-version: '3.5'
+version: "3.5"
 
 services:
     mens_database:
@@ -49,10 +49,7 @@ services:
         links:
             - mens_database
             - mens_redis
-        networks:
-            mens_network:
-                ipv4_address: 172.19.0.4
 
 networks:
-  default:
-    name: mens_network
+    default:
+        name: mens_network
