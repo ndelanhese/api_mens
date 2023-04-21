@@ -20,7 +20,7 @@ export default class UserModel {
         ],
       });
     } catch (error) {
-      throw new HttpError(500, 'Erro ao buscar usuário.');
+      throw new HttpError(500, 'Erro ao buscar usuário.', error);
     }
   }
 
@@ -35,9 +35,9 @@ export default class UserModel {
       });
     } catch (error) {
       if (error instanceof UniqueConstraintError) {
-        throw new HttpError(400, 'E-mail já cadastrado.');
+        throw new HttpError(400, 'E-mail já cadastrado.', error);
       }
-      throw new HttpError(500, 'Erro ao cadastrar usuário.');
+      throw new HttpError(500, 'Erro ao cadastrar usuário.', error);
     }
   }
 
@@ -56,17 +56,20 @@ export default class UserModel {
         },
       );
     } catch (error) {
-      throw new HttpError(500, 'Erro ao atualizar usuário.');
+      throw new HttpError(500, 'Erro ao atualizar usuário.', error);
     }
   }
 
   public async deleteUser(userId: number): Promise<number> {
     try {
       const deleted = await userModel.destroy({ where: { id: userId } });
-      if (deleted === 0) throw new HttpError(500, 'Usuário não encontrado.');
+      if (deleted === 0) throw new HttpError(404, 'Usuário não encontrado.');
       return deleted;
     } catch (error) {
-      throw new HttpError(500, 'Erro ao excluir usuário.');
+      if (error instanceof HttpError) {
+        throw new HttpError(error.statusCode, error.message, error);
+      }
+      throw new HttpError(500, 'Erro ao excluir usuário.', error);
     }
   }
 
@@ -81,7 +84,7 @@ export default class UserModel {
         order: [['id', 'ASC']],
       });
     } catch (error) {
-      throw new HttpError(500, 'Erro ao buscar usuários deletados.');
+      throw new HttpError(500, 'Erro ao buscar usuários deletados.', error);
     }
   }
 
@@ -89,7 +92,7 @@ export default class UserModel {
     try {
       await userModel.restore({ where: { id: userId } });
     } catch (error) {
-      throw new HttpError(500, 'Erro ao restaurar usuários.');
+      throw new HttpError(500, 'Erro ao restaurar usuários.', error);
     }
   }
 }

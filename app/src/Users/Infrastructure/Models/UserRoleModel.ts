@@ -14,7 +14,7 @@ export default class UserRolesModel {
       }));
       return await userRoleModel.bulkCreate(userRole);
     } catch (error) {
-      throw new HttpError(500, 'Erro ao criar os papeis do usuário.');
+      throw new HttpError(500, 'Erro ao criar os papeis do usuário.', error);
     }
   }
 
@@ -24,7 +24,7 @@ export default class UserRolesModel {
         where: { user_id: id },
       });
     } catch (error) {
-      throw new HttpError(500, 'Erro ao deletar os papéis do usuário.');
+      throw new HttpError(500, 'Erro ao deletar os papéis do usuário.', error);
     }
   }
 }

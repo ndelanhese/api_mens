@@ -14,7 +14,7 @@ export default class RoleModel {
         description: payload.getDescription(),
       });
     } catch (error) {
-      throw new HttpError(500, 'Erro ao criar papel.');
+      throw new HttpError(500, 'Erro ao criar papel.', error);
     }
   }
 
@@ -30,7 +30,7 @@ export default class RoleModel {
         },
       );
     } catch (error) {
-      throw new HttpError(500, 'Erro ao atualizar papel.');
+      throw new HttpError(500, 'Erro ao atualizar papel.', error);
     }
   }
 
@@ -39,7 +39,7 @@ export default class RoleModel {
       await rolePermissionModel.destroy({ where: { role_id: roleId } });
       await roleModel.destroy({ where: { id: roleId } });
     } catch (error) {
-      throw new HttpError(500, 'Erro ao deletar papel.');
+      throw new HttpError(500, 'Erro ao deletar papel.', error);
     }
   }
 }

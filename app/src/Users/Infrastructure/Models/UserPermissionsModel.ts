@@ -16,7 +16,11 @@ export default class UserPermissionsModel {
     try {
       return await userPermissionModel.bulkCreate(userPermission);
     } catch (error) {
-      throw new HttpError(500, 'Erro ao criar as permissões do usuário.');
+      throw new HttpError(
+        500,
+        'Erro ao criar as permissões do usuário.',
+        error,
+      );
     }
   }
 
@@ -26,7 +30,11 @@ export default class UserPermissionsModel {
         where: { user_id: id },
       });
     } catch (error) {
-      throw new HttpError(500, 'Erro ao deletar as permissões do usuário.');
+      throw new HttpError(
+        500,
+        'Erro ao deletar as permissões do usuário.',
+        error,
+      );
     }
   }
 }

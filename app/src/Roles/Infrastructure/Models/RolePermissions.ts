@@ -10,7 +10,7 @@ export default class RolePermission {
     try {
       return await rolePermission.bulkCreate(payload);
     } catch (error) {
-      throw new HttpError(500, 'Erro ao criar permissões.');
+      throw new HttpError(500, 'Erro ao criar permissões.', error);
     }
   }
 
@@ -20,7 +20,7 @@ export default class RolePermission {
         where: { role_id: roleId },
       });
     } catch (error) {
-      throw new HttpError(500, 'Erro ao deletar permissões.');
+      throw new HttpError(500, 'Erro ao deletar permissões.', error);
     }
   }
 }
