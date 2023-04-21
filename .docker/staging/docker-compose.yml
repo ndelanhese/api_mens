@@ -49,7 +49,15 @@ services:
         links:
             - mens_database
             - mens_redis
+        networks:
+            mens_network:
+                ipv4_address: 172.19.0.4
 
 networks:
-  default:
-    name: mens_network
+  mens_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/16
+          gateway: 172.19.0.1
