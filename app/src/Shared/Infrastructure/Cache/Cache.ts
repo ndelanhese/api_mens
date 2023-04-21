@@ -27,10 +27,10 @@ export const createCache = async (
   key: string,
   data: any,
 ): Promise<boolean> => {
-  const SEVEN_MINUTES_IN_SECONDS = 420;
+  const TEN_HOURS_IN_SECONDS = 36000;
   try {
     const cache = await client.set(key, JSON.stringify(data), {
-      EX: SEVEN_MINUTES_IN_SECONDS,
+      EX: TEN_HOURS_IN_SECONDS,
       NX: true,
     });
     return cache === 'OK' ? true : false;

@@ -7,27 +7,25 @@ export default class IBGEService {
   private baseUrl: string;
   constructor() {
     this.baseUrl =
-      'https://servicodados.ibge.gov.br/api/v1/localidades/estados/';
+      'http://servicodados.ibge.gov.br/api/v1/localidades/estados/';
   }
 
-  public async getMunicipality(uf: string) {
+  public async getMunicipalities(uf: string) {
     const data: IMunicipalityResponse[] = await axios
-      .get(`${this.baseUrl}${uf}/municipios`, {
-        timeout: 5000,
-      })
+      .get(`${this.baseUrl}${uf}/municipios`, { timeout: 5000 })
       .then(response => response.data)
       .catch(error => {
-        throw new HttpError(error.code, error.message);
+        throw new HttpError(500, error.message);
       });
     return data;
   }
 
-  public async getDistrict(uf: string) {
+  public async getDistricts(uf: string) {
     const data: IDistrictResponse[] = await axios
-      .get(`${this.baseUrl}${uf}/distritos`)
+      .get(`${this.baseUrl}${uf}/distritos`, { timeout: 5000 })
       .then(response => response.data)
       .catch(error => {
-        throw new HttpError(error.code, error.message);
+        throw new HttpError(500, error.message);
       });
     return data;
   }
