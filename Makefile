@@ -61,7 +61,7 @@ redis-exec:
 
 .PHONY: db-reset
 db-reset:
-	@docker exec -it mens_api bash -c "npm run db:reset"
+	@docker exec -it mens_api bash -c "npm run build && npm run db:reset"
 
 .PHONY: db-seed-all
 db-seed-all:
@@ -104,11 +104,11 @@ help:
 	@echo -e "${CG}   api-dev             ${RC}Start a development server"
 	@echo -e "${CG}   api-exec            ${RC}Enter inside the api container"
 	@echo -e "${CG}   api-install         ${RC}Install api dependencies"
-	@echo -e "${CG}   api-log            ${RC}View api logs"
+	@echo -e "${CG}   api-log             ${RC}View api logs"
 	@echo -e "${CG}   redis-exec          ${RC}Enter inside the redis container"
 	@echo  ""
 	@echo -e "${CY}DB commands${RC}"
-	@echo -e "${CG}   db-reset            ${RC}Reset database"
+	@echo -e "${CG}   db-reset            ${RC}Run build and reset database"
 	@echo -e "${CG}   db-seed-all         ${RC}Run build and all pending seeds"
 	@echo -e "${CG}   db-migrate          ${RC}Run build and all pending migrates"
 	@echo ""
