@@ -22,21 +22,15 @@ export default class AclService {
     try {
       const cacheClient = createCacheClient();
       const { id } = Token.deserializeAdminToken(authorization);
-      const cache = await getCache(
-        cacheClient,
-        `admin-users-profile-${authorization}`,
-      );
+      const cacheKey = `admin-users-profile-${authorization}`;
+      const cache = await getCache(cacheClient, cacheKey);
       if (cache) return JSON.stringify(cache);
       const userRoles = (await this.getRolesByUser(id)) || [];
       const isSuperAdmin = userRoles.find(role => role.name === 'superadmin');
       if (isSuperAdmin) {
         const permissions = await this.getPermissions();
         if (!permissions) return [];
-        await createCache(
-          cacheClient,
-          `admin-users-profile-${authorization}`,
-          permissions,
-        );
+        await createCache(cacheClient, cacheKey, permissions);
         return userRoles;
       }
       const userPermissions = (await this.getPermissionsByUser(id)) || [];

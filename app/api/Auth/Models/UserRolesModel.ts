@@ -2,7 +2,6 @@
 import RoleModel from '@db-models/RolesModel';
 import UserRoleModel from '@db-models/UsersRolesModel';
 import HttpError from '@exceptions/HttpError';
-import NotAuthorizedHttpError from '@exceptions/NotAuthorizedHttpError';
 
 import { IUserRolesReturn } from './UserRolesModel.types';
 
@@ -14,14 +13,12 @@ export default class UserRolesModel {
         attributes: ['role_id'],
         include: {
           model: RoleModel,
-          attributes: ['name'],
+          attributes: ['name', 'description'],
         },
       });
-      if (userRoles.length === 0) throw new NotAuthorizedHttpError();
       return userRoles;
     } catch (error) {
-      console.error(error);
-      throw new HttpError(500, 'Erro no Servidor.');
+      throw new HttpError(500, 'Erro ao buscar papéis do usuário.', error);
     }
   }
 }

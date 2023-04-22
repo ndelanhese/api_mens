@@ -74,7 +74,8 @@ export default class AuthController extends BaseController {
     try {
       const { authorization } = req.headers;
       const { id } = this.getUser(authorization);
-      const cache = await this.getCache(`admin-users-profile-${authorization}`);
+      const cacheKey = `admin-users-profile-${authorization}`;
+      const cache = await this.getCache(cacheKey);
       if (cache)
         return res.status(200).json({
           data: cache,
@@ -84,10 +85,7 @@ export default class AuthController extends BaseController {
       if (isSuperAdmin) {
         const permissions = await this.getPermissions();
         if (!permissions) return res.status(200).json({ data: [] });
-        await this.createCache(
-          `admin-users-profile-${authorization}`,
-          permissions,
-        );
+        await this.createCache(cacheKey, permissions);
         res.status(200).json({
           data: permissions,
         });
@@ -111,10 +109,7 @@ export default class AuthController extends BaseController {
         return res.status(200).json({ data: [] });
       }
 
-      await this.createCache(
-        `admin-users-profile-${authorization}`,
-        permissionWithName,
-      );
+      await this.createCache(cacheKey, permissionWithName);
       return res.status(200).json({
         data: permissionWithName,
       });
@@ -133,7 +128,7 @@ export default class AuthController extends BaseController {
       const roles = await userRolesModel.listRolesByUser(userId);
       return roles.map(role => ({
         id: role.role_id,
-        name: role.RoleModel.name,
+        name: role.RolesModel.name,
       }));
     } catch (error) {
       if (error instanceof HttpError) {

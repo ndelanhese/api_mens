@@ -10,12 +10,13 @@ export default class PermissionsModel {
         attributes: ['id', 'name', 'description'],
         where: { id },
       });
-      if (permission) {
-        return permission;
-      }
-      throw new HttpError(500, 'Erro no Servidor.');
+      if (!permission) throw new HttpError(404, 'Permissão não encontrada.');
+      return permission;
     } catch (error) {
-      throw new HttpError(500, 'Erro no Servidor.');
+      if (error instanceof HttpError)
+        throw new HttpError(error.statusCode, error.message, error);
+
+      throw new HttpError(500, 'Erro ao buscar permissão.', error);
     }
   }
 
@@ -25,7 +26,7 @@ export default class PermissionsModel {
         attributes: ['id', 'name', 'description'],
       });
     } catch (error) {
-      throw new HttpError(500, 'Erro no Servidor.');
+      throw new HttpError(500, 'Erro ao buscar permissões.', error);
     }
   }
 }

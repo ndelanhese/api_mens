@@ -1,6 +1,6 @@
 export interface IUserRolesReturn {
   role_id: number;
-  RoleModel: {
+  RolesModel: {
     name: string;
   };
 }
