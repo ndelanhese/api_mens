@@ -7,11 +7,11 @@ export default class UpdateBrandAction {
     input: UpdateBrandInputData,
     currentValue: Brand,
   ): Promise<void> {
-    const userRepository = new BrandsRepository();
-    const user = new Brand(
+    const brandsRepository = new BrandsRepository();
+    const brand = new Brand(
       input.name || currentValue.getName(),
       input.id || currentValue.getId(),
     );
-    await userRepository.update(user);
+    await brandsRepository.update(brand);
   }
 }

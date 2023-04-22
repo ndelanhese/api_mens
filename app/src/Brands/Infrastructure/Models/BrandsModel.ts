@@ -29,9 +29,9 @@ export default class BrandsModel {
     }
   }
 
-  public async deleteBrand(userId: number): Promise<number> {
+  public async deleteBrand(brandId: number): Promise<number> {
     try {
-      const deleted = await brandsModel.destroy({ where: { id: userId } });
+      const deleted = await brandsModel.destroy({ where: { id: brandId } });
       if (deleted === 0) throw new HttpError(404, 'Marca não encontrada.');
       return deleted;
     } catch (error) {

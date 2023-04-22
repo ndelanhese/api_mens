@@ -7,6 +7,8 @@ import UsersRoute from '@app/api/Users/Routes/UsersRoute';
 import AuthToken from '@auth-middleware/AuthMiddleware';
 import { Router, Request, Response } from 'express';
 
+import CategoriesRoute from './api/Categories/Routes/CategoriesRoute';
+
 const router = Router();
 
 const prepareInstance = () => {
@@ -16,6 +18,7 @@ const prepareInstance = () => {
   const statesRoute = new StatesRoute();
   const citiesRoute = new CitiesRoute();
   const brandsRoute = new BrandsRoute();
+  const categoriesRoute = new CategoriesRoute();
 
   return {
     loginRoute,
@@ -24,6 +27,7 @@ const prepareInstance = () => {
     statesRoute,
     citiesRoute,
     brandsRoute,
+    categoriesRoute,
   };
 };
 const instances = prepareInstance();
@@ -36,5 +40,6 @@ router.use('/users', AuthToken, instances.usersRoute.userRoute);
 router.use('/states', AuthToken, instances.statesRoute.stateRoute);
 router.use('/cities', AuthToken, instances.citiesRoute.cityRoute);
 router.use('/brands', AuthToken, instances.brandsRoute.brandRoute);
+router.use('/categories', AuthToken, instances.categoriesRoute.categoryRoute);
 
 export default router;

@@ -6,5 +6,7 @@ export interface IConfig {
     username: string | undefined;
     password: string | undefined;
     database: string | undefined;
+    seederStorage?: string | undefined;
+    seederStorageTableName?: string | undefined;
   };
 }
