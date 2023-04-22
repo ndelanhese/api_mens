@@ -6,6 +6,9 @@ import {
   CreationOptional,
 } from 'sequelize';
 
+import AddressesModel from './AddressesModel';
+import CustomersAddressesModel from './CustomersAddressesModel';
+import CustomerModel from './CustomersModel';
 import EmployeeModel from './EmployeesModel';
 import PermissionsModel from './PermissionsModel';
 import RolesModel from './RolesModel';
@@ -116,4 +119,22 @@ RolesModel.hasMany(RolesPermissionsModel, {
 PermissionsModel.hasMany(RolesPermissionsModel, {
   as: 'permissions',
   foreignKey: 'permission_id',
+});
+
+CustomersAddressesModel.belongsTo(CustomerModel, {
+  foreignKey: 'customer_id',
+});
+
+CustomersAddressesModel.belongsTo(AddressesModel, {
+  foreignKey: 'address_id',
+});
+
+AddressesModel.hasMany(CustomersAddressesModel, {
+  as: 'addresses',
+  foreignKey: 'address_id',
+});
+
+CustomerModel.hasMany(CustomersAddressesModel, {
+  as: 'address',
+  foreignKey: 'customer_id',
 });
