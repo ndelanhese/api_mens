@@ -60,7 +60,7 @@ export default class AclService {
       );
       return permissionWithName;
     } catch (error) {
-      throw new HttpErrorNotAuthorized(error);
+      throw new HttpErrorNotAuthorized();
     }
   }
 

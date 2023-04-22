@@ -1,11 +1,18 @@
-export default class DefaultError extends Error {
-  public stack?: string;
+import * as Sentry from '@sentry/node';
 
-  constructor(message: string, stack?: Error | unknown) {
+export default class DefaultError extends Error {
+  constructor(message: string, previous?: Error | unknown) {
     super(message);
-    this.stack = this.verifyUnknownError(stack);
+    if (previous instanceof Error) {
+      this.stack = previous.stack;
+    }
+    if (typeof previous === 'string') {
+      this.stack = previous;
+    }
+    DefaultError.sendSentryError(this);
   }
-  private verifyUnknownError(error: Error | unknown) {
-    if (error instanceof Error) return error.stack;
+
+  static sendSentryError(erro: Error) {
+    Sentry.captureException(erro);
   }
 }
