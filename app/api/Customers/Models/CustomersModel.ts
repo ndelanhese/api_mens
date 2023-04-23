@@ -13,11 +13,11 @@ export default class ListCustomersModel {
         include: [
           {
             model: CustomersAddressesModel,
-            as: 'address',
-            attributes: [],
+            as: 'addresses',
             include: [
               {
                 model: AddressesModel,
+                as: 'address',
                 attributes: [
                   'address',
                   'number',

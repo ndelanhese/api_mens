@@ -127,6 +127,7 @@ CustomersAddressesModel.belongsTo(CustomerModel, {
 
 CustomersAddressesModel.belongsTo(AddressesModel, {
   foreignKey: 'address_id',
+  as: 'address',
 });
 
 AddressesModel.hasMany(CustomersAddressesModel, {
@@ -135,6 +136,6 @@ AddressesModel.hasMany(CustomersAddressesModel, {
 });
 
 CustomerModel.hasMany(CustomersAddressesModel, {
-  as: 'address',
+  as: 'addresses',
   foreignKey: 'customer_id',
 });

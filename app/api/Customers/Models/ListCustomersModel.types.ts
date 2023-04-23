@@ -6,10 +6,12 @@ export interface ICustomer {
   birth_date: Date;
   phone: string;
   status: string;
-  address: IAddress;
+  addresses: {
+    address: IAddress;
+  }[];
 }
 
-export interface IAddress {
+interface IAddress {
   address: string;
   number: string;
   district: string;
