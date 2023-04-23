@@ -36,4 +36,37 @@ export default class ListCustomersModel {
       throw new HttpError(500, 'Erro ao listar clientes.', error);
     }
   }
+
+  public async getCustomer(customerId: number): Promise<ICustomer> {
+    try {
+      const customers: any = await customersModel.findByPk(customerId, {
+        include: [
+          {
+            model: CustomersAddressesModel,
+            as: 'addresses',
+            include: [
+              {
+                model: AddressesModel,
+                as: 'address',
+                attributes: [
+                  'address',
+                  'number',
+                  'district',
+                  'postal_code',
+                  'city',
+                  'state',
+                ],
+              },
+            ],
+          },
+        ],
+      });
+      if (!customers) throw new HttpError(404, 'Cliente não encontrado.');
+      return customers;
+    } catch (error) {
+      if (error instanceof HttpError)
+        throw new HttpError(error.statusCode, error.message, error);
+      throw new HttpError(500, 'Erro ao listar cliente.', error);
+    }
+  }
 }

@@ -18,7 +18,12 @@ export default class CustomersRoute {
       this.customerController,
     );
 
+    const getCustomer = this.customerController.getCustomer.bind(
+      this.customerController,
+    );
+
     this.customersRoute.get('/', getCustomers);
+    this.customersRoute.get('/:id', getCustomer);
   }
 
   get customerRoute() {

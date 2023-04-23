@@ -31,7 +31,32 @@ export default class UsersController extends BaseController {
         const addresses = this.prepareCustomerAddresses(customer.addresses);
         return this.prepareCustomerWithAddresses(customer, addresses);
       });
-      await this.createCache('customers', customers);
+      await this.createCache('customers', customerWithAddresses);
+      return res.status(200).json(customerWithAddresses);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getCustomer(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'customers_read');
+      const { id } = req.params;
+      const cacheKey = `customer-${id}`;
+      const cache = await this.getCache(cacheKey);
+      if (cache) return res.status(200).json(cache);
+      const customer = await this.customersModel.getCustomer(Number(id));
+      const addresses = this.prepareCustomerAddresses(customer.addresses);
+      const customerWithAddresses = this.prepareCustomerWithAddresses(
+        customer,
+        addresses,
+      );
+      await this.createCache(cacheKey, customerWithAddresses);
       return res.status(200).json(customerWithAddresses);
     } catch (error) {
       if (error instanceof HttpError) {
