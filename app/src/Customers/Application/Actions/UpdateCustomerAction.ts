@@ -14,7 +14,7 @@ export default class UpdateCustomerAction {
       input.birth_date || currentValue.getBirthDate(),
       input.phone || currentValue.getPhone(),
       input.status || currentValue.getStatus(),
-      input.address || currentValue.getAddress(),
+      undefined,
       input.rg || currentValue.getRg(),
       input.id || currentValue.getId(),
     );

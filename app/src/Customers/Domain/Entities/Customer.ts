@@ -8,7 +8,7 @@ export default class Customer {
   private birth_date: Date;
   private phone: string;
   private status: string;
-  private address: Address;
+  private address?: Address;
 
   constructor(
     name: string,
@@ -16,7 +16,7 @@ export default class Customer {
     birth_date: Date,
     phone: string,
     status: string,
-    address: Address,
+    address?: Address,
     rg?: string,
     id?: number,
   ) {

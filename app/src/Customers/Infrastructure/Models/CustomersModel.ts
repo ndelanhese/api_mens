@@ -19,6 +19,7 @@ export default class CustomersModel {
   }
 
   public async createCustomer(payload: Customer) {
+    //TODO Fazer a validação de que se existe o cpf e melhorar o retorno de erro
     try {
       const customer = await customerModel.create({
         name: payload.getName(),
@@ -30,12 +31,12 @@ export default class CustomersModel {
       });
 
       const address = await addressesModel.create({
-        address: payload.getAddress().getAddress(),
-        number: payload.getAddress().getNumber(),
-        district: payload.getAddress().getDistrict(),
-        postal_code: payload.getAddress().getPostalCode(),
-        city: payload.getAddress().getCity(),
-        state: payload.getAddress().getState(),
+        address: String(payload?.getAddress()?.getAddress()),
+        number: String(payload?.getAddress()?.getNumber()),
+        district: String(payload?.getAddress()?.getDistrict()),
+        postal_code: String(payload?.getAddress()?.getPostalCode()),
+        city: String(payload?.getAddress()?.getCity()),
+        state: String(payload?.getAddress()?.getState()),
       });
 
       await customersAddressesModel.create({
@@ -55,7 +56,7 @@ export default class CustomersModel {
       if (!customer) {
         throw new HttpError(404, 'Cliente não encontrado.');
       }
-      await customer.update({
+      return await customer.update({
         name: payload.getName(),
         cpf: payload.getCpf(),
         rg: payload.getRg(),
@@ -63,21 +64,6 @@ export default class CustomersModel {
         phone: payload.getPhone(),
         status: payload.getStatus(),
       });
-      const address = await addressesModel.findByPk(
-        payload.getAddress().getId(),
-      );
-      if (!address) {
-        throw new HttpError(404, 'Endereço não encontrado.');
-      }
-      await address.update({
-        address: payload.getAddress().getAddress(),
-        number: payload.getAddress().getNumber(),
-        district: payload.getAddress().getDistrict(),
-        postal_code: payload.getAddress().getPostalCode(),
-        city: payload.getAddress().getCity(),
-        state: payload.getAddress().getState(),
-      });
-      return { ...customer.toJSON(), ...address.toJSON() };
     } catch (error) {
       if (error instanceof HttpError)
         throw new HttpError(error.statusCode, error.message, error);

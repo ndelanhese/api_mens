@@ -101,6 +101,7 @@ export default class UsersController extends BaseController {
       return res.status(400).json({ message: 'E-mail já cadastrado.' });
     }
   }
+
   public async deleteUser(
     req: Request,
     res: Response,
@@ -118,6 +119,7 @@ export default class UsersController extends BaseController {
       }
     }
   }
+
   public async restoreUser(
     req: Request,
     res: Response,
@@ -154,6 +156,7 @@ export default class UsersController extends BaseController {
       }
     }
   }
+
   public async updateUser(
     req: Request,
     res: Response,
