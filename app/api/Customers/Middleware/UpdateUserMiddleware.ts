@@ -1,6 +1,9 @@
+import validator from 'cpf-cnpj-validator';
 import { NextFunction, Request, Response } from 'express';
 import joi from 'joi';
 import { messages } from 'joi-translation-pt-br';
+
+const JoiWithValidator = joi.extend(validator);
 
 const updateCustomerMiddleware = (
   req: Request,
@@ -9,10 +12,10 @@ const updateCustomerMiddleware = (
 ) => {
   const updateSchema = joi.object({
     name: joi.string().min(3),
-    cpf: joi.string(),
+    cpf: JoiWithValidator.string().cpf(),
     rg: joi.string(),
     birth_date: joi.string(),
-    phone: joi.number(),
+    phone: joi.string(),
     status: joi.string(),
   });
   const updateIdSchema = joi.object({

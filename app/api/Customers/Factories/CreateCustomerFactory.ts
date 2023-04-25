@@ -1,6 +1,7 @@
 import CreateCustomerInputData from '@app/src/Customers/Application/Dtos/CreateCustomerInputData';
 import Address from '@app/src/Customers/Domain/Entities/Address';
 import getDate from '@app/src/Shared/Domain/Utils/Date';
+import { removeMask } from '@app/src/Shared/Domain/Utils/Formatter';
 import { Request } from 'express';
 
 export default class CreateCustomerFactory {
@@ -10,18 +11,18 @@ export default class CreateCustomerFactory {
       addressData.address,
       addressData.number,
       addressData.district,
-      addressData.postal_code,
+      removeMask(addressData.postal_code),
       addressData.city,
       addressData.state,
     );
     return new CreateCustomerInputData(
       req.body.name,
-      req.body.cpf,
+      removeMask(req.body.cpf),
       getDate(req.body.birth_date),
-      req.body.phone,
+      removeMask(req.body.phone),
       req.body.status,
       address,
-      req.body.rg,
+      removeMask(req.body.rg),
     );
   }
 }

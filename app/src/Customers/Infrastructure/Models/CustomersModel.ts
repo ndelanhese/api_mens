@@ -19,7 +19,12 @@ export default class CustomersModel {
   }
 
   public async createCustomer(payload: Customer) {
-    //TODO Fazer a validação de que se existe o cpf e melhorar o retorno de erro
+    const verifyCustomer = await customerModel.findOne({
+      where: { cpf: payload.getCpf() },
+    });
+    if (verifyCustomer) {
+      throw new HttpError(400, 'Cliente já cadastrado.');
+    }
     try {
       const customer = await customerModel.create({
         name: payload.getName(),
@@ -46,6 +51,7 @@ export default class CustomersModel {
 
       return { ...customer.toJSON(), ...address.toJSON() };
     } catch (error) {
+      if (error instanceof HttpError) throw error;
       throw new HttpError(500, 'Erro ao cadastrar cliente.', error);
     }
   }

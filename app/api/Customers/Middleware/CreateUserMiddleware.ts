@@ -1,3 +1,5 @@
+import HttpError from '@app/src/Shared/Domain/Exceptions/HttpError';
+import { cpf } from 'cpf-cnpj-validator';
 import { NextFunction, Request, Response } from 'express';
 import joi from 'joi';
 import { messages } from 'joi-translation-pt-br';
@@ -8,12 +10,19 @@ const createCustomerMiddleware = (
   next: NextFunction,
 ) => {
   const createSchema = joi.object({
-    //TODO Fazer as validações de cpf e rg e demais campos
     name: joi.string().required(),
-    cpf: joi.string().required(),
-    rg: joi.string().required(),
+    cpf: joi
+      .string()
+      .custom(value => {
+        if (!cpf.isValid(value)) {
+          throw new HttpError(400, 'CPF invalido');
+        }
+        return value;
+      })
+      .required(),
+    rg: joi.string(),
     birth_date: joi.string().required(),
-    phone: joi.number().required(),
+    phone: joi.string().required(),
     status: joi.string(),
     address: joi
       .object({
