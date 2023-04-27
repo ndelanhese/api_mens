@@ -1,9 +1,9 @@
-import UserRepository from '../../Infrastructure/Repositories/CustomersRepository';
-import DeleteUserInputData from '../Dtos/DeleteCustomerInputData';
+import CustomerRepository from '../../Infrastructure/Repositories/CustomersRepository';
+import DeleteCustomerInputData from '../Dtos/DeleteCustomerInputData';
 
 export default class DeleteCustomerAction {
-  async execute(input: DeleteUserInputData): Promise<void> {
-    const userRepository = new UserRepository();
-    await userRepository.delete(input.id);
+  async execute(input: DeleteCustomerInputData): Promise<void> {
+    const customerRepository = new CustomerRepository();
+    await customerRepository.delete(input.id);
   }
 }

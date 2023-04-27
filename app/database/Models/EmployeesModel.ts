@@ -20,7 +20,7 @@ export default class EmployeeModel extends Model<
   public phone!: string;
   public pis_pasep!: string;
   public admission_date!: Date;
-  public resignation_date!: Date;
+  public resignation_date!: CreationOptional<Date>;
   public status!: CreationOptional<string>;
 }
 

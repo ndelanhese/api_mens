@@ -29,7 +29,7 @@ export default class CustomersController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'customers_read');
+      await this.verifyPermission(req, 'customers_read');
       const cache = await this.getCache('customers');
       if (cache) return res.status(200).json(cache);
       const customers = await this.customersModel.getCustomers();

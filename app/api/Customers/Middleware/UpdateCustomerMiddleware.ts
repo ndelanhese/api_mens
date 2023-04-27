@@ -1,9 +1,8 @@
-import validator from 'cpf-cnpj-validator';
+import HttpError from '@exceptions/HttpError';
+import { cpf } from 'cpf-cnpj-validator';
 import { NextFunction, Request, Response } from 'express';
 import joi from 'joi';
 import { messages } from 'joi-translation-pt-br';
-
-const JoiWithValidator = joi.extend(validator);
 
 const updateCustomerMiddleware = (
   req: Request,
@@ -12,7 +11,12 @@ const updateCustomerMiddleware = (
 ) => {
   const updateSchema = joi.object({
     name: joi.string().min(3),
-    cpf: JoiWithValidator.string().cpf(),
+    cpf: joi.string().custom(value => {
+      if (!cpf.isValid(value)) {
+        throw new HttpError(400, 'CPF invalido');
+      }
+      return value;
+    }),
     rg: joi.string(),
     birth_date: joi.string(),
     phone: joi.string(),
@@ -33,3 +37,7 @@ const updateCustomerMiddleware = (
   next();
 };
 export default updateCustomerMiddleware;
+
+//TODO adicionar validação de rg, data de nascimento, telefone
+//TODO  adicionar validação de status
+//TODO adicionar validação de endereço (postal-code)
