@@ -25,7 +25,9 @@ export default class CreateEmployeeFactory {
       req.body.status,
       address,
       removeMask(req.body.rg),
-      getDate(req.body.resignation_date),
+      req.body.resignation_date
+        ? getDate(req.body.resignation_date)
+        : undefined,
     );
   }
 }

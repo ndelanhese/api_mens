@@ -13,7 +13,7 @@ export default class ListEmployeesModel {
         include: [
           {
             model: EmployeesAddressesModel,
-            as: 'addresses',
+            as: 'employee_addresses',
             include: [
               {
                 model: AddressesModel,
@@ -43,7 +43,7 @@ export default class ListEmployeesModel {
         include: [
           {
             model: EmployeesAddressesModel,
-            as: 'addresses',
+            as: 'employee_addresses',
             include: [
               {
                 model: AddressesModel,

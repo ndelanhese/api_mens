@@ -34,7 +34,9 @@ export default class EmployeesController extends BaseController {
       if (cache) return res.status(200).json(cache);
       const employees = await this.employeesModel.getEmployees();
       const employeeWithAddresses = employees.map(employee => {
-        const addresses = this.prepareEmployeeAddresses(employee.addresses);
+        const addresses = this.prepareEmployeeAddresses(
+          employee.employee_addresses,
+        );
         return this.prepareEmployeeWithAddresses(employee, addresses);
       });
       await this.createCache('employees', employeeWithAddresses);
@@ -57,7 +59,9 @@ export default class EmployeesController extends BaseController {
       const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
       const employee = await this.employeesModel.getEmployee(Number(id));
-      const addresses = this.prepareEmployeeAddresses(employee.addresses);
+      const addresses = this.prepareEmployeeAddresses(
+        employee.employee_addresses,
+      );
       const employeeWithAddresses = this.prepareEmployeeWithAddresses(
         employee,
         addresses,
@@ -148,6 +152,9 @@ export default class EmployeesController extends BaseController {
       rg: employee.rg,
       birth_date: employee.birth_date,
       phone: employee.phone,
+      pis_pasep: employee.pis_pasep,
+      admission_date: employee.admission_date,
+      resignation_date: employee.resignation_date,
       status: employee.status,
       addresses: addresses,
     };

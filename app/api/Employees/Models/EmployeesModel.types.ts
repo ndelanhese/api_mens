@@ -9,7 +9,7 @@ export interface IEmployee {
   admission_date: Date;
   resignation_date?: Date;
   status: string;
-  addresses: {
+  employee_addresses: {
     address: IAddress;
   }[];
 }

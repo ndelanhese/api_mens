@@ -9,6 +9,7 @@ import {
 import AddressesModel from './AddressesModel';
 import CustomersAddressesModel from './CustomersAddressesModel';
 import CustomerModel from './CustomersModel';
+import EmployeesAddressesModel from './EmployeesAddressesModel';
 import EmployeeModel from './EmployeesModel';
 import PermissionsModel from './PermissionsModel';
 import RolesModel from './RolesModel';
@@ -121,6 +122,7 @@ PermissionsModel.hasMany(RolesPermissionsModel, {
   foreignKey: 'permission_id',
 });
 
+//CUSTOMER
 CustomersAddressesModel.belongsTo(CustomerModel, {
   foreignKey: 'customer_id',
 });
@@ -138,4 +140,23 @@ AddressesModel.hasMany(CustomersAddressesModel, {
 CustomerModel.hasMany(CustomersAddressesModel, {
   as: 'addresses',
   foreignKey: 'customer_id',
+});
+
+//EMPLOYEE
+EmployeesAddressesModel.belongsTo(EmployeeModel, {
+  foreignKey: 'employee_id',
+});
+
+EmployeesAddressesModel.belongsTo(AddressesModel, {
+  foreignKey: 'address_id',
+  as: 'address',
+});
+
+AddressesModel.hasMany(EmployeesAddressesModel, {
+  foreignKey: 'address_id',
+});
+
+EmployeeModel.hasMany(EmployeesAddressesModel, {
+  as: 'employee_addresses',
+  foreignKey: 'employee_id',
 });
