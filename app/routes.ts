@@ -10,6 +10,7 @@ import { Router, Request, Response } from 'express';
 import CategoriesRoute from './api/Categories/Routes/CategoriesRoute';
 import CustomersRoute from './api/Customers/Routes/CustomersRoute';
 import EmployeesRoute from './api/Employees/Routes/EmployeesRoute';
+import SuppliersRoute from './api/Suppliers/Routes/SuppliersRoute';
 
 const router = Router();
 
@@ -23,6 +24,7 @@ const prepareInstance = () => {
   const categoriesRoute = new CategoriesRoute();
   const customersRoute = new CustomersRoute();
   const employeesRoute = new EmployeesRoute();
+  const suppliersRoute = new SuppliersRoute();
 
   return {
     loginRoute,
@@ -34,6 +36,7 @@ const prepareInstance = () => {
     categoriesRoute,
     customersRoute,
     employeesRoute,
+    suppliersRoute,
   };
 };
 const instances = prepareInstance();
@@ -49,5 +52,6 @@ router.use('/brands', AuthToken, instances.brandsRoute.brandRoute);
 router.use('/categories', AuthToken, instances.categoriesRoute.categoryRoute);
 router.use('/customers', AuthToken, instances.customersRoute.customerRoute);
 router.use('/employees', AuthToken, instances.employeesRoute.employeeRoute);
+router.use('/suppliers', AuthToken, instances.suppliersRoute.supplierRoute);
 
 export default router;
