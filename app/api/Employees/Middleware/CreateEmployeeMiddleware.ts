@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from 'express';
 import joi from 'joi';
 import { messages } from 'joi-translation-pt-br';
 
-const createCustomerMiddleware = (
+const createEmployeeMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -23,6 +23,9 @@ const createCustomerMiddleware = (
     rg: joi.string(),
     birth_date: joi.string().required(),
     phone: joi.string().required(),
+    pis_pasep: joi.string().required(),
+    admission_date: joi.string().required(),
+    resignation_date: joi.string(),
     status: joi.string(),
     address: joi
       .object({
@@ -43,4 +46,8 @@ const createCustomerMiddleware = (
   }
   next();
 };
-export default createCustomerMiddleware;
+export default createEmployeeMiddleware;
+
+//TODO adicionar validação de rg, data de nascimento, telefone, pis pasep, data de admissão e data de demissão
+//TODO  adicionar validação de status
+//TODO adicionar validação de endereço (postal-code)

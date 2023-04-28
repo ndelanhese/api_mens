@@ -18,16 +18,16 @@ export default class UpdateCustomerFactory {
       removeMask(req.body.rg),
     );
   }
-  static fromCurrentCustomer(user: ICustomer) {
+  static fromCurrentCustomer(customer: ICustomer) {
     return new Customer(
-      user.name,
-      user.cpf,
-      user.birth_date,
-      user.phone,
-      user.status,
+      customer.name,
+      customer.cpf,
+      customer.birth_date,
+      customer.phone,
+      customer.status,
       undefined,
-      user.rg,
-      user.id,
+      customer.rg,
+      customer.id,
     );
   }
 }

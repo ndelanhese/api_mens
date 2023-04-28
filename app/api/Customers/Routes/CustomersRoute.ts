@@ -1,9 +1,9 @@
 import express, { Router } from 'express';
 
 import CustomersController from '../Controllers/CustomersController';
-import createCustomerMiddleware from '../Middleware/CreateUserMiddleware';
-import deleteCustomerMiddleware from '../Middleware/DeleteUserMiddleware';
-import updateCustomerMiddleware from '../Middleware/UpdateUserMiddleware';
+import createCustomerMiddleware from '../Middleware/CreateCustomerMiddleware';
+import deleteCustomerMiddleware from '../Middleware/DeleteCustomerMiddleware';
+import updateCustomerMiddleware from '../Middleware/UpdateCustomerMiddleware';
 
 export default class CustomersRoute {
   private customersRoute: Router;
