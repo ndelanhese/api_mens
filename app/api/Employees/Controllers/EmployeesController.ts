@@ -106,12 +106,13 @@ export default class EmployeesController extends BaseController {
       const currentEmployee = await this.employeesModel.getEmployee(
         employeeInputData.id,
       );
-      if (!currentEmployee) throw new HttpError(404, 'Cliente não encontrado.');
+      if (!currentEmployee)
+        throw new HttpError(404, 'Funcionário não encontrado.');
       const currentEmployeeInputData =
         UpdateEmployeeFactory.fromCurrentEmployee(currentEmployee);
       await employeeAction.execute(employeeInputData, currentEmployeeInputData);
       await this.deleteCache('employees');
-      return res.status(200).json('Cliente atualizado com sucesso.');
+      return res.status(200).json('Funcionário atualizado com sucesso.');
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -129,7 +130,7 @@ export default class EmployeesController extends BaseController {
       const employeeAction = new DeleteEmployeeAction();
       await employeeAction.execute(employeeInputData);
       await this.deleteCache('employees');
-      return res.status(200).json('Cliente deletado com sucesso.');
+      return res.status(200).json('Funcionário deletado com sucesso.');
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

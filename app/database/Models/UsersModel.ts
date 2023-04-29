@@ -14,6 +14,8 @@ import EmployeeModel from './EmployeesModel';
 import PermissionsModel from './PermissionsModel';
 import RolesModel from './RolesModel';
 import RolesPermissionsModel from './RolesPermissionsModel';
+import SuppliersAddressesModel from './SuppliersAddressesModel';
+import SuppliersModel from './SuppliersModel';
 import UsersPermissionsModel from './UsersPermissionsModel';
 import UsersRolesModel from './UsersRolesModel';
 
@@ -159,4 +161,23 @@ AddressesModel.hasMany(EmployeesAddressesModel, {
 EmployeeModel.hasMany(EmployeesAddressesModel, {
   as: 'employee_addresses',
   foreignKey: 'employee_id',
+});
+
+//SUPPLIERS
+SuppliersAddressesModel.belongsTo(SuppliersModel, {
+  foreignKey: 'supplier_id',
+});
+
+SuppliersAddressesModel.belongsTo(AddressesModel, {
+  foreignKey: 'address_id',
+  as: 'address',
+});
+
+AddressesModel.hasMany(SuppliersAddressesModel, {
+  foreignKey: 'address_id',
+});
+
+SuppliersModel.hasMany(SuppliersAddressesModel, {
+  as: 'supplier_addresses',
+  foreignKey: 'supplier_id',
 });
