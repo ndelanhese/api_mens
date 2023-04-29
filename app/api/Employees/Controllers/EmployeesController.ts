@@ -1,6 +1,12 @@
 import CreateEmployeeAction from '@app/src/Employees/Application/Actions/CreateEmployeeAction';
 import DeleteEmployeeAction from '@app/src/Employees/Application/Actions/DeleteEmployeeAction';
 import UpdateEmployeeAction from '@app/src/Employees/Application/Actions/UpdateEmployeeAction';
+import { formatCpf } from '@app/src/Shared/Domain/Utils/CpfCnpjFormatter';
+import {
+  formatPhoneNumber,
+  formatPisPasep,
+  formatRG,
+} from '@app/src/Shared/Domain/Utils/Formatter';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -149,11 +155,11 @@ export default class EmployeesController extends BaseController {
     return {
       id: employee.id,
       name: employee.name,
-      cpf: employee.cpf,
-      rg: employee.rg,
+      cpf: formatCpf(employee.cpf),
+      rg: formatRG(employee.rg ?? ''),
       birth_date: employee.birth_date,
-      phone: employee.phone,
-      pis_pasep: employee.pis_pasep,
+      phone: formatPhoneNumber(employee.phone),
+      pis_pasep: formatPisPasep(employee.pis_pasep),
       admission_date: employee.admission_date,
       resignation_date: employee.resignation_date,
       status: employee.status,
