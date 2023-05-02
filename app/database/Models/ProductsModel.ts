@@ -20,6 +20,9 @@ export default class ProductsModel extends Model<
   public size!: string;
   public color!: string;
   public quantity!: number;
+  public category_id!: number;
+  public brand_id!: number;
+  public supplier_id!: number;
 }
 
 ProductsModel.init(
@@ -27,7 +30,9 @@ ProductsModel.init(
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
+      allowNull: true,
       primaryKey: true,
+      unique: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -39,7 +44,7 @@ ProductsModel.init(
     },
     purchase_price: {
       type: DataTypes.FLOAT,
-      allowNull: false,
+      allowNull: true,
     },
     price: {
       type: DataTypes.FLOAT,
@@ -47,15 +52,45 @@ ProductsModel.init(
     },
     size: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     color: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    category_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: {
+          tableName: 'categories',
+        },
+        key: 'id',
+      },
+    },
+    brand_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: {
+          tableName: 'brands',
+        },
+        key: 'id',
+      },
+    },
+    supplier_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: {
+          tableName: 'suppliers',
+        },
+        key: 'id',
+      },
     },
   },
   {

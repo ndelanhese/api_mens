@@ -18,7 +18,7 @@ module.exports = {
       },
       purchase_price: {
         type: Sequelize.FLOAT,
-        allowNull: false,
+        allowNull: true,
       },
       price: {
         type: Sequelize.FLOAT,
@@ -26,15 +26,45 @@ module.exports = {
       },
       size: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       color: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       quantity: {
         type: Sequelize.INTEGER,
         allowNull: false,
+      },
+      category_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'categories',
+          },
+          key: 'id',
+        },
+      },
+      brand_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'brands',
+          },
+          key: 'id',
+        },
+      },
+      supplier_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'suppliers',
+          },
+          key: 'id',
+        },
       },
       createdAt: {
         type: Sequelize.DATE,
