@@ -12,9 +12,9 @@ export default class Product {
   private size?: string;
   private color?: string;
   private quantity: number;
-  private category: Category;
-  private brand: Brand;
-  private supplier: Supplier;
+  private category?: Category;
+  private brand?: Brand;
+  private supplier?: Supplier;
 
   constructor(
     part_number: string,
@@ -22,9 +22,9 @@ export default class Product {
     description: string,
     price: number,
     quantity: number,
-    category: Category,
-    brand: Brand,
-    supplier: Supplier,
+    category?: Category,
+    brand?: Brand,
+    supplier?: Supplier,
     purchase_price?: number,
     size?: string,
     color?: string,
@@ -125,7 +125,7 @@ export default class Product {
     return this;
   }
 
-  public getCategory(): Category {
+  public getCategory() {
     return this.category;
   }
 
@@ -134,7 +134,7 @@ export default class Product {
     return this;
   }
 
-  public getBrand(): Brand {
+  public getBrand() {
     return this.brand;
   }
 
@@ -143,7 +143,7 @@ export default class Product {
     return this;
   }
 
-  public getSupplier(): Supplier {
+  public getSupplier() {
     return this.supplier;
   }
 

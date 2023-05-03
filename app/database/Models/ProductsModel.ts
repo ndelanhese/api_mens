@@ -16,10 +16,10 @@ export default class ProductsModel extends Model<
   public part_number!: string;
   public name!: string;
   public description!: string;
-  public purchase_price!: number;
+  public purchase_price!: CreationOptional<number>;
   public price!: number;
-  public size!: string;
-  public color!: string;
+  public size!: CreationOptional<string>;
+  public color!: CreationOptional<string>;
   public quantity!: number;
   public category_id!: number;
   public brand_id!: number;

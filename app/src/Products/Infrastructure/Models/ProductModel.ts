@@ -1,107 +1,99 @@
-// import productModel from '@db-models/ProductsModel';
-// import HttpError from '@exceptions/HttpError';
-// import { Op } from 'sequelize';
+import productModel from '@db-models/ProductsModel';
+import HttpError from '@exceptions/HttpError';
 
-// import Product from '../../Domain/Entities/Product';
+import Product from '../../Domain/Entities/Product';
 
-// import { IProductModel, IProductPayload } from './ProductModel.types';
+import { IProductModel, IProductPayload } from './ProductModel.types';
 
-// export default class ProductsModel {
-//   public async createProduct(payload: Product) {
-//     try {
-//       return await productModel.create({
-//         manufacturer_slug: payload.getManufacturerSlug(),
-//         type: payload.getType(),
-//         part_number: payload.getPartNumber(),
-//         description: payload.getDescription(),
-//         currency: payload.getCurrency(),
-//         contributor_price: payload.getContributorPrice(),
-//         exempt_price: payload.getExemptPrice(),
-//         outlet: payload.isOutlet(),
-//         observation: payload.getObservation(),
-//         disclaimer: payload.getDisclaimer(),
-//       });
-//     } catch (error) {
-//       throw new HttpError(500, 'Erro ao criar produto.', error);
-//     }
-//   }
+export default class ProductsModel {
+  public async createProduct(payload: Product) {
+    try {
+      return await productModel.create({
+        part_number: payload.getPartNumber(),
+        name: payload.getName(),
+        description: payload.getDescription(),
+        purchase_price: payload.getPurchasePrice(),
+        price: payload.getPrice(),
+        size: payload.getSize(),
+        color: payload.getColor(),
+        quantity: payload.getQuantity(),
+        category_id: 1,
+        brand_id: 1,
+        supplier_id: 1,
+        // TODO -> Voltar para o normal
+        // category_id: Number(payload.getCategory()?.getId()),
+        // brand_id: Number(payload.getBrand()?.getId()),
+        // supplier_id: Number(payload.getSupplier()?.getId()),
+      });
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao criar produto.', error);
+    }
+  }
 
-//   public async updateProduct(payload: Product): Promise<void> {
-//     try {
-//       await productModel.update(
-//         {
-//           manufacturer_slug: payload.getManufacturerSlug(),
-//           type: payload.getType(),
-//           part_number: payload.getPartNumber(),
-//           description: payload.getDescription(),
-//           currency: payload.getCurrency(),
-//           contributor_price: payload.getContributorPrice(),
-//           exempt_price: payload.getExemptPrice(),
-//           outlet: payload.isOutlet(),
-//           observation: payload.getObservation(),
-//           disclaimer: payload.getDisclaimer(),
-//         },
-//         {
-//           where: {
-//             id: payload.getId(),
-//           },
-//         },
-//       );
-//     } catch (error) {
-//       throw new HttpError(500, 'Erro ao atualizar o produto.', error);
-//     }
-//   }
+  public async updateProduct(payload: Product): Promise<void> {
+    try {
+      await productModel.update(
+        {
+          part_number: payload.getPartNumber(),
+          name: payload.getName(),
+          description: payload.getDescription(),
+          purchase_price: payload.getPurchasePrice(),
+          price: payload.getPrice(),
+          size: payload.getSize(),
+          color: payload.getColor(),
+          quantity: payload.getQuantity(),
+          category_id: Number(payload.getCategory()?.getId()),
+          brand_id: Number(payload.getBrand()?.getId()),
+          supplier_id: Number(payload.getSupplier()?.getId()),
+        },
+        {
+          where: {
+            id: payload.getId(),
+          },
+        },
+      );
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao atualizar o produto.', error);
+    }
+  }
 
-//   public async deleteProduct(productId: number): Promise<void> {
-//     try {
-//       await productModel.destroy({
-//         where: {
-//           id: productId,
-//         },
-//       });
-//     } catch (error) {
-//       throw new HttpError(500, 'Erro ao deletar o produto.', error);
-//     }
-//   }
+  public async deleteProduct(id: number): Promise<void> {
+    try {
+      await productModel.destroy({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao deletar o produto.', error);
+    }
+  }
 
-//   public async importProducts(
-//     products: IProductPayload[],
-//     manufacturer_slug: string,
-//   ): Promise<void> {
-//     try {
-//       await this.deleteProductsByManufacturer(manufacturer_slug);
-//       await productModel.bulkCreate(products);
-//     } catch (error) {
-//       throw new HttpError(500, 'Erro ao importar os produtos.', error);
-//     }
-//   }
+  public async importProducts(products: IProductPayload[]): Promise<void> {
+    try {
+      //TODO -> Verificar qual o parâmetro que eu vou escolher para excluir
+      await this.deleteProductsByManufacturer();
+      await productModel.bulkCreate(products);
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao importar os produtos.', error);
+    }
+  }
 
-//   public async exportProducts(
-//     manufacturer_slug: string,
-//   ): Promise<IProductModel[]> {
-//     try {
-//       return await productModel.findAll({
-//         order: [['id', 'ASC']],
-//         where: {
-//           manufacturer_slug: {
-//             [Op.eq]: manufacturer_slug,
-//           },
-//         },
-//       });
-//     } catch (error) {
-//       throw new HttpError(500, 'Erro ao exportar os produtos.', error);
-//     }
-//   }
+  public async exportProducts(): Promise<IProductModel[]> {
+    try {
+      return await productModel.findAll({
+        order: [['id', 'ASC']],
+      });
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao exportar os produtos.', error);
+    }
+  }
 
-//   private async deleteProductsByManufacturer(manufacturer_slug: string) {
-//     try {
-//       await productModel.destroy({
-//         where: {
-//           manufacturer_slug,
-//         },
-//       });
-//     } catch (error) {
-//       throw new HttpError(500, 'Erro ao deletar os produtos.', error);
-//     }
-//   }
-// }
+  private async deleteProductsByManufacturer() {
+    try {
+      await productModel.destroy();
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao deletar os produtos.', error);
+    }
+  }
+}

@@ -1,54 +1,48 @@
-// import Product from '../../Domain/Entities/Product';
-// import SheetService from '../../Domain/Services/SheetService';
-// import ProductRepository from '../../Infrastructure/Repositories/ProductRepository';
-// import ImportProductsInputData from '../Dtos/ImportProductsInputData';
+import Product from '../../Domain/Entities/Product';
+import ProductRepository from '../../Infrastructure/Repositories/ProductRepository';
+import SheetService from '../../Infrastructure/Services/SheetService';
+import ImportProductsInputData from '../Dtos/ImportProductsInputData';
 
-// import { IImportProducts } from './ImportProductsAction.types';
+import { IImportProducts } from './ImportProductsAction.types';
 
-// export default class ImportProductsAction {
-//   async execute(input: ImportProductsInputData): Promise<IImportProducts> {
-//     const dataFromSheet = this.convertXlsx(
-//       input.table,
-//       input.manufacturer_slug,
-//     );
-//     const productsData = dataFromSheet.products.map(
-//       product =>
-//         new Product(
-//           product.manufacturer_slug,
-//           product.type,
-//           product.part_number,
-//           product.description,
-//           product.currency,
-//           product.outlet,
-//           product.contributor_price,
-//           product.exempt_price,
-//           product.observation,
-//           product.disclaimer,
-//         ),
-//     );
-//     const productRepository = new ProductRepository();
-//     const products = productsData.map(product => ({
-//       manufacturer_slug: product.getManufacturerSlug(),
-//       type: product.getType(),
-//       part_number: product.getPartNumber(),
-//       description: product.getDescription(),
-//       currency: product.getCurrency(),
-//       contributor_price: product.getContributorPrice(),
-//       exempt_price: product.getExemptPrice(),
-//       outlet: product.isOutlet(),
-//       observation: product.getObservation(),
-//       disclaimer: product.getDisclaimer(),
-//     }));
-//     await productRepository.import(products, input.manufacturer_slug);
-//     const { errors } = dataFromSheet;
-//     return {
-//       ...(errors.length === 0 ? { errors: null } : { errors: errors }),
-//       successfulRows: dataFromSheet.products.length,
-//     };
-//   }
+export default class ImportProductsAction {
+  async execute(input: ImportProductsInputData): Promise<IImportProducts> {
+    const dataFromSheet = this.convertXlsx(input.table);
+    const productsData = dataFromSheet.products.map(
+      product =>
+        new Product(
+          product.part_number,
+          product.name,
+          product.description,
+          product.price,
+          product.quantity,
+          //TODO -> adicionar: categoria, marca e fornecedor
+        ),
+    );
+    const productRepository = new ProductRepository();
+    const products = productsData.map(product => ({
+      part_number: product.getPartNumber(),
+      name: product.getName(),
+      description: product.getDescription(),
+      purchase_price: product.getPurchasePrice(),
+      price: product.getPrice(),
+      size: product.getSize(),
+      color: product.getColor(),
+      quantity: product.getQuantity(),
+      category_id: Number(product.getCategory()?.getId()),
+      brand_id: Number(product.getBrand()?.getId()),
+      supplier_id: Number(product.getSupplier()?.getId()),
+    }));
+    await productRepository.import(products);
+    const { errors } = dataFromSheet;
+    return {
+      ...(errors.length === 0 ? { errors: null } : { errors: errors }),
+      successfulRows: dataFromSheet.products.length,
+    };
+  }
 
-//   private convertXlsx(sheet: Buffer, manufacturer_slug: string) {
-//     const sheetService = new SheetService();
-//     return sheetService.sheetToData(sheet, manufacturer_slug);
-//   }
-// }
+  private convertXlsx(sheet: Buffer) {
+    const sheetService = new SheetService();
+    return sheetService.sheetToData(sheet);
+  }
+}

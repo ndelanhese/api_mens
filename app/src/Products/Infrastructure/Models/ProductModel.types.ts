@@ -1,27 +1,29 @@
 export interface IProductModel {
   id: number;
-  manufacturer_slug: string;
-  type: string;
   part_number: string;
+  name: string;
   description: string;
-  currency: string;
-  contributor_price: number;
-  exempt_price?: number;
-  outlet: boolean;
-  observation?: string;
-  disclaimer?: string;
+  purchase_price?: number;
+  price: number;
+  size?: string;
+  color?: string;
+  quantity: number;
+  category_id: number;
+  brand_id: number;
+  supplier_id: number;
 }
 
 export interface IProductPayload {
   id?: number;
-  manufacturer_slug: string;
-  type: string;
   part_number: string;
+  name: string;
   description: string;
-  currency: string;
-  contributor_price?: number;
-  exempt_price?: number;
-  outlet: boolean;
-  observation?: string;
-  disclaimer?: string;
+  purchase_price?: number;
+  price: number;
+  size?: string;
+  color?: string;
+  quantity: number;
+  category_id: number;
+  brand_id: number;
+  supplier_id: number;
 }

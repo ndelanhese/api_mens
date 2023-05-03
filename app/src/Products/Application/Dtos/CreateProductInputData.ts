@@ -1,14 +1,19 @@
+import Brand from '../../Domain/Entities/Brand';
+import Category from '../../Domain/Entities/Category';
+import Supplier from '../../Domain/Entities/Supplier';
+
 export default class CreateProductInputData {
   constructor(
-    readonly manufacturer_slug: string,
-    readonly type: string,
     readonly part_number: string,
+    readonly name: string,
     readonly description: string,
-    readonly currency: string = 'R$',
-    readonly outlet: boolean,
-    readonly contributor_price?: number,
-    readonly exempt_price?: number,
-    readonly observation?: string,
-    readonly disclaimer?: string,
+    readonly price: number,
+    readonly quantity: number,
+    readonly category: Category,
+    readonly brand: Brand,
+    readonly supplier: Supplier,
+    readonly purchase_price?: number,
+    readonly size?: string,
+    readonly color?: string,
   ) {}
 }
