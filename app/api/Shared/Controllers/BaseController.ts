@@ -1,6 +1,6 @@
 import checkPermission from '@acl/AclMiddleware';
-import Token from '@app/src/Shared/Domain/Services/Token/Token';
-import { IUserAdminDataToken } from '@app/src/Shared/Domain/Services/Token/Token.types';
+import Token from '@app/src/Shared/Infrastructure/Services/Token/Token';
+import { IUserAdminDataToken } from '@app/src/Shared/Infrastructure/Services/Token/Token.types';
 import {
   createCache,
   createCacheClient,

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
+import { resizeColumns } from '@app/src/Shared/Infrastructure/Services/Sheets/SheetUtils';
 import HttpError from '@exceptions/HttpError';
 import xlsx from 'xlsx';
 
@@ -38,9 +39,10 @@ export default class SheetService {
       MARCA: item.getBrand().getName(),
       FORNECEDOR: item.getSupplier().getCorporateName(),
     }));
-    const workSheet = xlsx.utils.json_to_sheet(rowsData);
-    const workBook = xlsx.utils.book_new();
-    xlsx.utils.book_append_sheet(workBook, workSheet, workSheetName);
+    const workSheet: xlsx.WorkSheet = xlsx.utils.json_to_sheet(rowsData);
+    const workSheetPrepared = resizeColumns(workSheet);
+    const workBook: xlsx.WorkBook = xlsx.utils.book_new();
+    xlsx.utils.book_append_sheet(workBook, workSheetPrepared, workSheetName);
     return xlsx.write(workBook, { type: 'buffer', bookType: 'xlsx' });
   }
 

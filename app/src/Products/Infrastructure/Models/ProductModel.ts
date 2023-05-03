@@ -7,7 +7,7 @@
 // import { IProductModel, IProductPayload } from './ProductModel.types';
 
 // export default class ProductsModel {
-//   public async createProduct(payload: Product): Promise<IProductModel> {
+//   public async createProduct(payload: Product) {
 //     try {
 //       return await productModel.create({
 //         manufacturer_slug: payload.getManufacturerSlug(),
@@ -22,7 +22,7 @@
 //         disclaimer: payload.getDisclaimer(),
 //       });
 //     } catch (error) {
-//       throw new HttpError(500, 'Erro ao criar produto.');
+//       throw new HttpError(500, 'Erro ao criar produto.', error);
 //     }
 //   }
 
@@ -48,7 +48,7 @@
 //         },
 //       );
 //     } catch (error) {
-//       throw new HttpError(500, 'Erro ao atualizar o produto.');
+//       throw new HttpError(500, 'Erro ao atualizar o produto.', error);
 //     }
 //   }
 
@@ -60,7 +60,7 @@
 //         },
 //       });
 //     } catch (error) {
-//       throw new HttpError(500, 'Erro ao deletar o produto.');
+//       throw new HttpError(500, 'Erro ao deletar o produto.', error);
 //     }
 //   }
 
@@ -72,7 +72,7 @@
 //       await this.deleteProductsByManufacturer(manufacturer_slug);
 //       await productModel.bulkCreate(products);
 //     } catch (error) {
-//       throw new HttpError(500, 'Erro ao importar os produtos.');
+//       throw new HttpError(500, 'Erro ao importar os produtos.', error);
 //     }
 //   }
 
@@ -89,7 +89,7 @@
 //         },
 //       });
 //     } catch (error) {
-//       throw new HttpError(500, 'Erro ao exportar os produtos.');
+//       throw new HttpError(500, 'Erro ao exportar os produtos.', error);
 //     }
 //   }
 
@@ -101,7 +101,7 @@
 //         },
 //       });
 //     } catch (error) {
-//       throw new HttpError(500, 'Erro ao deletar os produtos.');
+//       throw new HttpError(500, 'Erro ao deletar os produtos.', error);
 //     }
 //   }
 // }

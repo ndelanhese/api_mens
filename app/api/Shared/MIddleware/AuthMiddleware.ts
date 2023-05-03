@@ -1,4 +1,4 @@
-import Jwt from '@app/src/Shared/Domain/Services/Token/Token';
+import Jwt from '@app/src/Shared/Infrastructure/Services/Token/Token';
 import HttpError from '@exceptions/HttpError';
 import { Response, Request, NextFunction } from 'express';
 
