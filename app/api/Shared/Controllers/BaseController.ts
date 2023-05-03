@@ -52,4 +52,32 @@ export default class BaseController {
   private createNewCacheClient() {
     return createCacheClient();
   }
+
+  private dataSlice(page: number, perPage: number, data: Array<object>) {
+    const from = perPage * page - perPage;
+    const to = from + perPage;
+
+    return {
+      data: data.slice(from, to),
+      from: from + 1,
+      to: to > data.length ? data.length : to,
+    };
+  }
+
+  protected dataPagination(page: number, perPage: number, data: Array<object>) {
+    const dataSplitted = this.dataSlice(page, perPage, data);
+    if (dataSplitted.data.length === 0) {
+      return {
+        data: [],
+      };
+    }
+    return {
+      data: dataSplitted.data,
+      total: data.length,
+      page: page,
+      per_page: perPage,
+      from: dataSplitted.from,
+      to: dataSplitted.to,
+    };
+  }
 }
