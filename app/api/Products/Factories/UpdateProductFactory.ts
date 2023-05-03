@@ -1,38 +1,40 @@
-// import UpdateProductInputData from '@app/src/Products/Application/Dtos/UpdateProductInputData';
-// import Product from '@app/src/Products/Domain/Entities/Product';
-// import convertToIso from '@app/src/Shared/Domain/Utils/Currencies';
-// import { Request } from 'express';
+import UpdateProductInputData from '@app/src/Products/Application/Dtos/UpdateProductInputData';
+import Product from '@app/src/Products/Domain/Entities/Product';
+import { Request } from 'express';
 
-// import { IProduct } from './UpdateProductFactory.types';
+import { IProduct } from './UpdateProductFactory.types';
 
-// export default class UpdateProductFactory {
-//   static fromRequest(req: Request, manufacturer_slug: string) {
-//     return new UpdateProductInputData(
-//       manufacturer_slug,
-//       req.body.type,
-//       req.body.part_number,
-//       req.body.description,
-//       req.body.currency ? convertToIso(req.body.currency) : 'USD',
-//       req.body.contributor_price,
-//       req.body.outlet,
-//       req.body.exempt_price,
-//       req.body.observation,
-//       req.body.disclaimer,
-//     );
-//   }
-//   static currentValueFromRequest(currentValue: IProduct) {
-//     return new Product(
-//       currentValue.manufacturer_slug,
-//       currentValue.type,
-//       currentValue.part_number,
-//       currentValue.description,
-//       currentValue.currency,
-//       currentValue.outlet,
-//       currentValue.contributor_price,
-//       currentValue.exempt_price,
-//       currentValue.observation,
-//       currentValue.disclaimer,
-//       currentValue.id,
-//     );
-//   }
-// }
+export default class UpdateProductFactory {
+  static fromRequest(req: Request) {
+    return new UpdateProductInputData(
+      req.body.part_number,
+      req.body.name,
+      req.body.description,
+      req.body.price,
+      req.body.quantity,
+      req.body.category_id,
+      req.body.brand_id,
+      req.body.supplier_id,
+      req.body.purchase_price,
+      req.body.size,
+      req.body.color,
+    );
+  }
+  static currentValueFromRequest(currentValue: IProduct) {
+    return new Product(
+      currentValue.part_number,
+      currentValue.name,
+      currentValue.description,
+      currentValue.price,
+      currentValue.quantity,
+      undefined,
+      undefined,
+      undefined,
+      //TODO -> adicionar: categoria, marca e fornecedor
+      currentValue.purchase_price,
+      currentValue.size,
+      currentValue.color,
+      currentValue.id,
+    );
+  }
+}

@@ -8,18 +8,20 @@ const updateProductMiddleware = (
   next: NextFunction,
 ) => {
   const updateSchema = joi.object({
-    type: joi.string().allow('', null),
-    part_number: joi.string().allow(''),
-    description: joi.string().allow(''),
-    currency: joi.string().allow('', null),
-    contributor_price: joi.number().allow('', null),
-    exempt_price: joi.number().allow('', null),
-    outlet: joi.boolean().allow(''),
-    observation: joi.string().allow('', null),
-    disclaimer: joi.string().allow('', null),
+    part_number: joi.string(),
+    name: joi.string(),
+    description: joi.string(),
+    purchase_price: joi.number().allow(null),
+    price: joi.number(),
+    size: joi.string().allow(null),
+    color: joi.string().allow(null),
+    quantity: joi.number().min(0),
+    category_id: joi.number(),
+    brand_id: joi.number(),
+    supplier_id: joi.number(),
   });
   const updateIdSchema = joi.object({
-    product_id: joi.number().required(),
+    id: joi.number().required(),
   });
   const { error: errorBody } = updateSchema.validate(req.body, { messages });
   const { error: errorParams } = updateIdSchema.validate(req.params, {

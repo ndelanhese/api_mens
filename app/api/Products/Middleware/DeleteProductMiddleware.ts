@@ -8,7 +8,7 @@ const deleteProductMiddleware = (
   next: NextFunction,
 ) => {
   const deleteSchema = joi.object({
-    product_id: joi.number().required(),
+    id: joi.number().required(),
   });
   const { error } = deleteSchema.validate(req.params, { messages });
   if (error) {

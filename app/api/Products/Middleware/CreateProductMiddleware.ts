@@ -8,15 +8,17 @@ const createProductMiddleware = (
   next: NextFunction,
 ) => {
   const createSchema = joi.object({
-    type: joi.string().required(),
     part_number: joi.string().required(),
+    name: joi.string().required(),
     description: joi.string().required(),
-    currency: joi.string().allow(null),
-    contributor_price: joi.number().allow('', null),
-    exempt_price: joi.number().allow('', null),
-    outlet: joi.boolean().required(),
-    observation: joi.string().allow('', null),
-    disclaimer: joi.string().allow('', null),
+    purchase_price: joi.number().allow(null),
+    price: joi.number().required(),
+    size: joi.string().allow(null),
+    color: joi.string().allow(null),
+    quantity: joi.number().required().min(0),
+    category_id: joi.number().required(),
+    brand_id: joi.number().required(),
+    supplier_id: joi.number().required(),
   });
   const { error } = createSchema.validate(req.body, { messages });
   if (error) {

@@ -1,7 +1,3 @@
-import Brand from '../../Domain/Entities/Brand';
-import Category from '../../Domain/Entities/Category';
-import Supplier from '../../Domain/Entities/Supplier';
-
 export default class CreateProductInputData {
   constructor(
     readonly part_number: string,
@@ -9,9 +5,9 @@ export default class CreateProductInputData {
     readonly description: string,
     readonly price: number,
     readonly quantity: number,
-    readonly category: Category,
-    readonly brand: Brand,
-    readonly supplier: Supplier,
+    readonly category_id: number,
+    readonly brand_id: number,
+    readonly supplier_id: number,
     readonly purchase_price?: number,
     readonly size?: string,
     readonly color?: string,
