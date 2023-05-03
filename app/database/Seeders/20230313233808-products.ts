@@ -5,6 +5,7 @@ export async function up(queryInterface: QueryInterface) {
     'products',
     [
       {
+        part_number: 'ABC1',
         name: 'Camiseta Branca Lisa',
         description: 'Camiseta Masculina Branca Lisa',
         purchase_price: 40.55,
