@@ -40,6 +40,28 @@ export default class ProductsController extends BaseController {
     }
   }
 
+  public async getProduct(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      const cacheKey = `products-${req.params.id}`;
+      await this.verifyPermission(req, 'products_read');
+      const cache = await this.getCache(cacheKey);
+      if (cache) {
+        return res.status(200).json(cache);
+      }
+      const productsModel = new ProductsModel();
+      const product = await productsModel.getProduct(Number(req.params.id));
+      await this.createCache(cacheKey, product);
+      return res.status(200).json(product);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
   public async createProduct(
     req: Request,
     res: Response,
@@ -83,9 +105,7 @@ export default class ProductsController extends BaseController {
     try {
       await this.verifyPermission(req, 'products_update');
       const productsModel = new ProductsModel();
-      const product = await productsModel.getProductsById(
-        Number(req.params.id),
-      );
+      const product = await productsModel.getProduct(Number(req.params.id));
       const productInputData = UpdateProductFactory.fromRequest(req);
       const currentProduct =
         UpdateProductFactory.currentValueFromRequest(product);

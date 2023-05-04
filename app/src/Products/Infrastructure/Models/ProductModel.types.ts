@@ -15,7 +15,7 @@ export interface IProductModel {
 
 export interface IProductPayload {
   id?: number;
-  part_number: string;
+  part_number?: string;
   name: string;
   description: string;
   purchase_price?: number;

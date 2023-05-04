@@ -4,7 +4,7 @@ import Supplier from './Supplier';
 
 export default class Product {
   private id?: number;
-  private part_number: string;
+  private part_number?: string;
   private name: string;
   private description: string;
   private purchase_price?: number;
@@ -17,11 +17,11 @@ export default class Product {
   private supplier?: Supplier;
 
   constructor(
-    part_number: string,
     name: string,
     description: string,
     price: number,
     quantity: number,
+    part_number?: string,
     category?: Category,
     brand?: Brand,
     supplier?: Supplier,
@@ -53,7 +53,7 @@ export default class Product {
     return this;
   }
 
-  public getPartNumber(): string {
+  public getPartNumber() {
     return this.part_number;
   }
 

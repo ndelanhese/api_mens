@@ -13,7 +13,7 @@ export default class ProductsModel extends Model<
   InferCreationAttributes<ProductsModel>
 > {
   public id!: CreationOptional<number>;
-  public part_number!: string;
+  public part_number!: CreationOptional<string>;
   public name!: string;
   public description!: string;
   public purchase_price!: CreationOptional<number>;
@@ -37,7 +37,7 @@ ProductsModel.init(
     },
     part_number: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
     },
     name: {

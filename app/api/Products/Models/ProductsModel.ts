@@ -14,7 +14,7 @@ export default class ProductsModel {
     }
   }
 
-  public async getProductsById(id: number) {
+  public async getProduct(id: number) {
     try {
       const product = await productsModel.findByPk(id, {
         attributes: { exclude: ['category_id', 'brand_id', 'supplier_id'] },

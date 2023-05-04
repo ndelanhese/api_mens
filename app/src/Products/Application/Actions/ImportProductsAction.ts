@@ -11,11 +11,11 @@ export default class ImportProductsAction {
     const productsData = dataFromSheet.products.map(
       product =>
         new Product(
-          product.part_number,
           product.name,
           product.description,
           product.price,
           product.quantity,
+          product.part_number,
           //TODO -> adicionar: categoria, marca e fornecedor
         ),
     );

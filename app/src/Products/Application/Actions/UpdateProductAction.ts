@@ -9,11 +9,11 @@ export default class UpdateProductAction {
   ): Promise<Product> {
     const productRepository = new ProductRepository();
     const product = new Product(
-      input.part_number ?? currentValue.getPartNumber(),
       input.name ?? currentValue.getName(),
       input.description ?? currentValue.getDescription(),
       input.price ?? currentValue.getPrice(),
       input.quantity ?? currentValue.getQuantity(),
+      input.part_number ?? currentValue.getPartNumber(),
       // input.category ?? currentValue.getCategory(),
       // input.brand ?? currentValue.getBrand(),
       // input.supplier ?? currentValue.getSupplier(),

@@ -10,7 +10,7 @@ module.exports = {
       },
       part_number: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true,
       },
       name: {

@@ -22,11 +22,11 @@ export default class UpdateProductFactory {
   }
   static currentValueFromRequest(currentValue: IProduct) {
     return new Product(
-      currentValue.part_number,
       currentValue.name,
       currentValue.description,
       currentValue.price,
       currentValue.quantity,
+      currentValue.part_number,
       undefined,
       undefined,
       undefined,

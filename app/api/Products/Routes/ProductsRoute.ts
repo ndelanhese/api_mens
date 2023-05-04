@@ -21,6 +21,9 @@ export default class ProductsRoute {
     const getProducts = this.productsController.getProducts.bind(
       this.productsController,
     );
+    const getProduct = this.productsController.getProduct.bind(
+      this.productsController,
+    );
     const createProduct = this.productsController.createProduct.bind(
       this.productsController,
     );
@@ -38,6 +41,7 @@ export default class ProductsRoute {
     );
 
     this.productRoute.get('/', getProducts);
+    this.productRoute.get('/:id', getProduct);
     this.productRoute.post('/', createProductMiddleware, createProduct);
     this.productRoute.put('/:id', updateProductMiddleware, updateProduct);
     this.productRoute.post('/export', exportProducts);

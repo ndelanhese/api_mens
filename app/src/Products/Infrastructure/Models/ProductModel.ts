@@ -8,6 +8,9 @@ import { IProductModel, IProductPayload } from './ProductModel.types';
 export default class ProductsModel {
   public async createProduct(payload: Product) {
     try {
+      const categoryId = payload.getCategory()?.getId() ?? 1;
+      const brandId = payload.getBrand()?.getId() ?? 1;
+      const supplierId = payload.getSupplier()?.getId() ?? 1;
       return await productModel.create({
         part_number: payload.getPartNumber(),
         name: payload.getName(),
@@ -17,13 +20,9 @@ export default class ProductsModel {
         size: payload.getSize(),
         color: payload.getColor(),
         quantity: payload.getQuantity(),
-        category_id: 1,
-        brand_id: 1,
-        supplier_id: 1,
-        // TODO -> Voltar para o normal
-        // category_id: Number(payload.getCategory()?.getId()),
-        // brand_id: Number(payload.getBrand()?.getId()),
-        // supplier_id: Number(payload.getSupplier()?.getId()),
+        category_id: categoryId,
+        brand_id: brandId,
+        supplier_id: supplierId,
       });
     } catch (error) {
       throw new HttpError(500, 'Erro ao criar produto.', error);
@@ -32,6 +31,9 @@ export default class ProductsModel {
 
   public async updateProduct(payload: Product): Promise<void> {
     try {
+      const categoryId = payload.getCategory()?.getId();
+      const brandId = payload.getBrand()?.getId();
+      const supplierId = payload.getSupplier()?.getId();
       await productModel.update(
         {
           part_number: payload.getPartNumber(),
@@ -42,9 +44,9 @@ export default class ProductsModel {
           size: payload.getSize(),
           color: payload.getColor(),
           quantity: payload.getQuantity(),
-          category_id: Number(payload.getCategory()?.getId()),
-          brand_id: Number(payload.getBrand()?.getId()),
-          supplier_id: Number(payload.getSupplier()?.getId()),
+          category_id: categoryId,
+          brand_id: brandId,
+          supplier_id: supplierId,
         },
         {
           where: {
