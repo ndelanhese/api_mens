@@ -1,6 +1,5 @@
 export default class CreateProductInputData {
   constructor(
-    readonly part_number: string,
     readonly name: string,
     readonly description: string,
     readonly price: number,

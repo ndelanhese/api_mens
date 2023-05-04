@@ -4,7 +4,6 @@ import { Request } from 'express';
 export default class CreateProductFactory {
   static fromRequest(req: Request) {
     return new CreateProductInputData(
-      req.body.part_number,
       req.body.name,
       req.body.description,
       req.body.price,

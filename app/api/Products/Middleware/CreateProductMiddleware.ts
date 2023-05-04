@@ -8,7 +8,6 @@ const createProductMiddleware = (
   next: NextFunction,
 ) => {
   const createSchema = joi.object({
-    part_number: joi.string().required(),
     name: joi.string().required(),
     description: joi.string().required(),
     purchase_price: joi.number().allow(null),

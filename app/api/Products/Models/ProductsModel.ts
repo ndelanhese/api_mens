@@ -6,7 +6,8 @@ export default class ProductsModel {
     try {
       return await productsModel.findAll({
         order: [[order, direction]],
-        //TODO -> Adicionar dados de categoria, marca e fornecedor
+        attributes: { exclude: ['category_id', 'brand_id', 'supplier_id'] },
+        include: { all: true },
       });
     } catch (error) {
       throw new HttpError(500, 'Erro ao buscar produtos.', error);
@@ -15,8 +16,10 @@ export default class ProductsModel {
 
   public async getProductsById(id: number) {
     try {
-      const product = await productsModel.findByPk(id);
-      //TODO -> Adicionar dados de categoria, marca e fornecedor
+      const product = await productsModel.findByPk(id, {
+        attributes: { exclude: ['category_id', 'brand_id', 'supplier_id'] },
+        include: { all: true },
+      });
       if (!product) throw new HttpError(404, 'Produto não encontrado.');
       return product;
     } catch (error) {
