@@ -30,9 +30,9 @@ export default class ProductsController extends BaseController {
         PaginationFactory.fromRequest(req);
       const productsModel = new ProductsModel();
       const products = await productsModel.getProducts(order, direction);
-      await this.createCache(cacheKey, products);
-      //TODO -> Fazer paginação
-      return res.status(200).json({ products, page, perPage });
+      const productsPaginated = this.dataPagination(page, perPage, products);
+      await this.createCache(cacheKey, productsPaginated);
+      return res.status(200).json(productsPaginated);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

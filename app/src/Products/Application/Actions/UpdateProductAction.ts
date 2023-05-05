@@ -21,6 +21,7 @@ export default class UpdateProductAction {
     const supplier = supplier_id
       ? await this.getSupplier(supplier_id)
       : undefined;
+    //TODO -> Verificar essa lógica de geração de partNumber
     const partNumber = part_number
       ? this.generatePartNumber(category, brand, currentValue.getId())
       : currentValue.getPartNumber();

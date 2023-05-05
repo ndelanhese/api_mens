@@ -15,7 +15,7 @@
     "db:reset": "npm run db:drop && npm run db:setup",
     "build": "npm run rm:dist && npx tsc && tsc-alias && cp -r ./app/database/Migrations ./dist/database/Migrations",
     "start": "node ./dist/server.js",
-    "dev": "tsx -r tsconfig-paths/register ./app/server.ts",
+    "dev": "tsx watch -r tsconfig-paths/register ./app/server.ts",
     "test": "jest",
     "coverage": "npx tsc && jest ./dist --coverage",
     "lint": "eslint . --ext .js,.ts",
