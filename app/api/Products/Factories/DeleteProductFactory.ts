@@ -3,6 +3,6 @@ import { Request } from 'express';
 
 export default class DeleteProductFactory {
   static fromRequest(req: Request) {
-    return new DeleteProductInputData(Number(req.query.id));
+    return new DeleteProductInputData(Number(req.params.id));
   }
 }
