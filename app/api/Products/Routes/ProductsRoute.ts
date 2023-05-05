@@ -5,6 +5,7 @@ import createProductMiddleware from '../Middleware/CreateProductMiddleware';
 import deleteProductMiddleware from '../Middleware/DeleteProductMiddleware';
 import importProductsMiddleware from '../Middleware/ImportProductMiddleware';
 import updateProductMiddleware from '../Middleware/UpdateProductMiddleware';
+import updateProductStockMiddleware from '../Middleware/UpdateProductStockMiddleware';
 
 export default class ProductsRoute {
   private productsRoute: Router;
@@ -33,6 +34,9 @@ export default class ProductsRoute {
     const updateProduct = this.productsController.updateProduct.bind(
       this.productsController,
     );
+    const updateProductStock = this.productsController.updateProductStock.bind(
+      this.productsController,
+    );
     const importProducts = this.productsController.importProducts.bind(
       this.productsController,
     );
@@ -43,6 +47,11 @@ export default class ProductsRoute {
     this.productRoute.get('/', getProducts);
     this.productRoute.get('/:id', getProduct);
     this.productRoute.post('/', createProductMiddleware, createProduct);
+    this.productRoute.put(
+      '/:id/stock',
+      updateProductStockMiddleware,
+      updateProductStock,
+    );
     this.productRoute.put('/:id', updateProductMiddleware, updateProduct);
     this.productRoute.post('/export', exportProducts);
     this.productRoute.post('/import', importProductsMiddleware, importProducts);

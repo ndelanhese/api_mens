@@ -31,6 +31,10 @@ export default class ProductRepository {
     return product;
   }
 
+  async updateStock(id: number, quantity: number) {
+    await this.productsModel.updateProductStock(id, quantity);
+  }
+
   async import(products: IProducts[]): Promise<void> {
     await this.productsModel.importProducts(products);
   }

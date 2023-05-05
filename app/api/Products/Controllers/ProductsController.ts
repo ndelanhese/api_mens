@@ -4,6 +4,8 @@ import DeleteProductAction from '@app/src/Products/Application/Actions/DeletePro
 import ExportProductsAction from '@app/src/Products/Application/Actions/ExportProductsAction';
 import ImportProductsAction from '@app/src/Products/Application/Actions/ImportProductsAction';
 import UpdateProductAction from '@app/src/Products/Application/Actions/UpdateProductAction';
+import UpdateProductStockAction from '@app/src/Products/Application/Actions/UpdateProductStockAction';
+import { getDateString, getTime } from '@app/src/Shared/Domain/Utils/Date';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -12,6 +14,7 @@ import CreateProductFactory from '../Factories/CreateProductFactory';
 import DeleteProductFactory from '../Factories/DeleteProductFactory';
 import ImportProductsFactory from '../Factories/ImportProductsFactory';
 import UpdateProductFactory from '../Factories/UpdateProductFactory';
+import UpdateProductStockFactory from '../Factories/UpdateProductStockFactory';
 import ProductsModel from '../Models/ProductsModel';
 
 export default class ProductsController extends BaseController {
@@ -120,6 +123,24 @@ export default class ProductsController extends BaseController {
     }
   }
 
+  public async updateProductStock(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'products_update');
+      const productInputData = UpdateProductStockFactory.fromRequest(req);
+      const productAction = new UpdateProductStockAction();
+      await productAction.execute(productInputData);
+      await this.deleteCache('products');
+      return res.status(200).json('Estoque do produto atualizado com sucesso.');
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
   public async importProducts(
     req: Request,
     res: Response,
@@ -148,7 +169,7 @@ export default class ProductsController extends BaseController {
       const products = await productAction.execute();
       res.setHeader(
         'Content-Disposition',
-        `attachment; filename="Tabela-de-produtos.xlsx"`,
+        `attachment; filename="Tabela-de-produtos-${getDateString()}-${getTime()}.xlsx"`,
       );
       res.setHeader('Content-Type', 'application/vnd.ms-excel');
       return res.end(products);

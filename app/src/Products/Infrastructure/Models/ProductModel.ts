@@ -59,6 +59,27 @@ export default class ProductsModel {
     }
   }
 
+  public async updateProductStock(id: number, quantity: number) {
+    try {
+      await productModel.update(
+        {
+          quantity,
+        },
+        {
+          where: {
+            id,
+          },
+        },
+      );
+    } catch (error) {
+      throw new HttpError(
+        500,
+        'Erro ao atualizar o estoque do produto.',
+        error,
+      );
+    }
+  }
+
   public async deleteProduct(id: number): Promise<void> {
     try {
       await productModel.destroy({
