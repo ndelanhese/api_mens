@@ -27,7 +27,7 @@ export default class SheetService {
   public dataToSheet(products: Product[]): Buffer {
     const workSheetName = 'SheetJS';
     const rowsData = products.map(item => ({
-      ID: item.getId(),
+      PART_NUMBER: item.getPartNumber(),
       NOME: item.getName(),
       DESCRIÇÃO: item.getDescription,
       'PREÇO DE ORIGEM': item.getPurchasePrice(),
