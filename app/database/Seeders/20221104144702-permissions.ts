@@ -287,13 +287,6 @@ export async function up(queryInterface: QueryInterface) {
         updatedAt: new Date(),
       },
       {
-        name: 'products_import',
-        description: 'Importar de Produto',
-        group: 'Produtos',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
         name: 'products_export',
         description: 'Exportar de Produto',
         group: 'Produtos',

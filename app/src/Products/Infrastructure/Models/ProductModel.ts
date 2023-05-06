@@ -3,7 +3,7 @@ import HttpError from '@exceptions/HttpError';
 
 import Product from '../../Domain/Entities/Product';
 
-import { IProductModel, IProductPayload } from './ProductModel.types';
+import { IProductModel } from './ProductModel.types';
 
 export default class ProductsModel {
   public async createProduct(payload: Product) {
@@ -92,16 +92,6 @@ export default class ProductsModel {
     }
   }
 
-  public async importProducts(products: IProductPayload[]): Promise<void> {
-    try {
-      //TODO -> Verificar qual o parâmetro que eu vou escolher para excluir
-      await this.deleteProductsByManufacturer();
-      await productModel.bulkCreate(products);
-    } catch (error) {
-      throw new HttpError(500, 'Erro ao importar os produtos.', error);
-    }
-  }
-
   public async exportProducts(): Promise<IProductModel[]> {
     try {
       return await productModel.findAll({
@@ -109,14 +99,6 @@ export default class ProductsModel {
       });
     } catch (error) {
       throw new HttpError(500, 'Erro ao exportar os produtos.', error);
-    }
-  }
-
-  private async deleteProductsByManufacturer() {
-    try {
-      await productModel.destroy();
-    } catch (error) {
-      throw new HttpError(500, 'Erro ao deletar os produtos.', error);
     }
   }
 }

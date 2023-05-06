@@ -7,8 +7,6 @@ import CategoriesModel from '../Models/CategoriesModel';
 import ProductModel from '../Models/ProductModel';
 import SuppliersModel from '../Models/SuppliersModel';
 
-import { IProducts } from './ProductRepository.types';
-
 export default class ProductRepository {
   private productsModel: ProductModel;
 
@@ -39,10 +37,6 @@ export default class ProductRepository {
 
   async updateStock(id: number, quantity: number) {
     await this.productsModel.updateProductStock(id, quantity);
-  }
-
-  async import(products: IProducts[]): Promise<void> {
-    await this.productsModel.importProducts(products);
   }
 
   async export(): Promise<Product[]> {

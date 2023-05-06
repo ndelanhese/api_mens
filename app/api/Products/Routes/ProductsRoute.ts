@@ -3,7 +3,6 @@ import express, { Router } from 'express';
 import ProductsController from '../Controllers/ProductsController';
 import createProductMiddleware from '../Middleware/CreateProductMiddleware';
 import deleteProductMiddleware from '../Middleware/DeleteProductMiddleware';
-import importProductsMiddleware from '../Middleware/ImportProductMiddleware';
 import updateProductMiddleware from '../Middleware/UpdateProductMiddleware';
 import updateProductStockMiddleware from '../Middleware/UpdateProductStockMiddleware';
 
@@ -37,9 +36,6 @@ export default class ProductsRoute {
     const updateProductStock = this.productsController.updateProductStock.bind(
       this.productsController,
     );
-    const importProducts = this.productsController.importProducts.bind(
-      this.productsController,
-    );
     const exportProducts = this.productsController.exportProducts.bind(
       this.productsController,
     );
@@ -54,7 +50,6 @@ export default class ProductsRoute {
     );
     this.productRoute.put('/:id', updateProductMiddleware, updateProduct);
     this.productRoute.post('/export', exportProducts);
-    this.productRoute.post('/import', importProductsMiddleware, importProducts);
     this.productRoute.delete('/:id', deleteProductMiddleware, deleteProduct);
   }
 
