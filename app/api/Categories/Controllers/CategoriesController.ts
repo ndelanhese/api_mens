@@ -42,9 +42,9 @@ export default class CategoriesController extends BaseController {
       const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
       const categoriesModel = new CategoriesModel();
-      const brand = await categoriesModel.getCategory(Number(id));
-      await this.createCache(cacheKey, brand);
-      return res.status(200).json(brand);
+      const category = await categoriesModel.getCategory(Number(id));
+      await this.createCache(cacheKey, category);
+      return res.status(200).json(category);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -58,11 +58,13 @@ export default class CategoriesController extends BaseController {
   ): Promise<Response<string> | undefined> {
     try {
       await this.verifyPermission(req, 'categories_create');
-      const brandInputData = CreateCategoryFactory.fromRequest(req);
-      const brandAction = new CreateCategoryAction();
-      const brandId = (await brandAction.execute(brandInputData)).getId();
+      const categoryInputData = CreateCategoryFactory.fromRequest(req);
+      const categoryAction = new CreateCategoryAction();
+      const categoryId = (
+        await categoryAction.execute(categoryInputData)
+      ).getId();
       await this.deleteCache('categories');
-      return res.status(200).json(brandId);
+      return res.status(200).json(categoryId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

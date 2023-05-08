@@ -1,6 +1,11 @@
 import CreateCustomerAction from '@app/src/Customers/Application/Actions/CreateCustomerAction';
 import DeleteCustomerAction from '@app/src/Customers/Application/Actions/DeleteCustomerAction';
 import UpdateCustomerAction from '@app/src/Customers/Application/Actions/UpdateCustomerAction';
+import { formatCpf } from '@app/src/Shared/Domain/Utils/CpfCnpjFormatter';
+import {
+  formatPhoneNumber,
+  formatRG,
+} from '@app/src/Shared/Domain/Utils/Formatter';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -144,10 +149,10 @@ export default class CustomersController extends BaseController {
     return {
       id: customer.id,
       name: customer.name,
-      cpf: customer.cpf,
-      rg: customer.rg,
+      cpf: formatCpf(customer.cpf),
+      rg: formatRG(customer.rg ?? ''),
       birth_date: customer.birth_date,
-      phone: customer.phone,
+      phone: formatPhoneNumber(customer.phone),
       status: customer.status,
       addresses: addresses,
     };

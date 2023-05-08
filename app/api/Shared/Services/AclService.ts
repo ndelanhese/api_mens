@@ -1,4 +1,4 @@
-import Token from '@app/src/Shared/Domain/Services/Token/Token';
+import Token from '@app/src/Shared/Infrastructure/Services/Token/Token';
 import { getCache, createCache, createCacheClient } from '@cache/Cache';
 import HttpError from '@exceptions/HttpError';
 import HttpErrorNotAuthorized from '@exceptions/NotAuthorizedHttpError';

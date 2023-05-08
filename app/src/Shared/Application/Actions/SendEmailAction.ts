@@ -1,4 +1,4 @@
-import EmailService from '../../Domain/Services/Transporters/SMTP/EmailService';
+import EmailService from '../../Infrastructure/Services/Transporters/SMTP/EmailService';
 import SendEmailInputData from '../Dtos/SendEmailInputData';
 
 export default class SendEmailAction {

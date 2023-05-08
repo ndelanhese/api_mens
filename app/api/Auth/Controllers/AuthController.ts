@@ -1,4 +1,4 @@
-import Token from '@app/src/Shared/Domain/Services/Token/Token';
+import Token from '@app/src/Shared/Infrastructure/Services/Token/Token';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { getNextDay } from '@shared/Date';

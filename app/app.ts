@@ -18,6 +18,7 @@ export default class App {
 
   private setup(): void {
     this.app.use(cors());
+    this.app.disable('x-powered-by');
     this.app.use(
       fileUpload({
         tempFileDir: '/tmp/',

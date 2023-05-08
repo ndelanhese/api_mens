@@ -1,3 +1,4 @@
+import { formatCnpj } from '@app/src/Shared/Domain/Utils/CpfCnpjFormatter';
 import CreateSupplierAction from '@app/src/Suppliers/Application/Actions/CreateSupplierAction';
 import DeleteSupplierAction from '@app/src/Suppliers/Application/Actions/DeleteSupplierAction';
 import UpdateSupplierAction from '@app/src/Suppliers/Application/Actions/UpdateSupplierAction';
@@ -150,7 +151,7 @@ export default class SuppliersController extends BaseController {
       id: supplier.id,
       contact_name: supplier.contact_name,
       corporate_name: supplier.corporate_name,
-      cnpj: supplier.cnpj,
+      cnpj: formatCnpj(supplier.cnpj),
       status: supplier.status,
       addresses: addresses,
     };

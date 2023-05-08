@@ -7,11 +7,14 @@ import {
 } from 'sequelize';
 
 import AddressesModel from './AddressesModel';
+import BrandsModel from './BrandsModel';
+import CategoriesModel from './CategoriesModel';
 import CustomersAddressesModel from './CustomersAddressesModel';
 import CustomerModel from './CustomersModel';
 import EmployeesAddressesModel from './EmployeesAddressesModel';
 import EmployeeModel from './EmployeesModel';
 import PermissionsModel from './PermissionsModel';
+import ProductsModel from './ProductsModel';
 import RolesModel from './RolesModel';
 import RolesPermissionsModel from './RolesPermissionsModel';
 import SuppliersAddressesModel from './SuppliersAddressesModel';
@@ -180,4 +183,34 @@ AddressesModel.hasMany(SuppliersAddressesModel, {
 SuppliersModel.hasMany(SuppliersAddressesModel, {
   as: 'supplier_addresses',
   foreignKey: 'supplier_id',
+});
+
+ProductsModel.belongsTo(CategoriesModel, {
+  as: 'category',
+  foreignKey: 'category_id',
+});
+
+CategoriesModel.hasMany(ProductsModel, {
+  foreignKey: 'category_id',
+  as: 'category_product',
+});
+
+ProductsModel.belongsTo(BrandsModel, {
+  as: 'brand',
+  foreignKey: 'brand_id',
+});
+
+BrandsModel.hasMany(ProductsModel, {
+  foreignKey: 'brand_id',
+  as: 'brand_product',
+});
+
+ProductsModel.belongsTo(SuppliersModel, {
+  as: 'supplier',
+  foreignKey: 'supplier_id',
+});
+
+SuppliersModel.hasMany(ProductsModel, {
+  foreignKey: 'supplier_id',
+  as: 'supplier_product',
 });
