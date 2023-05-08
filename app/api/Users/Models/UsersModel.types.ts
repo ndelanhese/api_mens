@@ -26,8 +26,7 @@ export interface IUsersDeleted {
 
 export interface IUser {
   id: number;
-  first_name: string;
-  last_name: string;
+  user: string;
   phone_number: string;
   email: string;
   status: string;
@@ -35,6 +34,10 @@ export interface IUser {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
+  employee: {
+    name: string;
+    cpf: string;
+  };
   users_roles: { role_id: number }[];
   users_permissions: { permission_id: number }[];
 }

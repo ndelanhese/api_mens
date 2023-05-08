@@ -1,7 +1,7 @@
 import userModel from '@db-models/UsersModel';
 import userRoleModel from '@db-models/UsersRolesModel';
 import HttpError from '@exceptions/HttpError';
-import { Op, UniqueConstraintError } from 'sequelize';
+import { Op } from 'sequelize';
 
 import User from '../../Domain/Entities/User';
 
@@ -26,6 +26,19 @@ export default class UserModel {
 
   public async createUser(payload: User) {
     try {
+      const hasEmail = await userModel.findOne({
+        where: { email: payload.getEmail() },
+      });
+      if (hasEmail) throw new HttpError(400, 'Email já cadastrado.');
+      const hasUser = await userModel.findOne({
+        where: { user: payload.getUser() },
+      });
+      if (hasUser) throw new HttpError(400, 'Usuário já cadastrado.');
+      const hasEmployee = await userModel.findOne({
+        where: { employee_id: payload.getEmployeeId() },
+      });
+      if (hasEmployee)
+        throw new HttpError(400, 'Funcionário já possui cadastro de usuário.');
       return await userModel.create({
         user: payload.getUser(),
         email: payload.getEmail(),
@@ -34,15 +47,29 @@ export default class UserModel {
         employee_id: payload.getEmployeeId(),
       });
     } catch (error) {
-      if (error instanceof UniqueConstraintError) {
-        throw new HttpError(400, 'E-mail já cadastrado.', error);
-      }
+      if (error instanceof HttpError) throw error;
       throw new HttpError(500, 'Erro ao cadastrar usuário.', error);
     }
   }
 
   public async updateUser(payload: User): Promise<void> {
     try {
+      const hasEmail = await userModel.findOne({
+        where: { email: payload.getEmail(), id: { [Op.ne]: payload.getId() } },
+      });
+      if (hasEmail) throw new HttpError(400, 'Email já cadastrado.');
+      const hasUser = await userModel.findOne({
+        where: { user: payload.getUser(), id: { [Op.ne]: payload.getId() } },
+      });
+      if (hasUser) throw new HttpError(400, 'Usuário já cadastrado.');
+      const hasEmployee = await userModel.findOne({
+        where: {
+          employee_id: payload.getEmployeeId(),
+          id: { [Op.ne]: payload.getId() },
+        },
+      });
+      if (hasEmployee)
+        throw new HttpError(400, 'Funcionário já possui cadastro de usuário.');
       await userModel.update(
         {
           user: payload.getUser(),
