@@ -16,10 +16,13 @@ export default class SalesModel extends Model<
   public date!: Date;
   public observation!: CreationOptional<string>;
   public total_value!: number;
-  public discount_amount!: number;
-  public discount_type!: string;
+  public discount_amount!: CreationOptional<number>;
+  public discount_type!: CreationOptional<string>;
   public final_value!: number;
   public status!: CreationOptional<string>;
+  public customer_id!: number;
+  public employee_id!: number;
+  public user_id!: number;
 }
 
 SalesModel.init(
@@ -57,6 +60,36 @@ SalesModel.init(
       type: DataTypes.STRING,
       allowNull: true,
       defaultValue: 'finalizada',
+    },
+    customer_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: {
+          tableName: 'customers',
+        },
+        key: 'id',
+      },
+    },
+    employee_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: {
+          tableName: 'employees',
+        },
+        key: 'id',
+      },
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: {
+          tableName: 'users',
+        },
+        key: 'id',
+      },
     },
   },
   {
