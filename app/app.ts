@@ -4,7 +4,6 @@ import cors from 'cors';
 import express, { Express } from 'express';
 import fileUpload from 'express-fileupload';
 
-import sanitizeMiddleware from './api/Shared/MIddleware/SanitizeMiddleware';
 import sentryConfig from './config/sentry';
 import routes from './routes';
 
@@ -32,8 +31,6 @@ export default class App {
     this.app.use(bodyParser.urlencoded({ extended: true }));
 
     this.app.use(Sentry.Handlers.requestHandler());
-
-    this.app.use(sanitizeMiddleware);
 
     this.app.use('/', routes);
 
