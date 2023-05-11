@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import employeesModel from '@db-models/EmployeesModel';
 import userModel from '@db-models/UsersModel';
-import userPermissionsModel from '@db-models/UsersPermissionsModel';
-import userRoleModel from '@db-models/UsersRolesModel';
 import HttpError from '@exceptions/HttpError';
 import { Op } from 'sequelize';
 
@@ -9,18 +8,13 @@ import { IUser, IUserData } from './UsersModel.types';
 export default class UserModel {
   public async findAll() {
     try {
-      const users = await userModel.findAll({
+      return await userModel.findAll({
         attributes: {
-          exclude: ['password'],
+          exclude: ['password', 'employee_id'],
         },
         order: [['id', 'ASC']],
+        include: { model: employeesModel, as: 'employee' },
       });
-      if (users.length > 0) {
-        return {
-          data: users,
-        };
-      }
-      return [];
     } catch (error) {
       throw new HttpError(500, 'Erro ao listar usuários.', error);
     }
@@ -32,18 +26,7 @@ export default class UserModel {
         attributes: {
           exclude: ['password', 'deletedAt', 'createdAt', 'updatedAt'],
         },
-        include: [
-          {
-            model: userRoleModel,
-            as: 'users_roles',
-            attributes: ['role_id'],
-          },
-          {
-            model: userPermissionsModel,
-            as: 'users_permissions',
-            attributes: ['permission_id'],
-          },
-        ],
+        include: { all: true },
       });
       if (!data) throw new HttpError(404, 'Usuário não encontrado.');
       return data;

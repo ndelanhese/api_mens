@@ -34,8 +34,8 @@ export default class UsersRoute {
     const updateUser = this.userController.updateUser.bind(this.userController);
 
     this.usersRoute.get('/trash', getDeletedUsers);
-    this.usersRoute.get('/', getUsers);
     this.usersRoute.get('/:id', getUser);
+    this.usersRoute.get('/', getUsers);
     this.usersRoute.post('/', createUserMiddleware, createUser);
     this.usersRoute.delete('/:id', deleteUserMiddleware, deleteUser);
     this.usersRoute.patch('/:id', restoreUserMiddleware, restoreUser);

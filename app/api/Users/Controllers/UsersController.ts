@@ -186,8 +186,7 @@ export default class UsersController extends BaseController {
     const roles = user.users_roles.map(role => role.role_id);
     return {
       id: user.id,
-      first_name: user.first_name,
-      last_name: user.last_name,
+      user: user.user,
       phone_number: user.phone_number,
       email: user.email,
       status: user.status,
@@ -195,6 +194,10 @@ export default class UsersController extends BaseController {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
       deletedAt: user.deletedAt,
+      employee: {
+        name: user.employee.name,
+        cpf: user.employee.cpf,
+      },
       users_roles: roles,
       permissions: permissions,
     };
