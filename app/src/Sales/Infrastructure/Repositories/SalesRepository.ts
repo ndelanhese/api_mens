@@ -1,5 +1,5 @@
 import Sale from '../../Domain/Entities/Sale';
-import { statusEnum } from '../../Domain/Enums/Status';
+import { statusEnum } from '../../Domain/Enums/StatusTypes.types';
 import SalesModel from '../Models/SalesModel';
 
 export default class SalesRepository {

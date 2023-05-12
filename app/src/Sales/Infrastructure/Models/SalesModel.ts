@@ -2,11 +2,11 @@ import productModel from '@db-models/SalesModel';
 import HttpError from '@exceptions/HttpError';
 
 import Sale from '../../Domain/Entities/Sale';
-import { statusEnum } from '../../Domain/Enums/Status';
+import { statusEnum } from '../../Domain/Enums/StatusTypes.types';
 
 export default class SalesModel {
   public async createSale(payload: Sale) {
-    // TODO -> adicionar produtos
+    // TODO -> adicionar produtos e métodos de pagamento
     try {
       const customerId = payload.getCustomer()?.getId() ?? 1;
       const employeeId = payload.getEmployee()?.getId() ?? 1;
@@ -29,7 +29,7 @@ export default class SalesModel {
   }
 
   public async updateSale(payload: Sale): Promise<void> {
-    //TODO -> adicionar produtos
+    //TODO -> adicionar produtos e métodos de pagamento
     try {
       const customerId = payload.getCustomer()?.getId() ?? 1;
       const employeeId = payload.getEmployee()?.getId() ?? 1;
@@ -89,7 +89,7 @@ export default class SalesModel {
   }
 
   public async exportSales() {
-    // TODO -> adicionar produtos
+    // TODO -> adicionar produtos e métodos de pagamento
     try {
       return await productModel.findAll({
         order: [['id', 'DESC']],

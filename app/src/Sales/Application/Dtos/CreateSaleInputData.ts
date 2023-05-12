@@ -1,5 +1,5 @@
-import { DiscountsTypesEnum } from '../../Domain/Enums/DiscountTypes';
-import { statusEnum } from '../../Domain/Enums/Status';
+import { DiscountTypesOption } from '../../Domain/Enums/DiscountTypes.types';
+import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
 
 export default class CreateSaleInputData {
   constructor(
@@ -16,13 +16,13 @@ export default class CreateSaleInputData {
     readonly sale_products: Array<{
       readonly quantity: number;
       readonly discount_amount?: number;
-      readonly discount_type?: DiscountsTypesEnum;
+      readonly discount_type?: DiscountTypesOption;
       readonly final_value: number;
       readonly product_id: number;
     }>,
     readonly observation?: string,
-    readonly status?: statusEnum,
+    readonly status?: StatusTypesOptions,
     readonly discount_amount?: number,
-    readonly discount_type?: DiscountsTypesEnum,
+    readonly discount_type?: DiscountTypesOption,
   ) {}
 }
