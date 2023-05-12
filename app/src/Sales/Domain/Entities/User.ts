@@ -4,23 +4,12 @@ export default class User {
   private id?: number;
   private user: string;
   private email: string;
-  private password: string;
-  private status: string;
   private employee: Employee;
 
-  constructor(
-    user: string,
-    email: string,
-    password: string,
-    status: string,
-    employee: Employee,
-    id?: number,
-  ) {
+  constructor(user: string, email: string, employee: Employee, id?: number) {
     this.id = id;
     this.user = user;
     this.email = email;
-    this.password = password;
-    this.status = status;
     this.employee = employee;
   }
 
@@ -57,24 +46,6 @@ export default class User {
 
   public setEmail(email: string) {
     this.email = email;
-    return this;
-  }
-
-  public getPassword() {
-    return this.password;
-  }
-
-  public setPassword(password: string) {
-    this.password = password;
-    return this;
-  }
-
-  public getStatus() {
-    return this.status;
-  }
-
-  public setStatus(status: string) {
-    this.status = status;
     return this;
   }
 }

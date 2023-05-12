@@ -2,14 +2,13 @@ import productModel from '@db-models/SalesModel';
 import HttpError from '@exceptions/HttpError';
 
 import Sale from '../../Domain/Entities/Sale';
-import { statusEnum } from '../../Domain/Enums/StatusTypes.types';
+import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
 
 export default class SalesModel {
   public async createSale(payload: Sale) {
     // TODO -> adicionar produtos e métodos de pagamento
     try {
       const customerId = payload.getCustomer()?.getId() ?? 1;
-      const employeeId = payload.getEmployee()?.getId() ?? 1;
       const userId = payload.getUser()?.getId() ?? 1;
       return await productModel.create({
         date: payload.getDate(),
@@ -20,7 +19,6 @@ export default class SalesModel {
         final_value: payload.getFinalValue(),
         status: payload.getStatus(),
         customer_id: customerId,
-        employee_id: employeeId,
         user_id: userId,
       });
     } catch (error) {
@@ -32,7 +30,6 @@ export default class SalesModel {
     //TODO -> adicionar produtos e métodos de pagamento
     try {
       const customerId = payload.getCustomer()?.getId() ?? 1;
-      const employeeId = payload.getEmployee()?.getId() ?? 1;
       const userId = payload.getUser()?.getId() ?? 1;
       await productModel.update(
         {
@@ -44,7 +41,6 @@ export default class SalesModel {
           final_value: payload.getFinalValue(),
           status: payload.getStatus(),
           customer_id: customerId,
-          employee_id: employeeId,
           user_id: userId,
         },
         {
@@ -58,7 +54,7 @@ export default class SalesModel {
     }
   }
 
-  public async updateSaleStatus(id: number, status: statusEnum) {
+  public async updateSaleStatus(id: number, status: StatusTypesOptions) {
     try {
       await productModel.update(
         {

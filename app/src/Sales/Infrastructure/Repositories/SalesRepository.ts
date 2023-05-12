@@ -1,5 +1,5 @@
 import Sale from '../../Domain/Entities/Sale';
-import { statusEnum } from '../../Domain/Enums/StatusTypes.types';
+import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
 import SalesModel from '../Models/SalesModel';
 
 export default class SalesRepository {
@@ -30,7 +30,7 @@ export default class SalesRepository {
     return sale;
   }
 
-  async updateStatus(id: number, status: statusEnum) {
+  async updateStatus(id: number, status: StatusTypesOptions) {
     await this.salesModel.updateSaleStatus(id, status);
   }
 

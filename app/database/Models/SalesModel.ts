@@ -21,7 +21,6 @@ export default class SalesModel extends Model<
   public final_value!: number;
   public status!: CreationOptional<string>;
   public customer_id!: number;
-  public employee_id!: number;
   public user_id!: number;
 }
 
@@ -67,16 +66,6 @@ SalesModel.init(
       references: {
         model: {
           tableName: 'customers',
-        },
-        key: 'id',
-      },
-    },
-    employee_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: {
-          tableName: 'employees',
         },
         key: 'id',
       },

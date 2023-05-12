@@ -47,16 +47,6 @@ module.exports = {
           key: 'id',
         },
       },
-      employee_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: {
-            tableName: 'employees',
-          },
-          key: 'id',
-        },
-      },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

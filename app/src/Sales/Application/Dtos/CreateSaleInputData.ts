@@ -7,7 +7,6 @@ export default class CreateSaleInputData {
     readonly total_value: number,
     readonly final_value: number,
     readonly customer_id: number,
-    readonly employee_id: number,
     readonly user_id: number,
     readonly sale_methods: Array<{
       readonly installment: number;
