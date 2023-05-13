@@ -23,7 +23,7 @@ export default class CreateSaleAction {
       input.discount_type,
       input.status,
     );
-    await salesRepository.save(sale);
+    return await salesRepository.save(sale);
   }
 
   private async getCustomer(customer_id: number) {
