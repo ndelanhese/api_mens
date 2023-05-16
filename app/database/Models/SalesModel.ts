@@ -84,5 +84,7 @@ SalesModel.init(
   {
     sequelize,
     tableName: 'sales',
+    timestamps: true,
+    paranoid: true,
   },
 );

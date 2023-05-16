@@ -144,6 +144,7 @@ export default class ProductsController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
+      //TODO -> pegar filtros da request (categoria, marca, valor e etc)
       await this.verifyPermission(req, 'products_export');
       const productAction = new ExportProductsAction();
       const products = await productAction.execute();

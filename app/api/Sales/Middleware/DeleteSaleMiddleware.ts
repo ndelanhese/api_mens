@@ -8,11 +8,18 @@ const deleteSaleMiddleware = (
   next: NextFunction,
 ) => {
   const deleteSchema = joi.object({
+    observation: joi.string(),
+  });
+  const deleteIdSchema = joi.object({
     id: joi.number().required(),
   });
-  const { error } = deleteSchema.validate(req.params, { messages });
-  if (error) {
-    const { message } = error.details[0];
+  const { error: errorBody } = deleteSchema.validate(req.body, { messages });
+  const { error: errorParams } = deleteIdSchema.validate(req.params, {
+    messages,
+  });
+  if (errorBody || errorParams) {
+    const message =
+      errorBody?.details[0].message || errorParams?.details[0].message;
     return res.status(400).send({ message });
   }
   next();
