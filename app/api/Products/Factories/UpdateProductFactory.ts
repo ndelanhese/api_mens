@@ -30,7 +30,6 @@ export default class UpdateProductFactory {
       undefined,
       undefined,
       undefined,
-      //TODO -> adicionar: categoria, marca e fornecedor
       currentValue.purchase_price,
       currentValue.size,
       currentValue.color,

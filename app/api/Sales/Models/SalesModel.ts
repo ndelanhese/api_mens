@@ -2,7 +2,7 @@ import salesModel from '@db-models/SalesModel';
 import HttpError from '@exceptions/HttpError';
 
 export default class SalesModel {
-  public async getUsers() {
+  public async getSales() {
     try {
       return await salesModel.findAll({
         include: { all: true },
@@ -12,9 +12,9 @@ export default class SalesModel {
     }
   }
 
-  public async getUser(id: number) {
+  public async getSale(id: number) {
     try {
-      const sale = await salesModel.findByPk(id);
+      const sale = await salesModel.findByPk(id, { include: { all: true } });
       if (!sale) throw new HttpError(404, 'Venda não encontrada.');
       return sale;
     } catch (error) {

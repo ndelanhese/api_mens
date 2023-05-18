@@ -1,3 +1,5 @@
+import getDate from '@app/src/Shared/Domain/Utils/Date';
+
 import Customer from '../../Domain/Entities/Customer';
 import Employee from '../../Domain/Entities/Employee';
 import Sale from '../../Domain/Entities/Sale';
@@ -13,7 +15,7 @@ export default class CreateSaleAction {
     const customer = await this.getCustomer(input.customer_id);
     const user = await this.getUser(input.user_id);
     const sale = new Sale(
-      input.date,
+      getDate(input.date),
       input.total_value,
       input.final_value,
       customer,

@@ -34,8 +34,8 @@ const createSaleMiddleware = (
         joi.object({
           id: joi.number().required(),
           quantity: joi.number().required().min(1),
-          discount_amount: joi.number(),
-          discount_type: joi.string(),
+          discount_amount: joi.number().allow(null),
+          discount_type: joi.string().allow(null),
           final_value: joi.number().required(),
         }),
       )
@@ -46,7 +46,10 @@ const createSaleMiddleware = (
     const { message } = error.details[0];
     return res.status(400).send({ message });
   }
-  if (!DiscountTypes.isValid(req.body.discount_type)) {
+  if (
+    req.body.discount_type &&
+    !DiscountTypes.isValid(req.body.discount_type)
+  ) {
     return res.status(400).send({ message: 'Tipo de desconto inválido.' });
   }
   //TODO -> validar o tipo de desconto do produto

@@ -1,7 +1,12 @@
+import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
+import CreateSaleAction from '@app/src/Sales/Application/Actions/CreateSaleAction';
 import { getDateString, getTime } from '@app/src/Shared/Domain/Utils/Date';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
+
+import CreateSaleFactory from '../Factories/CreateSaleFactory';
+import SalesModel from '../Models/SalesModel';
 
 export default class SalesController extends BaseController {
   public async getSales(
@@ -15,8 +20,12 @@ export default class SalesController extends BaseController {
       if (cache) {
         return res.status(200).json(cache);
       }
-      await this.createCache(cacheKey, {});
-      return res.status(200).json({});
+      const { page, perPage } = PaginationFactory.fromRequest(req);
+      const salesModel = new SalesModel();
+      const sales = await salesModel.getSales();
+      const salesPaginated = this.dataPagination(page, perPage, sales);
+      await this.createCache(cacheKey, salesPaginated);
+      return res.status(200).json(salesPaginated);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -29,14 +38,17 @@ export default class SalesController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      const cacheKey = `sales-${req.params.id}`;
+      const id = Number(req.params.id);
+      const cacheKey = `sales-${id}`;
       await this.verifyPermission(req, 'sales_read');
       const cache = await this.getCache(cacheKey);
       if (cache) {
         return res.status(200).json(cache);
       }
-      await this.createCache(cacheKey, {});
-      return res.status(200).json({});
+      const salesModel = new SalesModel();
+      const sale = await salesModel.getSale(id);
+      await this.createCache(cacheKey, sale);
+      return res.status(200).json(sale);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -50,8 +62,11 @@ export default class SalesController extends BaseController {
   ): Promise<Response<string> | undefined> {
     try {
       await this.verifyPermission(req, 'sales_create');
+      const saleInputData = CreateSaleFactory.fromRequest(req);
+      const saleAction = new CreateSaleAction();
+      const saleId = (await saleAction.execute(saleInputData)).getId();
       await this.deleteCache('sales');
-      return res.status(204).json('salesId');
+      return res.status(204).json(saleId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
