@@ -11,7 +11,7 @@ const updateSaleMiddleware = (
 ) => {
   const updateSchema = joi.object({
     date: joi.string(),
-    observation: joi.string().allow(null),
+    observation: joi.string().required(),
     total_value: joi.number(),
     discount_amount: joi.number().allow(null),
     discount_type: joi.string().allow(null),
@@ -29,8 +29,8 @@ const updateSaleMiddleware = (
       joi.object({
         id: joi.number().required(),
         quantity: joi.number().min(1).required(),
-        discount_amount: joi.number().required(),
-        discount_type: joi.string().required(),
+        discount_amount: joi.number().allow(null),
+        discount_type: joi.string().allow(null),
         final_value: joi.number().required(),
       }),
     ),
@@ -47,7 +47,10 @@ const updateSaleMiddleware = (
       errorBody?.details[0].message || errorParams?.details[0].message;
     return res.status(400).send({ message });
   }
-  if (!DiscountTypes.isValid(req.body.discount_type)) {
+  if (
+    req.body.discount_type &&
+    !DiscountTypes.isValid(req.body.discount_type)
+  ) {
     return res.status(400).send({ message: 'Tipo de desconto inválido.' });
   }
   //TODO -> validar o tipo de desconto do produto

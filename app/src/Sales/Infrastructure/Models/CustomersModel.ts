@@ -1,7 +1,7 @@
 import customersModel from '@db-models/CustomersModel';
 import HttpError from '@exceptions/HttpError';
 
-export default class ListCustomersModel {
+export default class CustomersModel {
   public async getCustomer(customerId: number) {
     try {
       const customer = await customersModel.findByPk(customerId);

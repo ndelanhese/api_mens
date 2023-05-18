@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import joi from 'joi';
 import { messages } from 'joi-translation-pt-br';
 
-const updateSaleMiddleware = (
+const updateSaleStatusMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -30,4 +30,4 @@ const updateSaleMiddleware = (
   next();
 };
 
-export default updateSaleMiddleware;
+export default updateSaleStatusMiddleware;

@@ -30,8 +30,12 @@ export default class SalesRepository {
     return sale;
   }
 
-  async updateStatus(id: number, status: StatusTypesOptions) {
-    await this.salesModel.updateSaleStatus(id, status);
+  async updateStatus(
+    id: number,
+    status: StatusTypesOptions,
+    observation: string,
+  ) {
+    await this.salesModel.updateSaleStatus(id, status, observation);
   }
 
   async export() {
@@ -56,5 +60,9 @@ export default class SalesRepository {
     //     );
     //   }),
     // );
+  }
+
+  async getSale(id: number) {
+    return await this.salesModel.getSale(id);
   }
 }

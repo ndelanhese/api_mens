@@ -1,4 +1,4 @@
-import productModel from '@db-models/SalesModel';
+import salesModel from '@db-models/SalesModel';
 import HttpError from '@exceptions/HttpError';
 
 import Sale from '../../Domain/Entities/Sale';
@@ -10,7 +10,7 @@ export default class SalesModel {
     try {
       const customerId = payload.getCustomer()?.getId() ?? 1;
       const userId = payload.getUser()?.getId() ?? 1;
-      return await productModel.create({
+      return await salesModel.create({
         date: payload.getDate(),
         observation: payload.getObservation(),
         total_value: payload.getTotalValue(),
@@ -31,7 +31,7 @@ export default class SalesModel {
     try {
       const customerId = payload.getCustomer()?.getId() ?? 1;
       const userId = payload.getUser()?.getId() ?? 1;
-      await productModel.update(
+      await salesModel.update(
         {
           date: payload.getDate(),
           observation: payload.getObservation(),
@@ -54,11 +54,16 @@ export default class SalesModel {
     }
   }
 
-  public async updateSaleStatus(id: number, status: StatusTypesOptions) {
+  public async updateSaleStatus(
+    id: number,
+    status: StatusTypesOptions,
+    observation: string,
+  ) {
     try {
-      await productModel.update(
+      await salesModel.update(
         {
           status,
+          observation,
         },
         {
           where: {
@@ -74,7 +79,7 @@ export default class SalesModel {
   public async deleteSale(id: number): Promise<void> {
     // TODO -> adicionar o remover produtos
     try {
-      await productModel.destroy({
+      await salesModel.destroy({
         where: {
           id,
         },
@@ -87,12 +92,23 @@ export default class SalesModel {
   public async exportSales() {
     // TODO -> adicionar produtos e métodos de pagamento
     try {
-      return await productModel.findAll({
+      return await salesModel.findAll({
         order: [['id', 'DESC']],
         include: { all: true },
       });
     } catch (error) {
       throw new HttpError(500, 'Erro ao exportar os vendas.', error);
+    }
+  }
+
+  public async getSale(id: number) {
+    try {
+      const sale = await salesModel.findByPk(id, { include: { all: true } });
+      if (!sale) throw new HttpError(404, 'Venda não encontrada.');
+      return sale;
+    } catch (error) {
+      if (error instanceof HttpError) throw error;
+      throw new HttpError(500, 'Erro ao buscar venda.', error);
     }
   }
 }

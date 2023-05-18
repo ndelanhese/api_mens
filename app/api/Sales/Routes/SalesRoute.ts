@@ -3,6 +3,7 @@ import express, { Router } from 'express';
 import SalesController from '../Controllers/SalesController';
 import createSaleMiddleware from '../Middleware/CreateSaleMiddleware';
 import updateSaleMiddleware from '../Middleware/UpdateSaleMiddleware';
+import updateSaleStatusMiddleware from '../Middleware/UpdateSaleStatusMiddleware';
 
 export default class SalesRoute {
   private salesRoute: Router;
@@ -33,10 +34,14 @@ export default class SalesRoute {
 
     this.saleRoute.get('/', getSales);
     this.saleRoute.get('/:id', getSale);
-    this.saleRoute.post('/', createSaleMiddleware, createSale);
-    this.saleRoute.put('/:id/status', updateSaleMiddleware, updateSaleStatus);
+    this.saleRoute.put(
+      '/:id/status',
+      updateSaleStatusMiddleware,
+      updateSaleStatus,
+    );
     this.saleRoute.put('/:id', updateSaleMiddleware, updateSale);
     this.saleRoute.post('/export', exportSales);
+    this.saleRoute.post('/', createSaleMiddleware, createSale);
   }
 
   get saleRoute() {
