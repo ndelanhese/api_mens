@@ -2,7 +2,6 @@ import express, { Router } from 'express';
 
 import SalesController from '../Controllers/SalesController';
 import createSaleMiddleware from '../Middleware/CreateSaleMiddleware';
-import deleteSaleMiddleware from '../Middleware/DeleteSaleMiddleware';
 import updateSaleMiddleware from '../Middleware/UpdateSaleMiddleware';
 
 export default class SalesRoute {
@@ -22,9 +21,6 @@ export default class SalesRoute {
     const createSale = this.salesController.createSale.bind(
       this.salesController,
     );
-    const deleteSale = this.salesController.deleteSale.bind(
-      this.salesController,
-    );
     const updateSale = this.salesController.updateSale.bind(
       this.salesController,
     );
@@ -41,7 +37,6 @@ export default class SalesRoute {
     this.saleRoute.put('/:id/status', updateSaleMiddleware, updateSaleStatus);
     this.saleRoute.put('/:id', updateSaleMiddleware, updateSale);
     this.saleRoute.post('/export', exportSales);
-    this.saleRoute.delete('/:id', deleteSaleMiddleware, deleteSale);
   }
 
   get saleRoute() {
