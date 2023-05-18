@@ -3,12 +3,14 @@ import CreateSaleAction from '@app/src/Sales/Application/Actions/CreateSaleActio
 import ExportSaleAction from '@app/src/Sales/Application/Actions/ExportSaleAction';
 import UpdateSaleAction from '@app/src/Sales/Application/Actions/UpdateSaleAction';
 import UpdateSaleStatusAction from '@app/src/Sales/Application/Actions/UpdateSaleStatusAction';
-import { getDateString, getTime } from '@app/src/Shared/Domain/Utils/Date';
+import ExportSalesInputData from '@app/src/Sales/Application/Dtos/ExportSaleInputData';
+import { getDateString } from '@app/src/Shared/Domain/Utils/Date';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
 
 import CreateSaleFactory from '../Factories/CreateSaleFactory';
+import ExportSaleFactory from '../Factories/ExportSaleFactory';
 import UpdateSaleFactory from '../Factories/UpdateSaleFactory';
 import UpdateSaleStatusFactory from '../Factories/UpdateSaleStatusFactory';
 import SalesModel from '../Models/SalesModel';
@@ -123,10 +125,13 @@ export default class SalesController extends BaseController {
       //TODO -> pegar filtros da request (categoria, marca, produto, método de pagamento, cliente, funcionário, data, status e etc)
       await this.verifyPermission(req, 'sales_export');
       const saleAction = new ExportSaleAction();
-      const sales = await saleAction.execute();
+      const saleInputData = ExportSaleFactory.fromRequest(req);
+      const sales = await saleAction.execute(saleInputData);
       res.setHeader(
         'Content-Disposition',
-        `attachment; filename="Tabela-de-vendas-${getDateString()}-${getTime()}.xlsx"`,
+        `attachment; filename="Tabela-de-vendas-${this.prepareFileName(
+          saleInputData,
+        )}.xlsx"`,
       );
       res.setHeader('Content-Type', 'application/vnd.ms-excel');
       return res.end(sales);
@@ -135,5 +140,28 @@ export default class SalesController extends BaseController {
         return res.status(error.statusCode).send({ message: error.message });
       }
     }
+  }
+
+  private prepareFileName(input: ExportSalesInputData) {
+    const name = [''];
+    if (input.initial_date) {
+      if (input.initial_date && input.final_date) {
+        const initialDate = new Date(input.initial_date);
+        name.push(`de-${getDateString(initialDate)}`);
+      }
+      if (input.initial_date && !input.final_date) {
+        const initialDate = new Date(input.initial_date);
+        name.push(`a-partir-de-${getDateString(initialDate)}`);
+      }
+    }
+    if (input.final_date) {
+      const finalDate = new Date(input.final_date);
+      name.push(`ate-${getDateString(finalDate)}`);
+    }
+    //TODO -> adicionar os outros filtros de busca
+    if (name.length === 1) {
+      return '';
+    }
+    return name.join('-');
   }
 }

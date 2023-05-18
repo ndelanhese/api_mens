@@ -1,8 +1,11 @@
 import salesModel from '@db-models/SalesModel';
 import HttpError from '@exceptions/HttpError';
+import { Op, WhereOptions } from 'sequelize';
 
 import Sale from '../../Domain/Entities/Sale';
 import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
+
+import { ISaleFilter } from './SalesModel.types';
 
 export default class SalesModel {
   public async createSale(payload: Sale) {
@@ -89,12 +92,25 @@ export default class SalesModel {
     }
   }
 
-  public async exportSales() {
+  public async exportSales(input: ISaleFilter) {
     // TODO -> adicionar produtos e métodos de pagamento
+    // TODO -> adicionar todos filtros
     try {
+      const { initial_date, final_date } = input;
+      let whereClause: WhereOptions = {};
+      if (initial_date || final_date) {
+        whereClause = {
+          ...whereClause,
+          createdAt: {
+            ...(initial_date && { [Op.gte]: initial_date }),
+            ...(final_date && { [Op.lte]: final_date }),
+          },
+        };
+      }
       return await salesModel.findAll({
         order: [['id', 'DESC']],
         include: { all: true },
+        where: whereClause,
       });
     } catch (error) {
       throw new HttpError(500, 'Erro ao exportar os vendas.', error);
