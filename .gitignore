@@ -6,3 +6,4 @@ dist/
 storage/app/public/
 .history
 coverage/
+package-lock.json
