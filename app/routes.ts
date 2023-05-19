@@ -11,6 +11,7 @@ import CategoriesRoute from './api/Categories/Routes/CategoriesRoute';
 import CustomersRoute from './api/Customers/Routes/CustomersRoute';
 import EmployeesRoute from './api/Employees/Routes/EmployeesRoute';
 import ProductsRoute from './api/Products/Routes/ProductsRoute';
+import SalesRoute from './api/Sales/Routes/SalesRoute';
 import SuppliersRoute from './api/Suppliers/Routes/SuppliersRoute';
 
 const router = Router();
@@ -27,6 +28,7 @@ const prepareInstance = () => {
   const employeesRoute = new EmployeesRoute();
   const suppliersRoute = new SuppliersRoute();
   const productsRoute = new ProductsRoute();
+  const salesRoute = new SalesRoute();
 
   return {
     loginRoute,
@@ -40,6 +42,7 @@ const prepareInstance = () => {
     employeesRoute,
     suppliersRoute,
     productsRoute,
+    salesRoute,
   };
 };
 const instances = prepareInstance();
@@ -57,5 +60,6 @@ router.use('/customers', AuthToken, instances.customersRoute.customerRoute);
 router.use('/employees', AuthToken, instances.employeesRoute.employeeRoute);
 router.use('/suppliers', AuthToken, instances.suppliersRoute.supplierRoute);
 router.use('/products', AuthToken, instances.productsRoute.productRoute);
+router.use('/sales', AuthToken, instances.salesRoute.saleRoute);
 
 export default router;

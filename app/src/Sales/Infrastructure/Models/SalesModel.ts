@@ -1,102 +1,130 @@
-// import productModel from '@db-models/SalesModel';
-// import HttpError from '@exceptions/HttpError';
+import salesModel from '@db-models/SalesModel';
+import HttpError from '@exceptions/HttpError';
+import { Op, WhereOptions } from 'sequelize';
 
-// import Sale from '../../Domain/Entities/Sale';
+import Sale from '../../Domain/Entities/Sale';
+import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
 
-// export default class SalesModel {
-//   public async createSale(payload: Sale) {
-//     try {
-//       const categoryId = payload.getCategory()?.getId() ?? 1;
-//       const brandId = payload.getBrand()?.getId() ?? 1;
-//       const supplierId = payload.getSupplier()?.getId() ?? 1;
-//       return await productModel.create({
-//         date: payload.getDate(),
-//         name: payload.getName(),
-//         description: payload.getDescription(),
-//         purchase_price: payload.getPurchasePrice(),
-//         price: payload.getPrice(),
-//         size: payload.getSize(),
-//         color: payload.getColor(),
-//         quantity: payload.getQuantity(),
-//         category_id: categoryId,
-//         brand_id: brandId,
-//         supplier_id: supplierId,
-//       });
-//     } catch (error) {
-//       throw new HttpError(500, 'Erro ao criar produto.', error);
-//     }
-//   }
+import { ISaleFilter } from './SalesModel.types';
 
-//   public async updateSale(payload: Sale): Promise<void> {
-//     try {
-//       const categoryId = payload.getCategory()?.getId();
-//       const brandId = payload.getBrand()?.getId();
-//       const supplierId = payload.getSupplier()?.getId();
-//       await productModel.update(
-//         {
-//           part_number: payload.getPartNumber(),
-//           name: payload.getName(),
-//           description: payload.getDescription(),
-//           purchase_price: payload.getPurchasePrice(),
-//           price: payload.getPrice(),
-//           size: payload.getSize(),
-//           color: payload.getColor(),
-//           quantity: payload.getQuantity(),
-//           category_id: categoryId,
-//           brand_id: brandId,
-//           supplier_id: supplierId,
-//         },
-//         {
-//           where: {
-//             id: payload.getId(),
-//           },
-//         },
-//       );
-//     } catch (error) {
-//       throw new HttpError(500, 'Erro ao atualizar o produto.', error);
-//     }
-//   }
+export default class SalesModel {
+  public async createSale(payload: Sale) {
+    // TODO -> adicionar produtos e métodos de pagamento
+    try {
+      const customerId = payload.getCustomer()?.getId() ?? 1;
+      const userId = payload.getUser()?.getId() ?? 1;
+      return await salesModel.create({
+        date: payload.getDate(),
+        observation: payload.getObservation(),
+        total_value: payload.getTotalValue(),
+        discount_amount: payload.getDiscountAmount(),
+        discount_type: payload.getDiscountType(),
+        final_value: payload.getFinalValue(),
+        status: payload.getStatus(),
+        customer_id: customerId,
+        user_id: userId,
+      });
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao criar venda.', error);
+    }
+  }
 
-//   public async updateSaleStock(id: number, quantity: number) {
-//     try {
-//       await productModel.update(
-//         {
-//           quantity,
-//         },
-//         {
-//           where: {
-//             id,
-//           },
-//         },
-//       );
-//     } catch (error) {
-//       throw new HttpError(
-//         500,
-//         'Erro ao atualizar o estoque do produto.',
-//         error,
-//       );
-//     }
-//   }
+  public async updateSale(payload: Sale): Promise<void> {
+    //TODO -> adicionar produtos e métodos de pagamento
+    try {
+      const customerId = payload.getCustomer()?.getId() ?? 1;
+      const userId = payload.getUser()?.getId() ?? 1;
+      await salesModel.update(
+        {
+          date: payload.getDate(),
+          observation: payload.getObservation(),
+          total_value: payload.getTotalValue(),
+          discount_amount: payload.getDiscountAmount(),
+          discount_type: payload.getDiscountType(),
+          final_value: payload.getFinalValue(),
+          status: payload.getStatus(),
+          customer_id: customerId,
+          user_id: userId,
+        },
+        {
+          where: {
+            id: payload.getId(),
+          },
+        },
+      );
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao atualizar o venda.', error);
+    }
+  }
 
-//   public async deleteSale(id: number): Promise<void> {
-//     try {
-//       await productModel.destroy({
-//         where: {
-//           id,
-//         },
-//       });
-//     } catch (error) {
-//       throw new HttpError(500, 'Erro ao deletar o produto.', error);
-//     }
-//   }
+  public async updateSaleStatus(
+    id: number,
+    status: StatusTypesOptions,
+    observation: string,
+  ) {
+    try {
+      await salesModel.update(
+        {
+          status,
+          observation,
+        },
+        {
+          where: {
+            id,
+          },
+        },
+      );
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao atualizar o status do venda.', error);
+    }
+  }
 
-//   public async exportSales(): Promise<ISaleModel[]> {
-//     try {
-//       return await productModel.findAll({
-//         order: [['id', 'DESC']],
-//       });
-//     } catch (error) {
-//       throw new HttpError(500, 'Erro ao exportar os produtos.', error);
-//     }
-//   }
-// }
+  public async deleteSale(id: number): Promise<void> {
+    // TODO -> adicionar o remover produtos
+    try {
+      await salesModel.destroy({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao deletar o venda.', error);
+    }
+  }
+
+  public async exportSales(input: ISaleFilter) {
+    // TODO -> adicionar produtos e métodos de pagamento
+    // TODO -> adicionar todos filtros
+    try {
+      const { initial_date, final_date } = input;
+      let whereClause: WhereOptions = {};
+      if (initial_date || final_date) {
+        whereClause = {
+          ...whereClause,
+          createdAt: {
+            ...(initial_date && { [Op.gte]: initial_date }),
+            ...(final_date && { [Op.lte]: final_date }),
+          },
+        };
+      }
+      return await salesModel.findAll({
+        order: [['id', 'DESC']],
+        include: { all: true },
+        where: whereClause,
+      });
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao exportar os vendas.', error);
+    }
+  }
+
+  public async getSale(id: number) {
+    try {
+      const sale = await salesModel.findByPk(id, { include: { all: true } });
+      if (!sale) throw new HttpError(404, 'Venda não encontrada.');
+      return sale;
+    } catch (error) {
+      if (error instanceof HttpError) throw error;
+      throw new HttpError(500, 'Erro ao buscar venda.', error);
+    }
+  }
+}

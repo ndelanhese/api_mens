@@ -1,23 +1,15 @@
+import { getDateString } from '@app/src/Shared/Domain/Utils/Date';
 import { resizeColumns } from '@app/src/Shared/Infrastructure/Services/Sheets/SheetUtils';
 import xlsx from 'xlsx';
 
-import Product from '../../Domain/Entities/Product';
+import Sale from '../../Domain/Entities/Sale';
 
 export default class SheetService {
-  public dataToSheet(products: Product[]): Buffer {
+  public dataToSheet(products: Sale[]): Buffer {
     const workSheetName = 'SheetJS';
     const rowsData = products.map(item => ({
-      PART_NUMBER: item.getPartNumber(),
-      NOME: item.getName(),
-      DESCRIÇÃO: item.getDescription,
-      'PREÇO DE ORIGEM': item.getPurchasePrice(),
-      PREÇO: item.getPrice(),
-      TAMANHO: item.getSize(),
-      COR: item.getColor(),
-      QUANTIDADE: item.getQuantity(),
-      CATEGORIA: item.getCategory()?.getName(),
-      MARCA: item.getBrand()?.getName(),
-      FORNECEDOR: item.getSupplier()?.getCorporateName(),
+      DATA: getDateString(item.getDate()),
+      //TODO -> Colocar os outros dados de data
     }));
     const workSheet: xlsx.WorkSheet = xlsx.utils.json_to_sheet(rowsData);
     const workSheetPrepared = resizeColumns(workSheet);

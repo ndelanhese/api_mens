@@ -1,28 +1,25 @@
 import Customer from './Customer';
-import Employee from './Employee';
 import User from './User';
 
 export default class Sale {
   private id?: number;
   private date: Date;
-  private observation: string;
+  private observation?: string;
   private total_value: number;
   private discount_amount?: number;
   private discount_type?: string;
   private final_value: number;
   private status?: string;
   private customer: Customer;
-  private employee: Employee;
   private user: User;
 
   constructor(
     date: Date,
-    observation: string,
     total_value: number,
     final_value: number,
     customer: Customer,
-    employee: Employee,
     user: User,
+    observation?: string,
     discount_amount?: number,
     discount_type?: string,
     status?: string,
@@ -37,7 +34,6 @@ export default class Sale {
     this.final_value = final_value;
     this.status = status;
     this.customer = customer;
-    this.employee = employee;
     this.user = user;
   }
 
@@ -59,7 +55,7 @@ export default class Sale {
     return this;
   }
 
-  public getObservation(): string {
+  public getObservation() {
     return this.observation;
   }
 
@@ -119,15 +115,6 @@ export default class Sale {
 
   public setCustomer(customer: Customer) {
     this.customer = customer;
-    return this;
-  }
-
-  public getEmployee(): Employee {
-    return this.employee;
-  }
-
-  public setEmployee(employee: Employee) {
-    this.employee = employee;
     return this;
   }
 

@@ -38,7 +38,7 @@ export default class AuthController extends BaseController {
       if (user) {
         const isPwdValid = await bcrypt.compare(
           password,
-          <string>user.password,
+          String(user.password),
         );
         if (isPwdValid) {
           const userData = {

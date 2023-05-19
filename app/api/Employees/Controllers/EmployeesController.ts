@@ -86,7 +86,7 @@ export default class EmployeesController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'employees_create');
+      await this.verifyPermission(req, 'employees_create');
       const employeeInputData = CreateEmployeeFactory.fromRequest(req);
       const employeeAction = new CreateEmployeeAction();
       const employeeId = (
