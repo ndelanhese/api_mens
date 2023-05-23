@@ -11,12 +11,14 @@ import BrandsModel from './BrandsModel';
 import CategoriesModel from './CategoriesModel';
 import CustomersAddressesModel from './CustomersAddressesModel';
 import CustomerModel from './CustomersModel';
+import CustomersModel from './CustomersModel';
 import EmployeesAddressesModel from './EmployeesAddressesModel';
 import EmployeeModel from './EmployeesModel';
 import PermissionsModel from './PermissionsModel';
 import ProductsModel from './ProductsModel';
 import RolesModel from './RolesModel';
 import RolesPermissionsModel from './RolesPermissionsModel';
+import SalesModel from './SalesModel';
 import SuppliersAddressesModel from './SuppliersAddressesModel';
 import SuppliersModel from './SuppliersModel';
 import UsersPermissionsModel from './UsersPermissionsModel';
@@ -213,4 +215,24 @@ ProductsModel.belongsTo(SuppliersModel, {
 SuppliersModel.hasMany(ProductsModel, {
   foreignKey: 'supplier_id',
   as: 'supplier_product',
+});
+
+SalesModel.belongsTo(CustomersModel, {
+  foreignKey: 'customer_id',
+  as: 'customer',
+});
+
+CustomersModel.hasMany(SalesModel, {
+  foreignKey: 'customer_id',
+  as: 'customer_sale',
+});
+
+SalesModel.belongsTo(UsersModel, {
+  foreignKey: 'user_id',
+  as: 'user',
+});
+
+UsersModel.hasMany(SalesModel, {
+  foreignKey: 'user_id',
+  as: 'user_sale',
 });
