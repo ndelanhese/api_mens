@@ -15,7 +15,7 @@ export default class SalesProductsModel extends Model<
   public id!: CreationOptional<number>;
   public quantity!: number;
   public discount_amount!: CreationOptional<number>;
-  public discount_type!: CreationOptional<number>;
+  public discount_type!: CreationOptional<string>;
   public final_value!: number;
   public sale_id!: number;
   public product_id!: number;

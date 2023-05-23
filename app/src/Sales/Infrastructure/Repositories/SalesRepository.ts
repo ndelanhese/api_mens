@@ -44,24 +44,25 @@ export default class SalesRepository {
   async export(input: ISaleFilter) {
     //TODO -> adiciona produtos, métodos de pagamento e etc
     const sales = await this.salesModel.exportSales(input);
-    return Promise.all(
-      sales.map(async sale => {
-        const customer = await this.getCustomer(sale.customer_id);
-        const user = await this.getUser(sale.user_id);
-        return new Sale(
-          sale.date,
-          sale.total_value,
-          sale.final_value,
-          customer,
-          user,
-          sale.observation,
-          sale.discount_amount,
-          sale.discount_type,
-          sale.status,
-          sale.id,
-        );
-      }),
-    );
+    return sales;
+    // return Promise.all(
+    //   sales.map(async sale => {
+    //     const customer = await this.getCustomer(sale.customer_id);
+    //     const user = await this.getUser(sale.user_id);
+    //     return new Sale(
+    //       sale.date,
+    //       sale.total_value,
+    //       sale.final_value,
+    //       customer,
+    //       user,
+    //       sale.observation,
+    //       sale.discount_amount,
+    //       sale.discount_type,
+    //       sale.status,
+    //       sale.id,
+    //     );
+    //   }),
+    // );
   }
 
   async getSale(id: number) {

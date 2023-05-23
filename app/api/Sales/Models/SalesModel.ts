@@ -1,6 +1,10 @@
 import CustomersModel from '@db-models/CustomersModel';
 import EmployeesModel from '@db-models/EmployeesModel';
+import MethodsOfPaymentsModel from '@db-models/MethodsOfPaymentsModel';
+import ProductsModel from '@db-models/ProductsModel';
+import SalesMethodsOfPaymentsModel from '@db-models/SalesMethodsOfPaymentsModel';
 import salesModel from '@db-models/SalesModel';
+import SalesProductsModel from '@db-models/SalesProductsModel';
 import UsersModel from '@db-models/UsersModel';
 import HttpError from '@exceptions/HttpError';
 
@@ -24,6 +28,43 @@ export default class SalesModel {
                 as: 'employee',
                 attributes: ['id', 'name'],
               },
+            ],
+          },
+          {
+            model: SalesMethodsOfPaymentsModel,
+            as: 'methods_of_payments',
+            include: [
+              {
+                model: MethodsOfPaymentsModel,
+                as: 'method',
+                attributes: ['id', 'name'],
+              },
+            ],
+            attributes: ['id'],
+          },
+          {
+            model: SalesProductsModel,
+            as: 'sales_products',
+            include: [
+              {
+                model: ProductsModel,
+                as: 'product',
+                attributes: {
+                  exclude: [
+                    'createdAt',
+                    'updatedAt',
+                    'quantity',
+                    'purchase_price',
+                  ],
+                },
+              },
+            ],
+            attributes: [
+              'id',
+              'quantity',
+              'discount_amount',
+              'discount_type',
+              'final_value',
             ],
           },
         ],
@@ -52,6 +93,43 @@ export default class SalesModel {
                 as: 'employee',
                 attributes: ['id', 'name'],
               },
+            ],
+          },
+          {
+            model: SalesMethodsOfPaymentsModel,
+            as: 'methods_of_payments',
+            include: [
+              {
+                model: MethodsOfPaymentsModel,
+                as: 'method',
+                attributes: ['id', 'name'],
+              },
+            ],
+            attributes: ['id'],
+          },
+          {
+            model: SalesProductsModel,
+            as: 'sales_products',
+            include: [
+              {
+                model: ProductsModel,
+                as: 'product',
+                attributes: {
+                  exclude: [
+                    'createdAt',
+                    'updatedAt',
+                    'quantity',
+                    'purchase_price',
+                  ],
+                },
+              },
+            ],
+            attributes: [
+              'id',
+              'quantity',
+              'discount_amount',
+              'discount_type',
+              'final_value',
             ],
           },
         ],

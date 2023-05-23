@@ -1,4 +1,6 @@
+import salesMethodsOfPaymentsModel from '@db-models/SalesMethodsOfPaymentsModel';
 import salesModel from '@db-models/SalesModel';
+import salesProductsModel from '@db-models/SalesProductsModel';
 import HttpError from '@exceptions/HttpError';
 import { Op, WhereOptions } from 'sequelize';
 
@@ -9,11 +11,10 @@ import { ISaleFilter } from './SalesModel.types';
 
 export default class SalesModel {
   public async createSale(payload: Sale) {
-    // TODO -> adicionar produtos e métodos de pagamento
     try {
       const customerId = payload.getCustomer()?.getId() ?? 1;
       const userId = payload.getUser()?.getId() ?? 1;
-      return await salesModel.create({
+      const sale = await salesModel.create({
         date: payload.getDate(),
         observation: payload.getObservation(),
         total_value: payload.getTotalValue(),
@@ -24,6 +25,26 @@ export default class SalesModel {
         customer_id: customerId,
         user_id: userId,
       });
+
+      const salesMethodsOfPayments = payload.getPayment();
+      const payments = salesMethodsOfPayments.map(payment => ({
+        installment: payment.getInstallment(),
+        sale_id: sale.id,
+        method_id: payment.getType(),
+      }));
+      await salesMethodsOfPaymentsModel.bulkCreate(payments);
+
+      const salesProducts = payload.getProducts();
+      const products = salesProducts.map(product => ({
+        quantity: product.getQuantity(),
+        discount_amount: product.getDiscountAmount(),
+        discount_type: product.getDiscountType(),
+        final_value: product.getFinalValue(),
+        sale_id: sale.id,
+        product_id: product.getId(),
+      }));
+      await salesProductsModel.bulkCreate(products);
+      return sale;
     } catch (error) {
       throw new HttpError(500, 'Erro ao criar venda.', error);
     }
