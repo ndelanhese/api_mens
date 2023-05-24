@@ -1,11 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import CustomersModel from '@db-models/CustomersModel';
+import EmployeesModel from '@db-models/EmployeesModel';
+import MethodsOfPaymentsModel from '@db-models/MethodsOfPaymentsModel';
+import ProductsModel from '@db-models/ProductsModel';
 import salesMethodsOfPaymentsModel from '@db-models/SalesMethodsOfPaymentsModel';
+import SalesMethodsOfPaymentsModel from '@db-models/SalesMethodsOfPaymentsModel';
 import salesModel from '@db-models/SalesModel';
 import salesProductsModel from '@db-models/SalesProductsModel';
+import SalesProductsModel from '@db-models/SalesProductsModel';
+import UsersModel from '@db-models/UsersModel';
 import HttpError from '@exceptions/HttpError';
 import { Op, WhereOptions } from 'sequelize';
 
 import Sale from '../../Domain/Entities/Sale';
 import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
+import { ISaleExportResponse } from '../Repositories/SalesRepository.types';
 
 import { ISaleFilter } from './SalesModel.types';
 
@@ -135,8 +144,7 @@ export default class SalesModel {
     }
   }
 
-  public async exportSales(input: ISaleFilter) {
-    // TODO -> adicionar produtos e métodos de pagamento
+  public async exportSales(input: ISaleFilter): Promise<ISaleExportResponse[]> {
     // TODO -> adicionar todos filtros
     try {
       const { initial_date, final_date } = input;
@@ -150,11 +158,65 @@ export default class SalesModel {
           },
         };
       }
-      return await salesModel.findAll({
+      return (await salesModel.findAll({
         order: [['id', 'DESC']],
-        include: { all: true },
         where: whereClause,
-      });
+        include: [
+          {
+            model: CustomersModel,
+            as: 'customer',
+            attributes: { exclude: ['status', 'createdAt', 'updatedAt'] },
+          },
+          {
+            model: UsersModel,
+            as: 'user',
+            attributes: ['id'],
+            include: [
+              {
+                model: EmployeesModel,
+                as: 'employee',
+                attributes: ['id', 'name'],
+              },
+            ],
+          },
+          {
+            model: SalesMethodsOfPaymentsModel,
+            as: 'methods_of_payments',
+            include: [
+              {
+                model: MethodsOfPaymentsModel,
+                as: 'method',
+                attributes: ['id', 'name'],
+              },
+            ],
+            attributes: ['installment'],
+          },
+          {
+            model: SalesProductsModel,
+            as: 'sales_products',
+            include: [
+              {
+                model: ProductsModel,
+                as: 'product',
+                attributes: {
+                  exclude: [
+                    'createdAt',
+                    'updatedAt',
+                    'quantity',
+                    'purchase_price',
+                  ],
+                },
+              },
+            ],
+            attributes: [
+              'quantity',
+              'discount_amount',
+              'discount_type',
+              'final_value',
+            ],
+          },
+        ],
+      })) as any[];
     } catch (error) {
       throw new HttpError(500, 'Erro ao exportar os vendas.', error);
     }
