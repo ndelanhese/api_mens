@@ -25,25 +25,27 @@ export default class SalesModel {
         customer_id: customerId,
         user_id: userId,
       });
-
       const salesMethodsOfPayments = payload.getPayment();
-      const payments = salesMethodsOfPayments.map(payment => ({
-        installment: payment.getInstallment(),
-        sale_id: sale.id,
-        method_id: payment.getType(),
-      }));
-      await salesMethodsOfPaymentsModel.bulkCreate(payments);
-
+      if (salesMethodsOfPayments) {
+        const payments = salesMethodsOfPayments.map(payment => ({
+          installment: payment.getInstallment(),
+          sale_id: sale.id,
+          method_id: payment.getType(),
+        }));
+        await salesMethodsOfPaymentsModel.bulkCreate(payments);
+      }
       const salesProducts = payload.getProducts();
-      const products = salesProducts.map(product => ({
-        quantity: product.getQuantity(),
-        discount_amount: product.getDiscountAmount(),
-        discount_type: product.getDiscountType(),
-        final_value: product.getFinalValue(),
-        sale_id: sale.id,
-        product_id: product.getId(),
-      }));
-      await salesProductsModel.bulkCreate(products);
+      if (salesProducts) {
+        const products = salesProducts.map(product => ({
+          quantity: product.getQuantity(),
+          discount_amount: product.getDiscountAmount(),
+          discount_type: product.getDiscountType(),
+          final_value: product.getFinalValue(),
+          sale_id: sale.id,
+          product_id: product.getId(),
+        }));
+        await salesProductsModel.bulkCreate(products);
+      }
       return sale;
     } catch (error) {
       throw new HttpError(500, 'Erro ao criar venda.', error);
@@ -51,7 +53,6 @@ export default class SalesModel {
   }
 
   public async updateSale(payload: Sale): Promise<void> {
-    //TODO -> adicionar produtos e métodos de pagamento
     try {
       const customerId = payload.getCustomer()?.getId() ?? 1;
       const userId = payload.getUser()?.getId() ?? 1;
@@ -73,6 +74,27 @@ export default class SalesModel {
           },
         },
       );
+      const salesMethodsOfPayments = payload.getPayment();
+      if (salesMethodsOfPayments) {
+        const payments = salesMethodsOfPayments.map(payment => ({
+          installment: payment.getInstallment(),
+          sale_id: Number(payload.getId()),
+          method_id: payment.getType(),
+        }));
+        await salesMethodsOfPaymentsModel.bulkCreate(payments);
+      }
+      const salesProducts = payload.getProducts();
+      if (salesProducts) {
+        const products = salesProducts.map(product => ({
+          quantity: product.getQuantity(),
+          discount_amount: product.getDiscountAmount(),
+          discount_type: product.getDiscountType(),
+          final_value: product.getFinalValue(),
+          sale_id: Number(payload.getId()),
+          product_id: product.getId(),
+        }));
+        await salesProductsModel.bulkCreate(products);
+      }
     } catch (error) {
       throw new HttpError(500, 'Erro ao atualizar o venda.', error);
     }
@@ -140,7 +162,9 @@ export default class SalesModel {
 
   public async getSale(id: number) {
     try {
-      const sale = await salesModel.findByPk(id, { include: { all: true } });
+      const sale = await salesModel.findByPk(id, {
+        include: { all: true },
+      });
       if (!sale) throw new HttpError(404, 'Venda não encontrada.');
       return sale;
     } catch (error) {

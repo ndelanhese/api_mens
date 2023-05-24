@@ -14,8 +14,8 @@ export default class Sale {
   private status?: string;
   private customer: Customer;
   private user: User;
-  private payment: Payment[];
-  private products: Product[];
+  private payment?: Payment[];
+  private products?: Product[];
 
   constructor(
     date: Date,
@@ -23,8 +23,8 @@ export default class Sale {
     final_value: number,
     customer: Customer,
     user: User,
-    payment: Payment[],
-    products: Product[],
+    payment?: Payment[],
+    products?: Product[],
     observation?: string,
     discount_amount?: number,
     discount_type?: string,
@@ -135,7 +135,7 @@ export default class Sale {
     return this;
   }
 
-  public getPayment(): Payment[] {
+  public getPayment() {
     return this.payment;
   }
 
@@ -144,7 +144,7 @@ export default class Sale {
     return this;
   }
 
-  public getProducts(): Product[] {
+  public getProducts() {
     return this.products;
   }
 

@@ -8,16 +8,16 @@ export default class UpdateSaleInputData {
     readonly final_value?: number,
     readonly customer_id?: number,
     readonly user_id?: number,
-    readonly sale_methods?: Array<{
+    readonly sale_payment_methods?: Array<{
       readonly installment: number;
-      readonly method_id: number;
+      readonly type: number;
     }>,
     readonly sale_products?: Array<{
       readonly quantity: number;
       readonly discount_amount?: number;
       readonly discount_type?: DiscountTypesOption;
       readonly final_value: number;
-      readonly product_id: number;
+      readonly id: number;
     }>,
     readonly observation?: string,
     readonly status?: StatusTypesOptions,

@@ -40,7 +40,7 @@ export default class SalesModel {
                 attributes: ['id', 'name'],
               },
             ],
-            attributes: ['id'],
+            attributes: ['installment'],
           },
           {
             model: SalesProductsModel,
@@ -60,7 +60,6 @@ export default class SalesModel {
               },
             ],
             attributes: [
-              'id',
               'quantity',
               'discount_amount',
               'discount_type',
@@ -105,7 +104,7 @@ export default class SalesModel {
                 attributes: ['id', 'name'],
               },
             ],
-            attributes: ['id'],
+            attributes: ['id', 'installment'],
           },
           {
             model: SalesProductsModel,
