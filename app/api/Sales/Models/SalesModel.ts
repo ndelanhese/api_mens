@@ -1,11 +1,84 @@
+import CustomersModel from '@db-models/CustomersModel';
+import EmployeesModel from '@db-models/EmployeesModel';
+import MethodsOfPaymentsModel from '@db-models/MethodsOfPaymentsModel';
+import ProductsModel from '@db-models/ProductsModel';
+import SalesMethodsOfPaymentsModel from '@db-models/SalesMethodsOfPaymentsModel';
 import salesModel from '@db-models/SalesModel';
+import SalesProductsModel from '@db-models/SalesProductsModel';
+import UsersModel from '@db-models/UsersModel';
 import HttpError from '@exceptions/HttpError';
+import { Op, WhereOptions } from 'sequelize';
+
+import { ISaleFilter } from './SalesModel.types';
 
 export default class SalesModel {
-  public async getSales() {
+  public async getSales(input: ISaleFilter) {
     try {
+      const { initial_date, final_date, status, customers_id, users_id } =
+        input;
+      let whereClause: WhereOptions = {};
+      if (initial_date || final_date) {
+        whereClause = {
+          ...whereClause,
+          date: {
+            ...(initial_date && { [Op.gte]: initial_date }),
+            ...(final_date && { [Op.lte]: final_date }),
+          },
+        };
+      }
+      if (status) whereClause = { ...whereClause, status: { [Op.in]: status } };
+      if (customers_id) {
+        whereClause = {
+          ...whereClause,
+          customer_id: { [Op.in]: customers_id },
+        };
+      }
+      if (users_id) {
+        whereClause = {
+          ...whereClause,
+          user_id: { [Op.in]: users_id },
+        };
+      }
       return await salesModel.findAll({
-        include: { all: true },
+        order: [['id', 'DESC']],
+        where: whereClause,
+        include: [
+          {
+            model: CustomersModel,
+            as: 'customer',
+          },
+          {
+            model: UsersModel,
+            as: 'user',
+            attributes: { exclude: ['password'] },
+            include: [
+              {
+                model: EmployeesModel,
+                as: 'employee',
+              },
+            ],
+          },
+          {
+            model: SalesMethodsOfPaymentsModel,
+            as: 'methods_of_payments',
+            include: [
+              {
+                model: MethodsOfPaymentsModel,
+                as: 'method',
+              },
+            ],
+          },
+          {
+            model: SalesProductsModel,
+            as: 'sales_products',
+            include: [
+              {
+                model: ProductsModel,
+                as: 'product',
+              },
+            ],
+          },
+        ],
       });
     } catch (error) {
       throw new HttpError(500, 'Erro ao listar vendas.', error);
@@ -14,7 +87,64 @@ export default class SalesModel {
 
   public async getSale(id: number) {
     try {
-      const sale = await salesModel.findByPk(id, { include: { all: true } });
+      const sale = await salesModel.findByPk(id, {
+        include: [
+          {
+            model: CustomersModel,
+            as: 'customer',
+            attributes: { exclude: ['status', 'createdAt', 'updatedAt'] },
+          },
+          {
+            model: UsersModel,
+            as: 'user',
+            attributes: ['id'],
+            include: [
+              {
+                model: EmployeesModel,
+                as: 'employee',
+                attributes: ['id', 'name'],
+              },
+            ],
+          },
+          {
+            model: SalesMethodsOfPaymentsModel,
+            as: 'methods_of_payments',
+            include: [
+              {
+                model: MethodsOfPaymentsModel,
+                as: 'method',
+                attributes: ['id', 'name'],
+              },
+            ],
+            attributes: ['id', 'installment'],
+          },
+          {
+            model: SalesProductsModel,
+            as: 'sales_products',
+            include: [
+              {
+                model: ProductsModel,
+                as: 'product',
+                attributes: {
+                  exclude: [
+                    'createdAt',
+                    'updatedAt',
+                    'quantity',
+                    'purchase_price',
+                  ],
+                },
+              },
+            ],
+            attributes: [
+              'id',
+              'quantity',
+              'discount_amount',
+              'discount_type',
+              'final_value',
+            ],
+          },
+        ],
+      });
       if (!sale) throw new HttpError(404, 'Venda não encontrada.');
       return sale;
     } catch (error) {
@@ -22,6 +152,4 @@ export default class SalesModel {
       throw new HttpError(500, 'Erro ao buscar venda.', error);
     }
   }
-
-  //TODO adicionar filtros para listagem de vendas (data, cliente, produto, etc)
 }

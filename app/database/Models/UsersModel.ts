@@ -11,12 +11,17 @@ import BrandsModel from './BrandsModel';
 import CategoriesModel from './CategoriesModel';
 import CustomersAddressesModel from './CustomersAddressesModel';
 import CustomerModel from './CustomersModel';
+import CustomersModel from './CustomersModel';
 import EmployeesAddressesModel from './EmployeesAddressesModel';
 import EmployeeModel from './EmployeesModel';
+import MethodsOfPaymentsModel from './MethodsOfPaymentsModel';
 import PermissionsModel from './PermissionsModel';
 import ProductsModel from './ProductsModel';
 import RolesModel from './RolesModel';
 import RolesPermissionsModel from './RolesPermissionsModel';
+import SalesMethodsOfPaymentsModel from './SalesMethodsOfPaymentsModel';
+import SalesModel from './SalesModel';
+import SalesProductsModel from './SalesProductsModel';
 import SuppliersAddressesModel from './SuppliersAddressesModel';
 import SuppliersModel from './SuppliersModel';
 import UsersPermissionsModel from './UsersPermissionsModel';
@@ -213,4 +218,64 @@ ProductsModel.belongsTo(SuppliersModel, {
 SuppliersModel.hasMany(ProductsModel, {
   foreignKey: 'supplier_id',
   as: 'supplier_product',
+});
+
+SalesModel.belongsTo(CustomersModel, {
+  foreignKey: 'customer_id',
+  as: 'customer',
+});
+
+CustomersModel.hasMany(SalesModel, {
+  foreignKey: 'customer_id',
+  as: 'customer_sale',
+});
+
+SalesModel.belongsTo(UsersModel, {
+  foreignKey: 'user_id',
+  as: 'user',
+});
+
+UsersModel.hasMany(SalesModel, {
+  foreignKey: 'user_id',
+  as: 'user_sale',
+});
+
+// Sales x methods of payments
+SalesModel.hasMany(SalesMethodsOfPaymentsModel, {
+  foreignKey: 'sale_id',
+  as: 'methods_of_payments',
+});
+
+SalesMethodsOfPaymentsModel.belongsTo(SalesModel, {
+  foreignKey: 'sale_id',
+});
+
+SalesMethodsOfPaymentsModel.belongsTo(MethodsOfPaymentsModel, {
+  foreignKey: 'method_id',
+  as: 'method',
+});
+
+MethodsOfPaymentsModel.hasMany(SalesMethodsOfPaymentsModel, {
+  foreignKey: 'method_id',
+  as: 'sale_methods_of_payments',
+});
+
+// Sales x products
+SalesModel.hasMany(SalesProductsModel, {
+  foreignKey: 'sale_id',
+  as: 'sales_products',
+});
+
+SalesProductsModel.belongsTo(SalesModel, {
+  foreignKey: 'sale_id',
+});
+
+SalesProductsModel.belongsTo(ProductsModel, {
+  foreignKey: 'product_id',
+  as: 'product',
+});
+
+ProductsModel.hasMany(SalesProductsModel, {
+  foreignKey: 'product_id',
+  as: 'sales_products',
 });

@@ -1,50 +1,31 @@
-import Brand from './Brand';
-import Category from './Category';
-import Supplier from './Supplier';
-
 export default class Product {
-  private id?: number;
+  private id: number;
   private part_number?: string;
-  private name: string;
-  private description: string;
-  private purchase_price?: number;
-  private price: number;
-  private size?: string;
-  private color?: string;
+  private name?: string;
   private quantity: number;
-  private category?: Category;
-  private brand?: Brand;
-  private supplier?: Supplier;
+  private discount_amount?: number;
+  private discount_type?: string;
+  private final_value: number;
 
   constructor(
-    name: string,
-    description: string,
-    price: number,
+    id: number,
     quantity: number,
+    final_value: number,
+    discount_amount?: number,
+    discount_type?: string,
     part_number?: string,
-    category?: Category,
-    brand?: Brand,
-    supplier?: Supplier,
-    purchase_price?: number,
-    size?: string,
-    color?: string,
-    id?: number,
+    name?: string,
   ) {
     this.id = id;
     this.part_number = part_number;
     this.name = name;
-    this.description = description;
-    this.purchase_price = purchase_price;
-    this.price = price;
-    this.size = size;
-    this.color = color;
     this.quantity = quantity;
-    this.category = category;
-    this.brand = brand;
-    this.supplier = supplier;
+    this.discount_amount = discount_amount;
+    this.discount_type = discount_type;
+    this.final_value = final_value;
   }
 
-  public getId() {
+  public getId(): number {
     return this.id;
   }
 
@@ -62,57 +43,12 @@ export default class Product {
     return this;
   }
 
-  public getName(): string {
+  public getName() {
     return this.name;
   }
 
   public setName(name: string) {
     this.name = name;
-    return this;
-  }
-
-  public getDescription(): string {
-    return this.description;
-  }
-
-  public setDescription(description: string) {
-    this.description = description;
-    return this;
-  }
-
-  public getPurchasePrice() {
-    return this.purchase_price;
-  }
-
-  public setPurchasePrice(purchase_price: number) {
-    this.purchase_price = purchase_price;
-    return this;
-  }
-
-  public getPrice(): number {
-    return this.price;
-  }
-
-  public setPrice(price: number) {
-    this.price = price;
-    return this;
-  }
-
-  public getSize() {
-    return this.size;
-  }
-
-  public setSize(size: string) {
-    this.size = size;
-    return this;
-  }
-
-  public getColor() {
-    return this.color;
-  }
-
-  public setColor(color: string) {
-    this.color = color;
     return this;
   }
 
@@ -125,30 +61,30 @@ export default class Product {
     return this;
   }
 
-  public getCategory() {
-    return this.category;
+  public getDiscountAmount() {
+    return this.discount_amount;
   }
 
-  public setCategory(category: Category) {
-    this.category = category;
+  public setDiscountAmount(discount_amount: number) {
+    this.discount_amount = discount_amount;
     return this;
   }
 
-  public getBrand() {
-    return this.brand;
+  public getDiscountType() {
+    return this.discount_type;
   }
 
-  public setBrand(brand: Brand) {
-    this.brand = brand;
+  public setDiscountType(discount_type: string) {
+    this.discount_type = discount_type;
     return this;
   }
 
-  public getSupplier() {
-    return this.supplier;
+  public getFinalValue(): number {
+    return this.final_value;
   }
 
-  public setSupplier(supplier: Supplier) {
-    this.supplier = supplier;
+  public setFinalValue(final_value: number) {
+    this.final_value = final_value;
     return this;
   }
 }

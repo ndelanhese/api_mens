@@ -8,9 +8,9 @@ import {
 
 import { sequelize } from '.';
 
-export default class CustomerModel extends Model<
-  InferAttributes<CustomerModel>,
-  InferCreationAttributes<CustomerModel>
+export default class CustomersModel extends Model<
+  InferAttributes<CustomersModel>,
+  InferCreationAttributes<CustomersModel>
 > {
   public id!: CreationOptional<number>;
   public name!: string;
@@ -21,7 +21,7 @@ export default class CustomerModel extends Model<
   public status!: CreationOptional<string>;
 }
 
-CustomerModel.init(
+CustomersModel.init(
   {
     id: {
       type: DataTypes.INTEGER,

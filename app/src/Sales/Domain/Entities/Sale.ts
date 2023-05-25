@@ -1,4 +1,6 @@
 import Customer from './Customer';
+import Payment from './Payment';
+import Product from './Product';
 import User from './User';
 
 export default class Sale {
@@ -12,6 +14,8 @@ export default class Sale {
   private status?: string;
   private customer: Customer;
   private user: User;
+  private payment?: Payment[];
+  private products?: Product[];
 
   constructor(
     date: Date,
@@ -19,6 +23,8 @@ export default class Sale {
     final_value: number,
     customer: Customer,
     user: User,
+    payment?: Payment[],
+    products?: Product[],
     observation?: string,
     discount_amount?: number,
     discount_type?: string,
@@ -35,6 +41,8 @@ export default class Sale {
     this.status = status;
     this.customer = customer;
     this.user = user;
+    this.payment = payment;
+    this.products = products;
   }
 
   public getId() {
@@ -124,6 +132,24 @@ export default class Sale {
 
   public setUser(user: User) {
     this.user = user;
+    return this;
+  }
+
+  public getPayment() {
+    return this.payment;
+  }
+
+  public setPayment(payment: Payment[]) {
+    this.payment = payment;
+    return this;
+  }
+
+  public getProducts() {
+    return this.products;
+  }
+
+  public setProducts(products: Product[]) {
+    this.products = products;
     return this;
   }
 }

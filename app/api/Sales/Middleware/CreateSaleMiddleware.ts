@@ -4,6 +4,8 @@ import { NextFunction, Request, Response } from 'express';
 import joi from 'joi';
 import { messages } from 'joi-translation-pt-br';
 
+import { IProductInput } from './CreateSaleMiddleware.types';
+
 const createSaleMiddleware = (
   req: Request,
   res: Response,
@@ -52,9 +54,24 @@ const createSaleMiddleware = (
   ) {
     return res.status(400).send({ message: 'Tipo de desconto inválido.' });
   }
-  //TODO -> validar o tipo de desconto do produto
   if (!StatusTypes.isValid(req.body.status)) {
     return res.status(400).send({ message: 'Status inválido.' });
+  }
+  let shouldContinue = true;
+  const products = req.body.products;
+  products.forEach((product: IProductInput) => {
+    if (
+      product.discount_type &&
+      !DiscountTypes.isValid(product.discount_type)
+    ) {
+      shouldContinue = false;
+      return res
+        .status(400)
+        .send({ message: 'Tipo de desconto de produto inválido.' });
+    }
+  });
+  if (!shouldContinue) {
+    return;
   }
   next();
 };
