@@ -18,6 +18,21 @@ export const getDateString = (dateInput?: Date): string => {
   return dateString;
 };
 
+export const getDateTime = (date: Date): string => {
+  const options = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZone: 'America/Sao_Paulo',
+  };
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  return date.toLocaleString('pt-BR', options);
+};
+
 export const getCurrentDateUS = (): string => {
   const date = getDate();
   const year = date.getFullYear();
