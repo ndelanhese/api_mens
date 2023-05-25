@@ -39,7 +39,7 @@ export default class SalesModel {
         const payments = salesMethodsOfPayments.map(payment => ({
           installment: payment.getInstallment(),
           sale_id: sale.id,
-          method_id: payment.getType(),
+          method_id: payment.getId(),
         }));
         await salesMethodsOfPaymentsModel.bulkCreate(payments);
       }
@@ -88,7 +88,7 @@ export default class SalesModel {
         const payments = salesMethodsOfPayments.map(payment => ({
           installment: payment.getInstallment(),
           sale_id: Number(payload.getId()),
-          method_id: payment.getType(),
+          method_id: payment.getId(),
         }));
         await salesMethodsOfPaymentsModel.bulkCreate(payments);
       }
@@ -165,17 +165,15 @@ export default class SalesModel {
           {
             model: CustomersModel,
             as: 'customer',
-            attributes: { exclude: ['status', 'createdAt', 'updatedAt'] },
           },
           {
             model: UsersModel,
             as: 'user',
-            attributes: ['id'],
+            attributes: { exclude: ['password'] },
             include: [
               {
                 model: EmployeesModel,
                 as: 'employee',
-                attributes: ['id', 'name'],
               },
             ],
           },
@@ -186,10 +184,8 @@ export default class SalesModel {
               {
                 model: MethodsOfPaymentsModel,
                 as: 'method',
-                attributes: ['id', 'name'],
               },
             ],
-            attributes: ['installment'],
           },
           {
             model: SalesProductsModel,
@@ -198,21 +194,7 @@ export default class SalesModel {
               {
                 model: ProductsModel,
                 as: 'product',
-                attributes: {
-                  exclude: [
-                    'createdAt',
-                    'updatedAt',
-                    'quantity',
-                    'purchase_price',
-                  ],
-                },
               },
-            ],
-            attributes: [
-              'quantity',
-              'discount_amount',
-              'discount_type',
-              'final_value',
             ],
           },
         ],

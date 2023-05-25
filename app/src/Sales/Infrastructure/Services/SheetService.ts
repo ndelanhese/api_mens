@@ -16,13 +16,13 @@ export default class SheetService {
       CLIENTE: this.prepareClienteName(item.getCustomer().getName()),
       CPF: this.prepareCpf(item.getCustomer().getCpf()),
       'VALOR FINAL': this.prepareAmount(item.getFinalValue()),
-      DESCONTO: this.prepareDiscount(
+      'DESCONTO DA COMPRA': this.prepareDiscount(
         item.getDiscountAmount(),
         item.getDiscountType(),
       ),
-      PRODUTO: this.prepareProducts(item.getProducts()),
-      // Adicionar desconto de produto
-      PAGAMENTO: this.preparePayment(item.getPayment()),
+      PRODUTOS: this.prepareProducts(item.getProducts()),
+      'DESCONTOS ESPECÍFICOS': this.prepareProductDiscount(item.getProducts()),
+      PAGAMENTOS: this.preparePayment(item.getPayment()),
       STATUS: this.prepareStatus(item.getStatus()),
       OBSERVAÇÃO: item.getObservation(),
     }));
@@ -60,14 +60,11 @@ export default class SheetService {
   }
 
   private prepareProducts(products?: Product[]) {
-    //TODO -> Pegar o nome do produto
-    //TODO -> Verificar o pq do id undefined
     if (products) {
       const formattedProducts = products.map(
-        product =>
-          `${product.getQuantity()} - Nome do produto ${product.getId()}`,
+        product => `${product.getQuantity()} - ${product.getName()}`,
       );
-      return formattedProducts.join('\n');
+      return formattedProducts.join(', ');
     }
   }
 
@@ -86,13 +83,11 @@ export default class SheetService {
   }
 
   private preparePayment(payments?: Payment[]) {
-    //TODO -> Pegar o nome dos pagamentos
     if (payments) {
       const formattedPayments = payments.map(
-        payment =>
-          `${payment.getInstallment()} - Nome do pagamento ${payment.getType()}`,
+        payment => `${payment.getInstallment()} - ${payment.getName()}`,
       );
-      return formattedPayments.join('\n');
+      return formattedPayments.join(', ');
     }
   }
 
@@ -110,5 +105,26 @@ export default class SheetService {
       default:
         return null;
     }
+  }
+
+  private prepareProductDiscount(products?: Product[]) {
+    if (products) {
+      const formattedProducts = products
+        .map(product => {
+          const discountAmount = product.getDiscountAmount();
+          const discountType = product.getDiscountType();
+          if (!discountAmount || !discountType) {
+            return null;
+          }
+          const discount = this.prepareDiscount(discountAmount, discountType);
+          return `${product.getName()} - ${discount}`;
+        })
+        .filter(Boolean); // Remover valores nulos e vazios
+      if (formattedProducts.length === 0) {
+        return null;
+      }
+      return formattedProducts.join(', ');
+    }
+    return null;
   }
 }

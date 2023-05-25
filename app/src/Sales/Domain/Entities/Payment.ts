@@ -1,18 +1,29 @@
 export default class Payment {
-  private type: number;
+  private id: number;
   private installment: number;
+  private name?: string;
 
-  constructor(type: number, installment: number) {
-    this.type = type;
+  constructor(id: number, installment: number, name?: string) {
+    this.id = id;
+    this.name = name;
     this.installment = installment;
   }
 
-  public getType(): number {
-    return this.type;
+  public getId(): number {
+    return this.id;
   }
 
-  public setType(type: number) {
-    this.type = type;
+  public setId(id: number) {
+    this.id = id;
+    return this;
+  }
+
+  public getName() {
+    return this.name;
+  }
+
+  public setName(name: string) {
+    this.name = name;
     return this;
   }
 
