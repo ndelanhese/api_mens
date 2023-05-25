@@ -132,12 +132,12 @@ export default class SalesModel {
   }
 
   public async deleteSale(id: number): Promise<void> {
-    // TODO -> adicionar o remover produtos
     try {
       await salesModel.destroy({
         where: {
           id,
         },
+        cascade: true,
       });
     } catch (error) {
       throw new HttpError(500, 'Erro ao deletar o venda.', error);
@@ -145,9 +145,9 @@ export default class SalesModel {
   }
 
   public async exportSales(input: ISaleFilter): Promise<ISaleExportResponse[]> {
-    // TODO -> adicionar todos filtros
     try {
-      const { initial_date, final_date } = input;
+      const { initial_date, final_date, status, customers_id, users_id } =
+        input;
       let whereClause: WhereOptions = {};
       if (initial_date || final_date) {
         whereClause = {
@@ -156,6 +156,19 @@ export default class SalesModel {
             ...(initial_date && { [Op.gte]: initial_date }),
             ...(final_date && { [Op.lte]: final_date }),
           },
+        };
+      }
+      if (status) whereClause = { ...whereClause, status: { [Op.in]: status } };
+      if (customers_id) {
+        whereClause = {
+          ...whereClause,
+          customer_id: { [Op.in]: customers_id },
+        };
+      }
+      if (users_id) {
+        whereClause = {
+          ...whereClause,
+          user_id: { [Op.in]: users_id },
         };
       }
       return (await salesModel.findAll({

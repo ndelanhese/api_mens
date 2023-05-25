@@ -11,6 +11,7 @@ import { Request, Response } from 'express';
 
 import CreateSaleFactory from '../Factories/CreateSaleFactory';
 import ExportSaleFactory from '../Factories/ExportSaleFactory';
+import ListSaleFactory from '../Factories/ListSaleFactory';
 import UpdateSaleFactory from '../Factories/UpdateSaleFactory';
 import UpdateSaleStatusFactory from '../Factories/UpdateSaleStatusFactory';
 import SalesModel from '../Models/SalesModel';
@@ -28,8 +29,9 @@ export default class SalesController extends BaseController {
         return res.status(200).json(cache);
       }
       const { page, perPage } = PaginationFactory.fromRequest(req);
+      const inputData = ListSaleFactory.fromRequest(req);
       const salesModel = new SalesModel();
-      const sales = await salesModel.getSales();
+      const sales = await salesModel.getSales(inputData);
       const salesPaginated = this.dataPagination(page, perPage, sales);
       await this.createCache(cacheKey, salesPaginated);
       return res.status(200).json(salesPaginated);
@@ -122,7 +124,6 @@ export default class SalesController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      //TODO -> pegar filtros da request (categoria, marca, produto, método de pagamento, cliente, funcionário, data, status e etc)
       await this.verifyPermission(req, 'sales_export');
       const saleAction = new ExportSaleAction();
       const saleInputData = ExportSaleFactory.fromRequest(req);
@@ -158,7 +159,15 @@ export default class SalesController extends BaseController {
       const finalDate = new Date(input.final_date);
       name.push(`ate-${getDateString(finalDate)}`);
     }
-    //TODO -> adicionar os outros filtros de busca
+    if (input.status) {
+      name.push(`status-${input.status}`);
+    }
+    if (input.customers_id) {
+      name.push(`clientes-${input.customers_id}`);
+    }
+    if (input.users_id) {
+      name.push(`usuarios-${input.users_id}`);
+    }
     if (name.length === 1) {
       return '';
     }

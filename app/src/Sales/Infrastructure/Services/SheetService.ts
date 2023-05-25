@@ -6,6 +6,8 @@ import xlsx from 'xlsx';
 import Payment from '../../Domain/Entities/Payment';
 import Product from '../../Domain/Entities/Product';
 import Sale from '../../Domain/Entities/Sale';
+import { StatusTypes } from '../../Domain/Enums/StatusTypes';
+import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
 
 export default class SheetService {
   public dataToSheet(sale: Sale[]): Buffer {
@@ -39,11 +41,9 @@ export default class SheetService {
 
   private prepareClienteName(customerName: string) {
     const names: string[] = customerName.split(' ');
-
     if (names.length >= 2) {
       const firstName: string = names[0];
       const lastName: string = names[names.length - 1];
-
       const initials: string = names
         .slice(1, -1)
         .map((nome: string) => `${nome.charAt(0).toUpperCase()}.`)
@@ -51,7 +51,6 @@ export default class SheetService {
 
       return `${firstName} ${initials} ${lastName}`;
     }
-
     return customerName;
   }
 
@@ -92,19 +91,11 @@ export default class SheetService {
   }
 
   private prepareStatus(status?: string) {
-    //TODO -> Pegar o nome do enum status
-    switch (status) {
-      case 'PAID':
-        return 'Pago';
-      case 'pending':
-        return 'Pendente';
-      case 'canceled':
-        return 'Cancelado';
-      case 'refunded':
-        return 'Estornado';
-      default:
-        return null;
+    if (status && StatusTypes.isValid(status)) {
+      const statusType = StatusTypes.from(status as StatusTypesOptions);
+      return statusType.label();
     }
+    return null;
   }
 
   private prepareProductDiscount(products?: Product[]) {

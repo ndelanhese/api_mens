@@ -24,8 +24,6 @@ export default class ExportSaleAction {
     const status = this.parseToStringArray(input.status);
     const customers_id = this.parseToNumberArray(input.customers_id);
     const users_id = this.parseToNumberArray(input.users_id);
-    const products_ids = this.parseToNumberArray(input.products_ids);
-    const suppliers_ids = this.parseToNumberArray(input.suppliers_ids);
     const saleRepository = new SalesRepository();
     const sales = await saleRepository.export({
       initial_date,
@@ -33,12 +31,11 @@ export default class ExportSaleAction {
       status,
       customers_id,
       users_id,
-      products_ids,
-      suppliers_ids,
     });
     const salesMapped = await this.prepareDataResponse(sales);
     return this.convertXlsx(salesMapped);
   }
+
   private parseToStringArray(value: string | undefined) {
     if (value !== 'undefined' && value) {
       if (value.includes(',')) {

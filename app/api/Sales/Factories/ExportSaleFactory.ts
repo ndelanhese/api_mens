@@ -9,8 +9,6 @@ export default class ExportSaleFactory {
       req.query.status ? String(req.query.status) : undefined,
       req.query.customers_id ? String(req.query.customers_id) : undefined,
       req.query.users_id ? String(req.query.users_id) : undefined,
-      req.query.products_ids ? String(req.query.products_ids) : undefined,
-      req.query.suppliers_ids ? String(req.query.suppliers_ids) : undefined,
     );
   }
 }

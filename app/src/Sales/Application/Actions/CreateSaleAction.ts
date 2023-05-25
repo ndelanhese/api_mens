@@ -12,7 +12,6 @@ import SalesRepository from '../../Infrastructure/Repositories/SalesRepository';
 import CreateSaleInputData from '../Dtos/CreateSaleInputData';
 
 export default class CreateSaleAction {
-  //TODO -> adicionar produtos e métodos de pagamento
   async execute(input: CreateSaleInputData) {
     const salesRepository = new SalesRepository();
     const customer = await this.getCustomer(input.customer_id);
