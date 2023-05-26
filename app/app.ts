@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import express, { Express } from 'express';
 import fileUpload from 'express-fileupload';
+import 'dotenv/config';
 
 import sentryConfig from './config/sentry';
 import routes from './routes';
