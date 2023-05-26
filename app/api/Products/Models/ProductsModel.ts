@@ -3,11 +3,58 @@ import categoriesModel from '@db-models/CategoriesModel';
 import productsModel from '@db-models/ProductsModel';
 import SuppliersModel from '@db-models/SuppliersModel';
 import HttpError from '@exceptions/HttpError';
+import { WhereOptions, Op } from 'sequelize';
 
 export default class ProductsModel {
-  public async getProducts(order: string, direction: string) {
+  public async getProducts(
+    order: string,
+    direction: string,
+    category_id?: number,
+    brand_id?: number,
+    supplier_id?: number,
+    initial_value?: number,
+    final_value?: number,
+    name?: string,
+    part_number?: string,
+    description?: string,
+  ) {
     try {
+      let whereClause: WhereOptions = {};
+      if (initial_value || final_value) {
+        whereClause = {
+          ...whereClause,
+          createdAt: {
+            ...(initial_value && { [Op.gte]: initial_value }),
+            ...(final_value && { [Op.lte]: final_value }),
+          },
+        };
+      }
+      if (name) {
+        whereClause = { ...whereClause, name: { [Op.iLike]: `%${name}%` } };
+      }
+      if (part_number) {
+        whereClause = {
+          ...whereClause,
+          part_number: { [Op.iLike]: `%${part_number}%` },
+        };
+      }
+      if (description) {
+        whereClause = {
+          ...whereClause,
+          description: { [Op.iLike]: `%${description}%` },
+        };
+      }
+      if (category_id) {
+        whereClause = { ...whereClause, category_id };
+      }
+      if (brand_id) {
+        whereClause = { ...whereClause, brand_id };
+      }
+      if (supplier_id) {
+        whereClause = { ...whereClause, supplier_id };
+      }
       return await productsModel.findAll({
+        where: whereClause,
         order: [[order, direction]],
         attributes: { exclude: ['category_id', 'brand_id', 'supplier_id'] },
         include: [
@@ -63,5 +110,3 @@ export default class ProductsModel {
     }
   }
 }
-
-//TODO -> Adicionar filtros de produtos por chaves -> categoria, marca, preço, nome, part number, descrição.

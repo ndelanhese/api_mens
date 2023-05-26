@@ -12,6 +12,7 @@ import { Request, Response } from 'express';
 import CreateProductFactory from '../Factories/CreateProductFactory';
 import DeleteProductFactory from '../Factories/DeleteProductFactory';
 import ExportProductsFactory from '../Factories/ExportProductsFactory';
+import ListProductsFactory from '../Factories/ListProductsFactory';
 import UpdateProductFactory from '../Factories/UpdateProductFactory';
 import UpdateProductStockFactory from '../Factories/UpdateProductStockFactory';
 import ProductsModel from '../Models/ProductsModel';
@@ -30,8 +31,29 @@ export default class ProductsController extends BaseController {
       }
       const { page, perPage, order, direction } =
         PaginationFactory.fromRequest(req);
+      const {
+        brand_id,
+        category_id,
+        description,
+        final_value,
+        initial_value,
+        name,
+        part_number,
+        supplier_id,
+      } = ListProductsFactory.fromRequest(req);
       const productsModel = new ProductsModel();
-      const products = await productsModel.getProducts(order, direction);
+      const products = await productsModel.getProducts(
+        order,
+        direction,
+        category_id,
+        brand_id,
+        supplier_id,
+        initial_value,
+        final_value,
+        name,
+        part_number,
+        description,
+      );
       const productsPaginated = this.dataPagination(page, perPage, products);
       await this.createCache(cacheKey, productsPaginated);
       return res.status(200).json(productsPaginated);
@@ -145,7 +167,6 @@ export default class ProductsController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      //TODO -> pegar filtros da request (categoria, marca, valor e etc)
       await this.verifyPermission(req, 'products_export');
       const productAction = new ExportProductsAction();
       const productsInputData = ExportProductsFactory.fromRequest(req);
