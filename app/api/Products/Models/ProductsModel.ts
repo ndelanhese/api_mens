@@ -6,7 +6,6 @@ import HttpError from '@exceptions/HttpError';
 
 export default class ProductsModel {
   public async getProducts(order: string, direction: string) {
-    //TODO -> Adicionar os include individual (category, brand and supplier)
     try {
       return await productsModel.findAll({
         order: [[order, direction]],
