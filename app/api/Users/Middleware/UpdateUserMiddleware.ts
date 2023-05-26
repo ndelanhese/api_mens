@@ -1,3 +1,4 @@
+import { StatusTypes } from '@app/src/Shared/Domain/Enums/StatusTypes';
 import { NextFunction, Request, Response } from 'express';
 import joi from 'joi';
 import { messages } from 'joi-translation-pt-br';
@@ -11,7 +12,7 @@ const updateUserMiddleware = (
     user: joi.string().min(3).required(),
     email: joi.string().email().required(),
     password: joi.string().min(6).required().allow(null, ''),
-    status: joi.string().valid('active', 'inactive').required(),
+    status: joi.string().required(),
     employee_id: joi.number().required(),
   });
   const updateIdSchema = joi.object({
@@ -25,6 +26,10 @@ const updateUserMiddleware = (
     const message =
       errorBody?.details[0].message || errorParams?.details[0].message;
     return res.status(400).send({ message });
+  }
+  const status = req.body.status;
+  if (status && !StatusTypes.isValid(status)) {
+    return res.status(400).send({ message: 'Status inválido.' });
   }
   next();
 };
