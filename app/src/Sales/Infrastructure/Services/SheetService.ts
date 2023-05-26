@@ -6,8 +6,8 @@ import xlsx from 'xlsx';
 import Payment from '../../Domain/Entities/Payment';
 import Product from '../../Domain/Entities/Product';
 import Sale from '../../Domain/Entities/Sale';
-import { StatusTypes } from '../../Domain/Enums/StatusTypes';
-import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
+import { SaleStatusTypes } from '../../Domain/Enums/SaleStatusTypes';
+import { StatusTypesOptions } from '../../Domain/Enums/SaleStatusTypes.types';
 
 export default class SheetService {
   public dataToSheet(sale: Sale[]): Buffer {
@@ -91,8 +91,8 @@ export default class SheetService {
   }
 
   private prepareStatus(status?: string) {
-    if (status && StatusTypes.isValid(status)) {
-      const statusType = StatusTypes.from(status as StatusTypesOptions);
+    if (status && SaleStatusTypes.isValid(status)) {
+      const statusType = SaleStatusTypes.from(status as StatusTypesOptions);
       return statusType.label();
     }
     return null;

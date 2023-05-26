@@ -1,5 +1,5 @@
 import { DiscountTypesOption } from '../../Domain/Enums/DiscountTypes.types';
-import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
+import { StatusTypesOptions } from '../../Domain/Enums/SaleStatusTypes.types';
 
 export default class CreateSaleInputData {
   constructor(
