@@ -11,6 +11,7 @@ import { Request, Response } from 'express';
 
 import CreateProductFactory from '../Factories/CreateProductFactory';
 import DeleteProductFactory from '../Factories/DeleteProductFactory';
+import ExportProductsFactory from '../Factories/ExportProductsFactory';
 import UpdateProductFactory from '../Factories/UpdateProductFactory';
 import UpdateProductStockFactory from '../Factories/UpdateProductStockFactory';
 import ProductsModel from '../Models/ProductsModel';
@@ -147,7 +148,8 @@ export default class ProductsController extends BaseController {
       //TODO -> pegar filtros da request (categoria, marca, valor e etc)
       await this.verifyPermission(req, 'products_export');
       const productAction = new ExportProductsAction();
-      const products = await productAction.execute();
+      const productsInputData = ExportProductsFactory.fromRequest(req);
+      const products = await productAction.execute(productsInputData);
       res.setHeader(
         'Content-Disposition',
         `attachment; filename="Tabela-de-produtos-${getDateString()}-${getTime()}.xlsx"`,

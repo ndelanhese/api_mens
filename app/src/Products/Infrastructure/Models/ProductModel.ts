@@ -1,7 +1,9 @@
 import productModel from '@db-models/ProductsModel';
 import HttpError from '@exceptions/HttpError';
+import { Op, WhereOptions } from 'sequelize';
 
 import Product from '../../Domain/Entities/Product';
+import { IProductsExportProps } from '../Repositories/ProductRepository.types';
 
 import { IProductModel } from './ProductModel.types';
 
@@ -92,10 +94,33 @@ export default class ProductsModel {
     }
   }
 
-  public async exportProducts(): Promise<IProductModel[]> {
+  public async exportProducts(
+    input: IProductsExportProps,
+  ): Promise<IProductModel[]> {
     try {
+      const { initial_value, final_value, brands_id, categories_id } = input;
+      let whereClause: WhereOptions = {};
+      if (initial_value || final_value) {
+        whereClause = {
+          ...whereClause,
+          createdAt: {
+            ...(initial_value && { [Op.gte]: initial_value }),
+            ...(final_value && { [Op.lte]: final_value }),
+          },
+        };
+      }
+      if (brands_id?.length !== 0) {
+        whereClause = { ...whereClause, brand_id: { [Op.in]: brands_id } };
+      }
+      if (categories_id?.length !== 0) {
+        whereClause = {
+          ...whereClause,
+          category_id: { [Op.in]: categories_id },
+        };
+      }
       return await productModel.findAll({
         order: [['id', 'ASC']],
+        where: whereClause,
       });
     } catch (error) {
       throw new HttpError(500, 'Erro ao exportar os produtos.', error);

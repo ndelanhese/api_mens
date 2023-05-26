@@ -1,6 +1,8 @@
 import Product from '../../Domain/Entities/Product';
 import ProductModel from '../Models/ProductModel';
 
+import { IProductsExportProps } from './ProductRepository.types';
+
 export default class ProductRepository {
   private productsModel: ProductModel;
 
@@ -33,7 +35,7 @@ export default class ProductRepository {
     await this.productsModel.updateProductStock(id, quantity);
   }
 
-  async export() {
-    return await this.productsModel.exportProducts();
+  async export(input: IProductsExportProps) {
+    return await this.productsModel.exportProducts(input);
   }
 }

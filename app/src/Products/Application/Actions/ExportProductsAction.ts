@@ -7,11 +7,20 @@ import CategoriesModel from '../../Infrastructure/Models/CategoriesModel';
 import SuppliersModel from '../../Infrastructure/Models/SuppliersModel';
 import ProductRepository from '../../Infrastructure/Repositories/ProductRepository';
 import SheetService from '../../Infrastructure/Services/SheetService';
+import ExportProductInputData from '../Dtos/ExportProductInputData';
 
 export default class ExportProductsAction {
-  async execute(): Promise<Buffer> {
+  async execute(input: ExportProductInputData): Promise<Buffer> {
     const productRepository = new ProductRepository();
-    const products = await productRepository.export();
+    const categories_id = this.parseToNumberArray(input.categories_id);
+    const brands_id = this.parseToNumberArray(input.brands_id);
+    const { final_value, initial_value } = input;
+    const products = await productRepository.export({
+      categories_id,
+      brands_id,
+      initial_value,
+      final_value,
+    });
     const productsData = await Promise.all(
       products.map(async product => {
         const category = await this.getCategory(product.category_id);
@@ -62,5 +71,15 @@ export default class ExportProductsAction {
       supplier.status,
       supplier.id,
     );
+  }
+
+  private parseToNumberArray(value: string | undefined) {
+    if (value !== 'undefined' && value) {
+      if (value.includes(',')) {
+        return value.split(',').map(v => parseInt(v));
+      }
+      return [parseInt(value)];
+    }
+    return [];
   }
 }
