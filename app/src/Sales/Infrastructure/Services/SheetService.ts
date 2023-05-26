@@ -7,7 +7,7 @@ import Payment from '../../Domain/Entities/Payment';
 import Product from '../../Domain/Entities/Product';
 import Sale from '../../Domain/Entities/Sale';
 import { SaleStatusTypes } from '../../Domain/Enums/SaleStatusTypes';
-import { StatusTypesOptions } from '../../Domain/Enums/SaleStatusTypes.types';
+import { SaleStatusTypesOptions } from '../../Domain/Enums/SaleStatusTypes.types';
 
 export default class SheetService {
   public dataToSheet(sale: Sale[]): Buffer {
@@ -92,7 +92,7 @@ export default class SheetService {
 
   private prepareStatus(status?: string) {
     if (status && SaleStatusTypes.isValid(status)) {
-      const statusType = SaleStatusTypes.from(status as StatusTypesOptions);
+      const statusType = SaleStatusTypes.from(status as SaleStatusTypesOptions);
       return statusType.label();
     }
     return null;
