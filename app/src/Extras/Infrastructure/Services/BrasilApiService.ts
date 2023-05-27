@@ -10,16 +10,15 @@ export default class BrasilApiService {
   }
 
   public async getAddressByCep(cep: string) {
+    const ONLY_NUMBER_CEP = cep.replace(/\D/g, '');
     const data: ICepResponde = await axios
-      .get(`${this.baseUrl}/cep/v2/${cep}`, { timeout: 5000 })
+      .get(`${this.baseUrl}/cep/v2/${ONLY_NUMBER_CEP}`, { timeout: 5000 })
       .then(response => response.data)
-      .catch(error => {
-        throw new HttpError(error.code, error.message);
-      });
+      .catch(() => null);
     return data;
   }
 
-  public async getCompanyInformationByCep(cnpj: string) {
+  public async getCompanyInformationByCnpj(cnpj: string) {
     const data: ICnpjRequest = await axios
       .get(`${this.baseUrl}#tag/BANKS/cnpj/v1/${cnpj}`, {
         timeout: 5000,

@@ -1,6 +1,4 @@
 import { StatusTypes } from '@app/src/Shared/Domain/Enums/StatusTypes';
-import HttpError from '@app/src/Shared/Domain/Exceptions/HttpError';
-import { cpf } from 'cpf-cnpj-validator';
 import { NextFunction, Request, Response } from 'express';
 import joi from 'joi';
 import { messages } from 'joi-translation-pt-br';
@@ -12,15 +10,7 @@ const createCustomerMiddleware = (
 ) => {
   const createSchema = joi.object({
     name: joi.string().required(),
-    cpf: joi
-      .string()
-      .custom(value => {
-        if (!cpf.isValid(value)) {
-          throw new HttpError(400, 'CPF invalido');
-        }
-        return value;
-      })
-      .required(),
+    cpf: joi.string().required(),
     rg: joi.string(),
     birth_date: joi.string().required(),
     phone: joi.string().required(),
@@ -49,5 +39,3 @@ const createCustomerMiddleware = (
   next();
 };
 export default createCustomerMiddleware;
-//TODO adicionar validação de rg, data de nascimento, telefone
-//TODO adicionar validação de endereço (postal-code)

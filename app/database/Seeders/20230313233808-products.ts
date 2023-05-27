@@ -1,4 +1,4 @@
-import getDate from '@app/src/Shared/Domain/Utils/Date';
+import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
 import { QueryInterface } from 'sequelize';
 export async function up(queryInterface: QueryInterface) {
   await queryInterface.bulkInsert(

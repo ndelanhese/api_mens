@@ -1,12 +1,12 @@
 import CreateEmployeeAction from '@app/src/Employees/Application/Actions/CreateEmployeeAction';
 import DeleteEmployeeAction from '@app/src/Employees/Application/Actions/DeleteEmployeeAction';
 import UpdateEmployeeAction from '@app/src/Employees/Application/Actions/UpdateEmployeeAction';
-import { formatCpf } from '@app/src/Shared/Domain/Utils/CpfCnpjFormatter';
+import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
 import {
   formatPhoneNumber,
   formatPisPasep,
   formatRG,
-} from '@app/src/Shared/Domain/Utils/Formatter';
+} from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';

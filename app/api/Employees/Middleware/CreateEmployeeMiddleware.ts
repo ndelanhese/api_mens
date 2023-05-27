@@ -53,5 +53,4 @@ const createEmployeeMiddleware = (
 };
 export default createEmployeeMiddleware;
 
-//TODO adicionar validação de rg, data de nascimento, telefone, pis pasep, data de admissão e data
-//TODO adicionar validação de endereço (postal-code)
+//TODO adicionar validação de data de nascimento, telefone, data de admissão e data

@@ -42,6 +42,3 @@ const updateCustomerMiddleware = (
   next();
 };
 export default updateCustomerMiddleware;
-
-//TODO adicionar validação de rg, data de nascimento, telefone
-//TODO adicionar validação de endereço (postal-code)

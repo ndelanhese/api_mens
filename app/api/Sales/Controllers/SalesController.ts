@@ -4,7 +4,7 @@ import ExportSaleAction from '@app/src/Sales/Application/Actions/ExportSaleActio
 import UpdateSaleAction from '@app/src/Sales/Application/Actions/UpdateSaleAction';
 import UpdateSaleStatusAction from '@app/src/Sales/Application/Actions/UpdateSaleStatusAction';
 import ExportSalesInputData from '@app/src/Sales/Application/Dtos/ExportSaleInputData';
-import { getDateString } from '@app/src/Shared/Domain/Utils/Date';
+import { getDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';

@@ -1,4 +1,4 @@
-import { removeMask } from '@app/src/Shared/Domain/Utils/Formatter';
+import { removeMask } from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import CreateSupplierInputData from '@app/src/Suppliers/Application/Dtos/CreateSupplierInputData';
 import Address from '@app/src/Suppliers/Domain/Entities/Address';
 import { Request } from 'express';

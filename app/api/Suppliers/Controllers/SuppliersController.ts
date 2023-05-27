@@ -1,4 +1,4 @@
-import { formatCnpj } from '@app/src/Shared/Domain/Utils/CpfCnpjFormatter';
+import { formatCnpj } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
 import CreateSupplierAction from '@app/src/Suppliers/Application/Actions/CreateSupplierAction';
 import DeleteSupplierAction from '@app/src/Suppliers/Application/Actions/DeleteSupplierAction';
 import UpdateSupplierAction from '@app/src/Suppliers/Application/Actions/UpdateSupplierAction';

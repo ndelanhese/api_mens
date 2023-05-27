@@ -1,4 +1,4 @@
-import { getTime } from '@shared/Date';
+import { getTime } from '@app/src/Shared/Infrastructure/Utils/Date';
 
 export default abstract class Media {
   private static id = 0;

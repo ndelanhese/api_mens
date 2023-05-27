@@ -1,11 +1,11 @@
 import CreateCustomerAction from '@app/src/Customers/Application/Actions/CreateCustomerAction';
 import DeleteCustomerAction from '@app/src/Customers/Application/Actions/DeleteCustomerAction';
 import UpdateCustomerAction from '@app/src/Customers/Application/Actions/UpdateCustomerAction';
-import { formatCpf } from '@app/src/Shared/Domain/Utils/CpfCnpjFormatter';
+import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
 import {
   formatPhoneNumber,
   formatRG,
-} from '@app/src/Shared/Domain/Utils/Formatter';
+} from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -81,7 +81,7 @@ export default class CustomersController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'customers_create');
+      await this.verifyPermission(req, 'customers_create');
       const customerInputData = CreateCustomerFactory.fromRequest(req);
       const customerAction = new CreateCustomerAction();
       const customerId = (

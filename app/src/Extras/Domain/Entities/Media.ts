@@ -1,4 +1,4 @@
-import { getYear, getMonth } from '@shared/Date';
+import { getYear, getMonth } from '@app/src/Shared/Infrastructure/Utils/Date';
 
 import MediaAbstract from '../Abstract/Media';
 

@@ -1,4 +1,4 @@
-import getDate from '@app/src/Shared/Domain/Utils/Date';
+import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
 import { hashSync } from 'bcryptjs';
 import { QueryInterface } from 'sequelize';
 

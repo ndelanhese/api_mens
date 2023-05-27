@@ -1,7 +1,7 @@
 import Token from '@app/src/Shared/Infrastructure/Services/Token/Token';
+import { getNextDay } from '@app/src/Shared/Infrastructure/Utils/Date';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
-import { getNextDay } from '@shared/Date';
 import bcrypt from 'bcryptjs';
 import { Response, Request } from 'express';
 

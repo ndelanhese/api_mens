@@ -1,7 +1,7 @@
 import UpdateEmployeeInputData from '@app/src/Employees/Application/Dtos/UpdateEmployeeInputData';
 import Employee from '@app/src/Employees/Domain/Entities/Employee';
-import getDate from '@app/src/Shared/Domain/Utils/Date';
-import { removeMask } from '@app/src/Shared/Domain/Utils/Formatter';
+import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
+import { removeMask } from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import { Request } from 'express';
 
 import { IEmployee } from './UpdateEmployeeFactory.types';

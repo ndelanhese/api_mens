@@ -4,7 +4,10 @@ import DeleteProductAction from '@app/src/Products/Application/Actions/DeletePro
 import ExportProductsAction from '@app/src/Products/Application/Actions/ExportProductsAction';
 import UpdateProductAction from '@app/src/Products/Application/Actions/UpdateProductAction';
 import UpdateProductStockAction from '@app/src/Products/Application/Actions/UpdateProductStockAction';
-import { getDateString, getTime } from '@app/src/Shared/Domain/Utils/Date';
+import {
+  getDateString,
+  getTime,
+} from '@app/src/Shared/Infrastructure/Utils/Date';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';

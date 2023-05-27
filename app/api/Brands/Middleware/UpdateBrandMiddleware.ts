@@ -8,7 +8,7 @@ const updateBrandMiddleware = (
   next: NextFunction,
 ) => {
   const updateSchema = joi.object({
-    name: joi.string().allow('', null).required(),
+    name: joi.string().allow('', null),
   });
   const updateIdSchema = joi.object({
     id: joi.number().required(),
