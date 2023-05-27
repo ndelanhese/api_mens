@@ -52,5 +52,3 @@ const createEmployeeMiddleware = (
   }
 };
 export default createEmployeeMiddleware;
-
-//TODO adicionar validação de data de nascimento, telefone, data de admissão e data

@@ -45,6 +45,3 @@ const updateEmployeeMiddleware = (
   next();
 };
 export default updateEmployeeMiddleware;
-
-//TODO adicionar validação de rg, data de nascimento, telefone, pis pasep, data de admissão e data de demissão
-//TODO adicionar validação de endereço (postal-code)

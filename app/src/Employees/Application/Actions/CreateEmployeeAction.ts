@@ -1,4 +1,6 @@
 import BrasilApiService from '@app/src/Extras/Infrastructure/Services/BrasilApiService';
+import { validateCpf as cpfValidate } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
+import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
 import { validatePisPasep as pisPasepValidate } from '@app/src/Shared/Infrastructure/Utils/PisPasep';
 import HttpError from '@exceptions/HttpError';
 
@@ -22,6 +24,11 @@ export default class CreateEmployeeAction {
       input.resignation_date,
     );
     this.validatePisPasep(employee.getPisPasep());
+    this.validateCpf(employee.getCpf());
+    this.validateDate(employee.getBirthDate());
+    this.validateAdmissionDate(employee.getAdmissionDate());
+    this.validateResignationDate(employee.getResignationDate());
+    this.validatePhone(employee.getPhone());
     await this.validateCep(employee.getAddress()?.getPostalCode());
     return await employeeRepository.save(employee);
   }
@@ -45,6 +52,47 @@ export default class CreateEmployeeAction {
     const isValidPisPasep = pisPasepValidate(pis_pasep);
     if (!isValidPisPasep) {
       throw new HttpError(404, 'PIS PASEP inválido');
+    }
+    return;
+  }
+
+  private validateCpf(cpf: string) {
+    if (!cpfValidate(cpf)) {
+      throw new HttpError(400, 'CPF invalido');
+    }
+    return;
+  }
+
+  private validateDate(date: Date) {
+    const currentDate = getDate();
+    if (date >= currentDate) {
+      throw new HttpError(400, 'Data de nascimento invalida');
+    }
+    return;
+  }
+
+  private validateAdmissionDate(date: Date) {
+    const currentDate = getDate();
+    if (date >= currentDate) {
+      throw new HttpError(400, 'Data de contratação invalida');
+    }
+    return;
+  }
+
+  private validateResignationDate(date?: Date) {
+    if (!date) return;
+    const currentDate = getDate();
+    if (date >= currentDate) {
+      throw new HttpError(400, 'Data de demissão invalida');
+    }
+    return;
+  }
+
+  private validatePhone(phone: string) {
+    const ONLY_NUMBERS_REGEX = /^\d+$/;
+    const isOnlyNumbers = ONLY_NUMBERS_REGEX.test(phone);
+    if (!isOnlyNumbers) {
+      throw new HttpError(400, 'Telefone invalido');
     }
     return;
   }
