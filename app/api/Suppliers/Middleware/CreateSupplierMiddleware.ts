@@ -47,5 +47,3 @@ const createSupplierMiddleware = (
   next();
 };
 export default createSupplierMiddleware;
-
-//TODO adicionar validação de endereço (postal-code)
