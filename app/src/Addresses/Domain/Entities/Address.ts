@@ -1,4 +1,4 @@
-export default class eAddress {
+export default class Address {
   private id?: number;
   private address: string;
   private number: string;

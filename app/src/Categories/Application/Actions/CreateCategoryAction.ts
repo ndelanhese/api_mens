@@ -4,8 +4,8 @@ import CreateCategoryInputData from '../Dtos/CreateCategoryInputData';
 
 export default class CreateCategoryAction {
   async execute(input: CreateCategoryInputData): Promise<Category> {
-    const brandRepository = new CategoriesRepository();
-    const user = new Category(input.name);
-    return await brandRepository.save(user);
+    const categoriesRepository = new CategoriesRepository();
+    const category = new Category(input.name);
+    return await categoriesRepository.save(category);
   }
 }
