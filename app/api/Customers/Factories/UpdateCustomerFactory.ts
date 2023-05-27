@@ -11,11 +11,12 @@ export default class UpdateCustomerFactory {
     return new UpdateCustomerInputData(
       Number(req.params.id),
       req.body.name,
-      removeMask(req.body.cpf),
+      req.body.cpf ? removeMask(req.body.cpf) : undefined,
       getDate(req.body.birth_date),
-      removeMask(req.body.phone),
+      req.body.phone ? removeMask(req.body.phone) : undefined,
       req.body.status,
-      removeMask(req.body.rg),
+      req.body.rg ? removeMask(req.body.rg) : undefined,
+      req.body.address,
     );
   }
   static fromCurrentCustomer(customer: ICustomer) {

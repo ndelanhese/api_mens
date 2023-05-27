@@ -1,4 +1,6 @@
+import Address from '../../Domain/Entities/Address';
 import Customer from '../../Domain/Entities/Customer';
+import AddressesModel from '../../Infrastructure/Models/AddressesModel';
 import CustomersRepository from '../../Infrastructure/Repositories/CustomersRepository';
 import UpdateCustomerInputData from '../Dtos/UpdateCustomerInputData';
 
@@ -24,6 +26,25 @@ export default class UpdateCustomerAction extends CustomerAction {
     this.validateDate(customer.getBirthDate());
     this.validatePhone(customer.getPhone());
     await customerRepository.update(customer);
+    await this.updateAddress(input);
+  }
+
+  private async updateAddress(input: UpdateCustomerInputData) {
+    if (input.address) {
+      const { address: inputData } = input;
+      const address = new Address(
+        inputData.address,
+        inputData.number,
+        inputData.district,
+        inputData.postal_code,
+        inputData.city,
+        inputData.state,
+        inputData.id,
+      );
+      const addressesModel = new AddressesModel();
+      await addressesModel.updateAddress(address);
+      return;
+    }
+    return;
   }
 }
-//TODO -> adicionar atualização de endereço

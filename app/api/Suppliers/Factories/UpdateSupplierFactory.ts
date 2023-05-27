@@ -11,7 +11,7 @@ export default class UpdateSupplierFactory {
       Number(req.params.id),
       req.body.contact_name,
       req.body.corporate_name,
-      removeMask(req.body.cnpj),
+      req.body.cnpj ? removeMask(req.body.cnpj) : undefined,
       req.body.status,
     );
   }
