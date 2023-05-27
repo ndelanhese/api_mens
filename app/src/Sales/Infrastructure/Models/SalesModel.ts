@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { StatusTypesOptions } from '@app/src/Shared/Domain/Enums/StatusTypes.types';
 import CustomersModel from '@db-models/CustomersModel';
 import EmployeesModel from '@db-models/EmployeesModel';
 import MethodsOfPaymentsModel from '@db-models/MethodsOfPaymentsModel';
@@ -13,7 +14,6 @@ import HttpError from '@exceptions/HttpError';
 import { Op, WhereOptions } from 'sequelize';
 
 import Sale from '../../Domain/Entities/Sale';
-import { StatusTypesOptions } from '../../Domain/Enums/SaleStatusTypes.types';
 import { ISaleExportResponse } from '../Repositories/SalesRepository.types';
 
 import { ISaleFilter } from './SalesModel.types';

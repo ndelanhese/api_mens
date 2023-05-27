@@ -1,4 +1,4 @@
-import { StatusTypesOptions } from '../../Domain/Enums/SaleStatusTypes.types';
+import { StatusTypesOptions } from '@app/src/Shared/Domain/Enums/StatusTypes.types';
 
 export default class UpdateSaleStatusInputData {
   constructor(
