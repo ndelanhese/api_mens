@@ -20,6 +20,15 @@ const updateSupplierMiddleware = (
       return value;
     }),
     status: joi.string(),
+    address: joi.object({
+      id: joi.number().required(),
+      address: joi.string().required(),
+      number: joi.number().required(),
+      district: joi.string().required(),
+      postal_code: joi.string().required(),
+      city: joi.string().required(),
+      state: joi.string().required(),
+    }),
   });
   const updateIdSchema = joi.object({
     id: joi.number().required(),
