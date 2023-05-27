@@ -1,12 +1,10 @@
-import HttpError from '@app/src/Shared/Domain/Exceptions/HttpError';
-import { validateCpf as cpfValidate } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
-import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
-
 import Customer from '../../Domain/Entities/Customer';
 import CustomersRepository from '../../Infrastructure/Repositories/CustomersRepository';
 import UpdateCustomerInputData from '../Dtos/UpdateCustomerInputData';
 
-export default class UpdateCustomerAction {
+import CustomerAction from './CustomerAction';
+
+export default class UpdateCustomerAction extends CustomerAction {
   async execute(
     input: UpdateCustomerInputData,
     currentValue: Customer,
@@ -26,30 +24,6 @@ export default class UpdateCustomerAction {
     this.validateDate(customer.getBirthDate());
     this.validatePhone(customer.getPhone());
     await customerRepository.update(customer);
-  }
-
-  private validateCpf(cpf: string) {
-    if (!cpfValidate(cpf)) {
-      throw new HttpError(400, 'CPF invalido');
-    }
-    return;
-  }
-
-  private validateDate(date: Date) {
-    const currentDate = getDate();
-    if (date > currentDate) {
-      throw new HttpError(400, 'Data de nascimento invalida');
-    }
-    return;
-  }
-
-  private validatePhone(phone: string) {
-    const ONLY_NUMBERS_REGEX = /^\d+$/;
-    const isOnlyNumbers = ONLY_NUMBERS_REGEX.test(phone);
-    if (!isOnlyNumbers) {
-      throw new HttpError(400, 'Telefone invalido');
-    }
-    return;
   }
 }
 //TODO -> adicionar atualização de endereço

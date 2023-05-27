@@ -88,7 +88,7 @@ export default class CustomersController extends BaseController {
         await customerAction.execute(customerInputData)
       ).getId();
       await this.deleteCache('customers');
-      return res.status(200).json(customerId);
+      return res.status(201).json(customerId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -112,7 +112,7 @@ export default class CustomersController extends BaseController {
         UpdateCustomerFactory.fromCurrentCustomer(currentCustomer);
       await customerAction.execute(customerInputData, currentCustomerInputData);
       await this.deleteCache('customers');
-      return res.status(200).json('Cliente atualizado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -130,7 +130,7 @@ export default class CustomersController extends BaseController {
       const customerAction = new DeleteCustomerAction();
       await customerAction.execute(customerInputData);
       await this.deleteCache('customers');
-      return res.status(200).json('Cliente deletado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

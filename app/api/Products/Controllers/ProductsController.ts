@@ -99,7 +99,7 @@ export default class ProductsController extends BaseController {
       const productAction = new CreateProductAction();
       const productId = (await productAction.execute(productInputData)).getId();
       await this.deleteCache('products');
-      return res.status(200).json(productId);
+      return res.status(201).json(productId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -117,7 +117,7 @@ export default class ProductsController extends BaseController {
       const productAction = new DeleteProductAction();
       await productAction.execute(productInputData);
       await this.deleteCache('products');
-      return res.status(200).json('Produto deletado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

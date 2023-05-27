@@ -64,7 +64,7 @@ export default class CategoriesController extends BaseController {
         await categoryAction.execute(categoryInputData)
       ).getId();
       await this.deleteCache('categories');
-      return res.status(200).json(categoryId);
+      return res.status(201).json(categoryId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -88,7 +88,7 @@ export default class CategoriesController extends BaseController {
         UpdateCategoryFactory.fromCurrentCategory(currentCategories);
       await userAction.execute(userInputData, currentCategoriesInputData);
       await this.deleteCache('categories');
-      return res.status(200).json('Categoria atualizada com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -106,7 +106,7 @@ export default class CategoriesController extends BaseController {
       const userAction = new DeleteCategoryAction();
       await userAction.execute(userInputData);
       await this.deleteCache('categories');
-      return res.status(200).json('Categoria deletada com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

@@ -42,5 +42,3 @@ export default class App {
     this.app.listen(PORT);
   }
 }
-//TODO -> Verificar se todos os update e delete estão retornando um 204
-//TODO -> Verificar se todos os create estão retornando um 201 e retornando somente o id
