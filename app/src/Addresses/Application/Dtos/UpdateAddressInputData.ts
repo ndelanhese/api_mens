@@ -1,5 +1,6 @@
 export default class UpdateAddressInputData {
   constructor(
+    readonly id: number,
     readonly address?: string,
     readonly number?: string,
     readonly district?: string,
