@@ -1,11 +1,11 @@
 import CreateCustomerAction from '@app/src/Customers/Application/Actions/CreateCustomerAction';
 import DeleteCustomerAction from '@app/src/Customers/Application/Actions/DeleteCustomerAction';
 import UpdateCustomerAction from '@app/src/Customers/Application/Actions/UpdateCustomerAction';
-import { formatCpf } from '@app/src/Shared/Domain/Utils/CpfCnpjFormatter';
+import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
 import {
   formatPhoneNumber,
   formatRG,
-} from '@app/src/Shared/Domain/Utils/Formatter';
+} from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -81,14 +81,14 @@ export default class CustomersController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      // await this.verifyPermission(req, 'customers_create');
+      await this.verifyPermission(req, 'customers_create');
       const customerInputData = CreateCustomerFactory.fromRequest(req);
       const customerAction = new CreateCustomerAction();
       const customerId = (
         await customerAction.execute(customerInputData)
       ).getId();
       await this.deleteCache('customers');
-      return res.status(200).json(customerId);
+      return res.status(201).json(customerId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -112,7 +112,7 @@ export default class CustomersController extends BaseController {
         UpdateCustomerFactory.fromCurrentCustomer(currentCustomer);
       await customerAction.execute(customerInputData, currentCustomerInputData);
       await this.deleteCache('customers');
-      return res.status(200).json('Cliente atualizado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -130,7 +130,7 @@ export default class CustomersController extends BaseController {
       const customerAction = new DeleteCustomerAction();
       await customerAction.execute(customerInputData);
       await this.deleteCache('customers');
-      return res.status(200).json('Cliente deletado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

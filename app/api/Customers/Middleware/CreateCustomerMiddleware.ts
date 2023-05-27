@@ -1,5 +1,4 @@
-import HttpError from '@app/src/Shared/Domain/Exceptions/HttpError';
-import { cpf } from 'cpf-cnpj-validator';
+import { StatusTypes } from '@app/src/Shared/Domain/Enums/StatusTypes';
 import { NextFunction, Request, Response } from 'express';
 import joi from 'joi';
 import { messages } from 'joi-translation-pt-br';
@@ -11,18 +10,7 @@ const createCustomerMiddleware = (
 ) => {
   const createSchema = joi.object({
     name: joi.string().required(),
-    cpf: joi
-      .string()
-      .custom(value => {
-        if (!cpf.isValid(value)) {
-          throw new HttpError(400, 'CPF invalido');
-        }
-        return value;
-      })
-      .required(),
-    //TODO adicionar validação de rg, data de nascimento, telefone
-    //TODO  adicionar validação de status
-    //TODO adicionar validação de endereço (postal-code)
+    cpf: joi.string().required(),
     rg: joi.string(),
     birth_date: joi.string().required(),
     phone: joi.string().required(),
@@ -43,6 +31,10 @@ const createCustomerMiddleware = (
   if (error) {
     const { message } = error.details[0];
     return res.status(400).send({ message });
+  }
+  const status = req.body.status;
+  if (status && !StatusTypes.isValid(status)) {
+    return res.status(400).send({ message: 'Status inválido.' });
   }
   next();
 };

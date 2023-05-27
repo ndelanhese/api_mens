@@ -78,7 +78,7 @@ export default class RolesController extends BaseController {
       const roleId = (await roleAction.execute(roleInputData)).getId();
       await this.deleteCache('roles');
       await this.deleteCache('users');
-      return res.status(200).json(roleId);
+      return res.status(201).json(roleId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -115,13 +115,10 @@ export default class RolesController extends BaseController {
       const currentRoleInputData =
         UpdateRoleFactory.fromCurrentRole(currentRole);
       const roleAction = new UpdateRoleAction();
-      const role = await roleAction.execute(
-        roleInputData,
-        currentRoleInputData,
-      );
+      await roleAction.execute(roleInputData, currentRoleInputData);
       await this.deleteCache('roles');
       await this.deleteCache('users');
-      return res.status(200).json(role);
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

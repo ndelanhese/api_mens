@@ -1,12 +1,12 @@
 import CreateEmployeeAction from '@app/src/Employees/Application/Actions/CreateEmployeeAction';
 import DeleteEmployeeAction from '@app/src/Employees/Application/Actions/DeleteEmployeeAction';
 import UpdateEmployeeAction from '@app/src/Employees/Application/Actions/UpdateEmployeeAction';
-import { formatCpf } from '@app/src/Shared/Domain/Utils/CpfCnpjFormatter';
+import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
 import {
   formatPhoneNumber,
   formatPisPasep,
   formatRG,
-} from '@app/src/Shared/Domain/Utils/Formatter';
+} from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -93,7 +93,7 @@ export default class EmployeesController extends BaseController {
         await employeeAction.execute(employeeInputData)
       ).getId();
       await this.deleteCache('employees');
-      return res.status(200).json(employeeId);
+      return res.status(201).json(employeeId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -118,7 +118,7 @@ export default class EmployeesController extends BaseController {
         UpdateEmployeeFactory.fromCurrentEmployee(currentEmployee);
       await employeeAction.execute(employeeInputData, currentEmployeeInputData);
       await this.deleteCache('employees');
-      return res.status(200).json('Funcionário atualizado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -136,7 +136,7 @@ export default class EmployeesController extends BaseController {
       const employeeAction = new DeleteEmployeeAction();
       await employeeAction.execute(employeeInputData);
       await this.deleteCache('employees');
-      return res.status(200).json('Funcionário deletado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

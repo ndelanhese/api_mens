@@ -4,13 +4,18 @@ import DeleteProductAction from '@app/src/Products/Application/Actions/DeletePro
 import ExportProductsAction from '@app/src/Products/Application/Actions/ExportProductsAction';
 import UpdateProductAction from '@app/src/Products/Application/Actions/UpdateProductAction';
 import UpdateProductStockAction from '@app/src/Products/Application/Actions/UpdateProductStockAction';
-import { getDateString, getTime } from '@app/src/Shared/Domain/Utils/Date';
+import {
+  getDateString,
+  getTime,
+} from '@app/src/Shared/Infrastructure/Utils/Date';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
 
 import CreateProductFactory from '../Factories/CreateProductFactory';
 import DeleteProductFactory from '../Factories/DeleteProductFactory';
+import ExportProductsFactory from '../Factories/ExportProductsFactory';
+import ListProductsFactory from '../Factories/ListProductsFactory';
 import UpdateProductFactory from '../Factories/UpdateProductFactory';
 import UpdateProductStockFactory from '../Factories/UpdateProductStockFactory';
 import ProductsModel from '../Models/ProductsModel';
@@ -29,8 +34,29 @@ export default class ProductsController extends BaseController {
       }
       const { page, perPage, order, direction } =
         PaginationFactory.fromRequest(req);
+      const {
+        brand_id,
+        category_id,
+        description,
+        final_value,
+        initial_value,
+        name,
+        part_number,
+        supplier_id,
+      } = ListProductsFactory.fromRequest(req);
       const productsModel = new ProductsModel();
-      const products = await productsModel.getProducts(order, direction);
+      const products = await productsModel.getProducts(
+        order,
+        direction,
+        category_id,
+        brand_id,
+        supplier_id,
+        initial_value,
+        final_value,
+        name,
+        part_number,
+        description,
+      );
       const productsPaginated = this.dataPagination(page, perPage, products);
       await this.createCache(cacheKey, productsPaginated);
       return res.status(200).json(productsPaginated);
@@ -73,7 +99,7 @@ export default class ProductsController extends BaseController {
       const productAction = new CreateProductAction();
       const productId = (await productAction.execute(productInputData)).getId();
       await this.deleteCache('products');
-      return res.status(200).json(productId);
+      return res.status(201).json(productId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -91,7 +117,7 @@ export default class ProductsController extends BaseController {
       const productAction = new DeleteProductAction();
       await productAction.execute(productInputData);
       await this.deleteCache('products');
-      return res.status(200).json('Produto deletado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -144,10 +170,10 @@ export default class ProductsController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      //TODO -> pegar filtros da request (categoria, marca, valor e etc)
       await this.verifyPermission(req, 'products_export');
       const productAction = new ExportProductsAction();
-      const products = await productAction.execute();
+      const productsInputData = ExportProductsFactory.fromRequest(req);
+      const products = await productAction.execute(productsInputData);
       res.setHeader(
         'Content-Disposition',
         `attachment; filename="Tabela-de-produtos-${getDateString()}-${getTime()}.xlsx"`,

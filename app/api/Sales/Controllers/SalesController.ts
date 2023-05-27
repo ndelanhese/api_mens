@@ -4,7 +4,7 @@ import ExportSaleAction from '@app/src/Sales/Application/Actions/ExportSaleActio
 import UpdateSaleAction from '@app/src/Sales/Application/Actions/UpdateSaleAction';
 import UpdateSaleStatusAction from '@app/src/Sales/Application/Actions/UpdateSaleStatusAction';
 import ExportSalesInputData from '@app/src/Sales/Application/Dtos/ExportSaleInputData';
-import { getDateString } from '@app/src/Shared/Domain/Utils/Date';
+import { getDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -75,7 +75,7 @@ export default class SalesController extends BaseController {
       const saleAction = new CreateSaleAction();
       const saleId = (await saleAction.execute(saleInputData)).getId();
       await this.deleteCache('sales');
-      return res.status(200).json(saleId);
+      return res.status(201).json(saleId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

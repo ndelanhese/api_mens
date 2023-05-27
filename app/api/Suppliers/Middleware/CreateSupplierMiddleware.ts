@@ -1,3 +1,4 @@
+import { StatusTypes } from '@app/src/Shared/Domain/Enums/StatusTypes';
 import HttpError from '@app/src/Shared/Domain/Exceptions/HttpError';
 import { cnpj } from 'cpf-cnpj-validator';
 import { NextFunction, Request, Response } from 'express';
@@ -39,9 +40,10 @@ const createSupplierMiddleware = (
     const { message } = error.details[0];
     return res.status(400).send({ message });
   }
+  const status = req.body.status;
+  if (status && !StatusTypes.isValid(status)) {
+    return res.status(400).send({ message: 'Status inválido.' });
+  }
   next();
 };
 export default createSupplierMiddleware;
-
-//TODO  adicionar validação de status
-//TODO adicionar validação de endereço (postal-code)

@@ -1,4 +1,4 @@
-export type StatusTypesOptions =
+export type SaleStatusTypesOptions =
   | 'completed'
   | 'refunded'
   | 'pending'

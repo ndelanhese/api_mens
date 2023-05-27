@@ -1,4 +1,4 @@
-import getDate from '@app/src/Shared/Domain/Utils/Date';
+import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
 import { Request } from 'express';
 
 export default class ListSaleFactory {

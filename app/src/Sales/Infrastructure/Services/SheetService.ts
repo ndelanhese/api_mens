@@ -1,13 +1,13 @@
-import { formatCpf } from '@app/src/Shared/Domain/Utils/CpfCnpjFormatter';
-import { getDateTime } from '@app/src/Shared/Domain/Utils/Date';
 import { resizeColumns } from '@app/src/Shared/Infrastructure/Services/Sheets/SheetUtils';
+import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
+import { getDateTime } from '@app/src/Shared/Infrastructure/Utils/Date';
 import xlsx from 'xlsx';
 
 import Payment from '../../Domain/Entities/Payment';
 import Product from '../../Domain/Entities/Product';
 import Sale from '../../Domain/Entities/Sale';
-import { StatusTypes } from '../../Domain/Enums/StatusTypes';
-import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
+import { SaleStatusTypes } from '../../Domain/Enums/SaleStatusTypes';
+import { SaleStatusTypesOptions } from '../../Domain/Enums/SaleStatusTypes.types';
 
 export default class SheetService {
   public dataToSheet(sale: Sale[]): Buffer {
@@ -91,8 +91,8 @@ export default class SheetService {
   }
 
   private prepareStatus(status?: string) {
-    if (status && StatusTypes.isValid(status)) {
-      const statusType = StatusTypes.from(status as StatusTypesOptions);
+    if (status && SaleStatusTypes.isValid(status)) {
+      const statusType = SaleStatusTypes.from(status as SaleStatusTypesOptions);
       return statusType.label();
     }
     return null;

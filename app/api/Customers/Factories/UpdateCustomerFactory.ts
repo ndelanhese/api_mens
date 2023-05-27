@@ -1,7 +1,7 @@
 import UpdateCustomerInputData from '@app/src/Customers/Application/Dtos/UpdateCustomerInputData';
 import Customer from '@app/src/Customers/Domain/Entities/Customer';
-import getDate from '@app/src/Shared/Domain/Utils/Date';
-import { removeMask } from '@app/src/Shared/Domain/Utils/Formatter';
+import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
+import { removeMask } from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import { Request } from 'express';
 
 import { ICustomer } from './UpdateCustomerFactory.types';

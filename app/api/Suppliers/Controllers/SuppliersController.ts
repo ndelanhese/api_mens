@@ -1,4 +1,4 @@
-import { formatCnpj } from '@app/src/Shared/Domain/Utils/CpfCnpjFormatter';
+import { formatCnpj } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
 import CreateSupplierAction from '@app/src/Suppliers/Application/Actions/CreateSupplierAction';
 import DeleteSupplierAction from '@app/src/Suppliers/Application/Actions/DeleteSupplierAction';
 import UpdateSupplierAction from '@app/src/Suppliers/Application/Actions/UpdateSupplierAction';
@@ -88,7 +88,7 @@ export default class SuppliersController extends BaseController {
         await supplierAction.execute(supplierInputData)
       ).getId();
       await this.deleteCache('suppliers');
-      return res.status(200).json(supplierId);
+      return res.status(201).json(supplierId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -113,7 +113,7 @@ export default class SuppliersController extends BaseController {
         UpdateSupplierFactory.fromCurrentSupplier(currentSupplier);
       await supplierAction.execute(supplierInputData, currentSupplierInputData);
       await this.deleteCache('suppliers');
-      return res.status(200).json('Fornecedor atualizado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -131,7 +131,7 @@ export default class SuppliersController extends BaseController {
       const supplierAction = new DeleteSupplierAction();
       await supplierAction.execute(supplierInputData);
       await this.deleteCache('suppliers');
-      return res.status(200).json('Fornecedor deletado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

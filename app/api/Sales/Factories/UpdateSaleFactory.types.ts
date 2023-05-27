@@ -1,4 +1,4 @@
-import Date from '@app/src/Shared/Domain/Utils/Date';
+import Date from '@app/src/Shared/Infrastructure/Utils/Date';
 
 export interface ISale {
   date: Date;

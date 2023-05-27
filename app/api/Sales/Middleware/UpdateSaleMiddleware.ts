@@ -1,5 +1,5 @@
 import { DiscountTypes } from '@app/src/Sales/Domain/Enums/DiscountTypes';
-import { StatusTypes } from '@app/src/Sales/Domain/Enums/StatusTypes';
+import { SaleStatusTypes } from '@app/src/Sales/Domain/Enums/SaleStatusTypes';
 import { NextFunction, Request, Response } from 'express';
 import joi from 'joi';
 import { messages } from 'joi-translation-pt-br';
@@ -71,7 +71,7 @@ const updateSaleMiddleware = (
   if (!shouldContinue) {
     return;
   }
-  if (!StatusTypes.isValid(req.body.status)) {
+  if (!SaleStatusTypes.isValid(req.body.status)) {
     return res.status(400).send({ message: 'Status inválido.' });
   }
   next();

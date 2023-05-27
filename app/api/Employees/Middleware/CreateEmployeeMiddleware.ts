@@ -1,3 +1,4 @@
+import { StatusTypes } from '@app/src/Shared/Domain/Enums/StatusTypes';
 import HttpError from '@app/src/Shared/Domain/Exceptions/HttpError';
 import { cpf } from 'cpf-cnpj-validator';
 import { NextFunction, Request, Response } from 'express';
@@ -45,9 +46,9 @@ const createEmployeeMiddleware = (
     return res.status(400).send({ message });
   }
   next();
+  const status = req.body.status;
+  if (status && !StatusTypes.isValid(status)) {
+    return res.status(400).send({ message: 'Status inválido.' });
+  }
 };
 export default createEmployeeMiddleware;
-
-//TODO adicionar validação de rg, data de nascimento, telefone, pis pasep, data de admissão e data de demissão
-//TODO  adicionar validação de status
-//TODO adicionar validação de endereço (postal-code)

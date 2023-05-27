@@ -2,7 +2,9 @@ import Customer from '../../Domain/Entities/Customer';
 import CustomerRepository from '../../Infrastructure/Repositories/CustomersRepository';
 import CreateCustomerInputData from '../Dtos/CreateCustomerInputData';
 
-export default class CreateCustomerAction {
+import CustomerAction from './CustomerAction';
+
+export default class CreateCustomerAction extends CustomerAction {
   async execute(input: CreateCustomerInputData): Promise<Customer> {
     const customerRepository = new CustomerRepository();
     const customer = new Customer(
@@ -14,6 +16,10 @@ export default class CreateCustomerAction {
       input.address,
       input.rg,
     );
+    this.validateCpf(customer.getCpf());
+    this.validateDate(customer.getBirthDate());
+    this.validatePhone(customer.getPhone());
+    await this.validateCep(customer.getAddress()?.getPostalCode());
     return await customerRepository.save(customer);
   }
 }

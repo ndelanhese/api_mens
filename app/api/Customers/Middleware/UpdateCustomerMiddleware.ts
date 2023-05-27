@@ -1,3 +1,4 @@
+import { StatusTypes } from '@app/src/Shared/Domain/Enums/StatusTypes';
 import HttpError from '@exceptions/HttpError';
 import { cpf } from 'cpf-cnpj-validator';
 import { NextFunction, Request, Response } from 'express';
@@ -34,10 +35,10 @@ const updateCustomerMiddleware = (
       errorBody?.details[0].message || errorParams?.details[0].message;
     return res.status(400).send({ message });
   }
+  const status = req.body.status;
+  if (status && !StatusTypes.isValid(status)) {
+    return res.status(400).send({ message: 'Status inválido.' });
+  }
   next();
 };
 export default updateCustomerMiddleware;
-
-//TODO adicionar validação de rg, data de nascimento, telefone
-//TODO  adicionar validação de status
-//TODO adicionar validação de endereço (postal-code)

@@ -2,7 +2,9 @@ import Supplier from '../../Domain/Entities/Supplier';
 import SuppliersRepository from '../../Infrastructure/Repositories/SuppliersRepository';
 import UpdateSupplierInputData from '../Dtos/UpdateSupplierInputData';
 
-export default class UpdateSupplierAction {
+import SupplierAction from './SupplierAction';
+
+export default class UpdateSupplierAction extends SupplierAction {
   async execute(
     input: UpdateSupplierInputData,
     currentValue: Supplier,
@@ -16,6 +18,7 @@ export default class UpdateSupplierAction {
       undefined,
       input.id || currentValue.getId(),
     );
+    await this.validateCep(supplier.getAddress()?.getPostalCode());
     await supplierRepository.update(supplier);
   }
 }

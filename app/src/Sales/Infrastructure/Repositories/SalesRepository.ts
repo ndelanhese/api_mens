@@ -1,5 +1,5 @@
 import Sale from '../../Domain/Entities/Sale';
-import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
+import { StatusTypesOptions } from '../../Domain/Enums/SaleStatusTypes.types';
 import SalesModel from '../Models/SalesModel';
 
 import { ISaleFilter } from './SalesRepository.types';

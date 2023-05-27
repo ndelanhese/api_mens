@@ -13,7 +13,7 @@ import HttpError from '@exceptions/HttpError';
 import { Op, WhereOptions } from 'sequelize';
 
 import Sale from '../../Domain/Entities/Sale';
-import { StatusTypesOptions } from '../../Domain/Enums/StatusTypes.types';
+import { StatusTypesOptions } from '../../Domain/Enums/SaleStatusTypes.types';
 import { ISaleExportResponse } from '../Repositories/SalesRepository.types';
 
 import { ISaleFilter } from './SalesModel.types';

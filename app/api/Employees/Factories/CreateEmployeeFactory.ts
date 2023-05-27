@@ -1,7 +1,7 @@
 import CreateEmployeeInputData from '@app/src/Employees/Application/Dtos/CreateEmployeeInputData';
 import Address from '@app/src/Employees/Domain/Entities/Address';
-import getDate from '@app/src/Shared/Domain/Utils/Date';
-import { removeMask } from '@app/src/Shared/Domain/Utils/Formatter';
+import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
+import { removeMask } from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import { Request } from 'express';
 
 export default class CreateEmployeeFactory {

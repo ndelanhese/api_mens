@@ -93,7 +93,7 @@ export default class UsersController extends BaseController {
       const userAction = new CreateUserAction();
       const userId = (await userAction.execute(userInputData)).getId();
       await this.deleteCache('users');
-      return res.status(200).json(userId);
+      return res.status(201).json(userId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -112,7 +112,7 @@ export default class UsersController extends BaseController {
       const userAction = new DeleteUserAction();
       await userAction.execute(userInputData);
       await this.deleteCache('users');
-      return res.status(200).json('Usuário deletado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -130,7 +130,7 @@ export default class UsersController extends BaseController {
       const userAction = new RestoreUserAction();
       await userAction.execute(userInputData);
       await this.deleteCache('users');
-      return res.status(200).json('Usuário restaurado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -147,9 +147,7 @@ export default class UsersController extends BaseController {
       const userAction = new UpdateRolesAndPermissionsAction();
       await userAction.execute(userInputData);
       await this.deleteCache('users');
-      return res
-        .status(200)
-        .json('Papéis e Permissões atualizadas com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -171,7 +169,7 @@ export default class UsersController extends BaseController {
         UpdateUserFactory.fromCurrentUser(currentUser);
       await userAction.execute(userInputData, currentUserInputData);
       await this.deleteCache('users');
-      return res.status(200).json('Usuário atualizado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

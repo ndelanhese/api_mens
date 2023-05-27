@@ -2,16 +2,18 @@ import { StatusTypesOptions } from './StatusTypes.types';
 
 export class StatusTypes {
   public static labels = {
-    completed: 'Finalizada',
-    refunded: 'Estornada',
+    active: 'Ativo',
+    inactive: 'Inativo',
     pending: 'Pendente',
-    canceled: 'Cancelada',
+    suspended: 'Suspenso',
+    blocked: 'Bloqueado',
   };
   public readonly value: StatusTypesOptions;
-  public static completed = new StatusTypes('completed');
-  public static refunded = new StatusTypes('refunded');
+  public static active = new StatusTypes('active');
+  public static inactive = new StatusTypes('inactive');
   public static pending = new StatusTypes('pending');
-  public static canceled = new StatusTypes('canceled');
+  public static suspended = new StatusTypes('suspended');
+  public static blocked = new StatusTypes('blocked');
 
   protected constructor(value: StatusTypesOptions) {
     this.value = value;

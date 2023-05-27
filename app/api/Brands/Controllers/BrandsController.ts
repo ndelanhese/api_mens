@@ -62,7 +62,7 @@ export default class BrandsController extends BaseController {
       const brandAction = new CreateBrandAction();
       const brandId = (await brandAction.execute(brandInputData)).getId();
       await this.deleteCache('brands');
-      return res.status(200).json(brandId);
+      return res.status(201).json(brandId);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -84,7 +84,7 @@ export default class BrandsController extends BaseController {
         UpdateBrandFactory.fromCurrentBrand(currentBrands);
       await userAction.execute(userInputData, currentBrandsInputData);
       await this.deleteCache('brands');
-      return res.status(200).json('Marca atualizada com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -102,7 +102,7 @@ export default class BrandsController extends BaseController {
       const userAction = new DeleteBrandAction();
       await userAction.execute(userInputData);
       await this.deleteCache('brands');
-      return res.status(200).json('Marca deletada com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
