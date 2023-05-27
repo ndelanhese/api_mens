@@ -2,7 +2,9 @@ import Address from '../../Domain/Entities/Address';
 import AddressesRepository from '../../Infrastructure/Repositories/AddressesRepository';
 import UpdateAddressInputData from '../Dtos/UpdateAddressInputData';
 
-export default class UpdateAddressAction {
+import AddressesAction from './AddressesAction';
+
+export default class UpdateAddressAction extends AddressesAction {
   async execute(
     input: UpdateAddressInputData,
     currentValue: Address,
@@ -16,6 +18,7 @@ export default class UpdateAddressAction {
       input.city || currentValue.getCity(),
       input.state || currentValue.getState(),
     );
+    await this.validateCep(address.getPostalCode());
     await addressesRepository.update(address);
   }
 }

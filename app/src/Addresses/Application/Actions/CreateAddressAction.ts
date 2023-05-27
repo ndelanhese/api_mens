@@ -2,7 +2,9 @@ import Address from '../../Domain/Entities/Address';
 import AddressesRepository from '../../Infrastructure/Repositories/AddressesRepository';
 import CreateAddressInputData from '../Dtos/CreateAddressInputData';
 
-export default class CreateAddressAction {
+import AddressesAction from './AddressesAction';
+
+export default class CreateAddressAction extends AddressesAction {
   async execute(input: CreateAddressInputData): Promise<Address> {
     const addressRepository = new AddressesRepository();
     const address = new Address(
@@ -13,6 +15,7 @@ export default class CreateAddressAction {
       input.city,
       input.state,
     );
+    await this.validateCep(address.getPostalCode());
     return await addressRepository.save(address);
   }
 }
