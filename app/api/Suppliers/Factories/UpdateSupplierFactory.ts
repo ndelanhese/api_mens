@@ -13,6 +13,7 @@ export default class UpdateSupplierFactory {
       req.body.corporate_name,
       req.body.cnpj ? removeMask(req.body.cnpj) : undefined,
       req.body.status,
+      req.body.address,
     );
   }
   static fromCurrentSupplier(employee: ISupplier) {

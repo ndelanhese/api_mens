@@ -19,6 +19,7 @@ export default class ListEmployeesModel {
                 model: AddressesModel,
                 as: 'address',
                 attributes: [
+                  'id',
                   'address',
                   'number',
                   'district',
@@ -49,6 +50,7 @@ export default class ListEmployeesModel {
                 model: AddressesModel,
                 as: 'address',
                 attributes: [
+                  'id',
                   'address',
                   'number',
                   'district',
