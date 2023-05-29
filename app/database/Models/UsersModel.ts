@@ -39,7 +39,7 @@ export default class UsersModel extends Model<
   public password!: string;
   public status!: CreationOptional<string>;
   public employee_id!: number;
-  public deletedAt!: CreationOptional<Date | null>;
+  public deleted_at!: CreationOptional<Date | null>;
 }
 
 UsersModel.init(
@@ -80,7 +80,7 @@ UsersModel.init(
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
     },
-    deletedAt: {
+    deleted_at: {
       type: DataTypes.DATE,
       allowNull: true,
     },

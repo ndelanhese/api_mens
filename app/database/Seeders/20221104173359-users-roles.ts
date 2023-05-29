@@ -8,8 +8,8 @@ export async function up(queryInterface: QueryInterface) {
       {
         role_id: 1,
         user_id: 1,
-        createdAt: getDate(),
-        updatedAt: getDate(),
+        created_at: getDate(),
+        updated_at: getDate(),
       },
     ],
     {},

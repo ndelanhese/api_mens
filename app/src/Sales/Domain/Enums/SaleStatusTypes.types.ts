@@ -2,4 +2,5 @@ export type SaleStatusTypesOptions =
   | 'completed'
   | 'refunded'
   | 'pending'
-  | 'canceled';
+  | 'canceled'
+  | 'on_trial';

@@ -6,12 +6,14 @@ export class SaleStatusTypes {
     refunded: 'Estornada',
     pending: 'Pendente',
     canceled: 'Cancelada',
+    on_trial: 'Condicional',
   };
   public readonly value: SaleStatusTypesOptions;
   public static completed = new SaleStatusTypes('completed');
   public static refunded = new SaleStatusTypes('refunded');
   public static pending = new SaleStatusTypes('pending');
   public static canceled = new SaleStatusTypes('canceled');
+  public static on_trial = new SaleStatusTypes('on_trial');
 
   protected constructor(value: SaleStatusTypesOptions) {
     this.value = value;

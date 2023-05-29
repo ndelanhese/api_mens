@@ -5,10 +5,18 @@ export async function up(queryInterface: QueryInterface) {
   await queryInterface.bulkInsert(
     'methods_of_payments',
     [
-      { name: 'Pix', createdAt: getDate(), updatedAt: getDate() },
-      { name: 'Cartão de Crédito', createdAt: getDate(), updatedAt: getDate() },
-      { name: 'Cartão de Débito', createdAt: getDate(), updatedAt: getDate() },
-      { name: 'Dinheiro', createdAt: getDate(), updatedAt: getDate() },
+      { name: 'Pix', created_at: getDate(), updated_at: getDate() },
+      {
+        name: 'Cartão de Crédito',
+        created_at: getDate(),
+        updated_at: getDate(),
+      },
+      {
+        name: 'Cartão de Débito',
+        created_at: getDate(),
+        updated_at: getDate(),
+      },
+      { name: 'Dinheiro', created_at: getDate(), updated_at: getDate() },
     ],
     {},
   );

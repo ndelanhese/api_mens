@@ -19,9 +19,9 @@ export interface ISaleExportResponse {
   status?: string;
   customer_id: number;
   user_id: number;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date | null;
   customer: {
     id: number;
     name: string;

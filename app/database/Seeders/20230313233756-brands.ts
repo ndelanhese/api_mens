@@ -4,7 +4,7 @@ import { QueryInterface } from 'sequelize';
 export async function up(queryInterface: QueryInterface) {
   await queryInterface.bulkInsert(
     'brands',
-    [{ name: 'Touvo', createdAt: getDate(), updatedAt: getDate() }],
+    [{ name: 'Touvo', created_at: getDate(), updated_at: getDate() }],
     {},
   );
 }

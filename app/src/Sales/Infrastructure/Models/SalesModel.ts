@@ -152,7 +152,7 @@ export default class SalesModel {
       if (initial_date || final_date) {
         whereClause = {
           ...whereClause,
-          createdAt: {
+          created_at: {
             ...(initial_date && { [Op.gte]: initial_date }),
             ...(final_date && { [Op.lte]: final_date }),
           },

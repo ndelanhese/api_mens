@@ -92,7 +92,7 @@ export default class SalesModel {
           {
             model: CustomersModel,
             as: 'customer',
-            attributes: { exclude: ['status', 'createdAt', 'updatedAt'] },
+            attributes: { exclude: ['status', 'created_at', 'updated_at'] },
           },
           {
             model: UsersModel,
@@ -127,8 +127,8 @@ export default class SalesModel {
                 as: 'product',
                 attributes: {
                   exclude: [
-                    'createdAt',
-                    'updatedAt',
+                    'created_at',
+                    'updated_at',
                     'quantity',
                     'purchase_price',
                   ],

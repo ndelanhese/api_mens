@@ -7,8 +7,8 @@ export async function up(queryInterface: QueryInterface) {
     [
       {
         name: 'Camiseta Masculina',
-        createdAt: getDate(),
-        updatedAt: getDate(),
+        created_at: getDate(),
+        updated_at: getDate(),
       },
     ],
     {},
