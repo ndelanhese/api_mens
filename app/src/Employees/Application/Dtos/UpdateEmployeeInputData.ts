@@ -10,5 +10,14 @@ export default class UpdateEmployeeInputData {
     readonly status?: string,
     readonly rg?: string,
     readonly resignation_date?: Date,
+    readonly address?: {
+      readonly id: number;
+      readonly address: string;
+      readonly number: string;
+      readonly district: string;
+      readonly postal_code: string;
+      readonly city: string;
+      readonly state: string;
+    },
   ) {}
 }

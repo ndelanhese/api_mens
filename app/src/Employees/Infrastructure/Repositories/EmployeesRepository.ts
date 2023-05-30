@@ -17,6 +17,7 @@ export default class EmployeeRepository {
 
   async create(employee: Employee): Promise<Employee> {
     const { id } = await this.employeeModel.createEmployee(employee);
+
     return employee.setId(id);
   }
 

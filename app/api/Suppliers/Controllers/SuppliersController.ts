@@ -56,7 +56,7 @@ export default class SuppliersController extends BaseController {
     try {
       await this.verifyPermission(req, 'suppliers_read');
       const { id } = req.params;
-      const cacheKey = `supplier-${id}`;
+      const cacheKey = `suppliers-${id}`;
       const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
       const supplier = await this.suppliersModel.getSupplier(Number(id));

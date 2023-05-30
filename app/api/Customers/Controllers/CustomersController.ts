@@ -58,7 +58,7 @@ export default class CustomersController extends BaseController {
     try {
       await this.verifyPermission(req, 'customers_read');
       const { id } = req.params;
-      const cacheKey = `customer-${id}`;
+      const cacheKey = `customers-${id}`;
       const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
       const customer = await this.customersModel.getCustomer(Number(id));

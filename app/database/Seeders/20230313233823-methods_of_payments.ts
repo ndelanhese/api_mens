@@ -6,8 +6,16 @@ export async function up(queryInterface: QueryInterface) {
     'methods_of_payments',
     [
       { name: 'Pix', createdAt: getDate(), updatedAt: getDate() },
-      { name: 'Cartão de Crédito', createdAt: getDate(), updatedAt: getDate() },
-      { name: 'Cartão de Débito', createdAt: getDate(), updatedAt: getDate() },
+      {
+        name: 'Cartão de Crédito',
+        createdAt: getDate(),
+        updatedAt: getDate(),
+      },
+      {
+        name: 'Cartão de Débito',
+        createdAt: getDate(),
+        updatedAt: getDate(),
+      },
       { name: 'Dinheiro', createdAt: getDate(), updatedAt: getDate() },
     ],
     {},

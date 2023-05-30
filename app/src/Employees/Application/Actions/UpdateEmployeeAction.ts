@@ -1,13 +1,12 @@
-import HttpError from '@app/src/Shared/Domain/Exceptions/HttpError';
-import { validateCpf as cpfValidate } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
-import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
-import { validatePisPasep as pisPasepValidate } from '@app/src/Shared/Infrastructure/Utils/PisPasep';
-
+import Address from '../../Domain/Entities/Address';
 import Employee from '../../Domain/Entities/Employee';
+import AddressesModel from '../../Infrastructure/Models/AddressesModel';
 import EmployeesRepository from '../../Infrastructure/Repositories/EmployeesRepository';
 import UpdateEmployeeInputData from '../Dtos/UpdateEmployeeInputData';
 
-export default class UpdateEmployeeAction {
+import EmployeeAction from './EmployeeAction';
+
+export default class UpdateEmployeeAction extends EmployeeAction {
   async execute(
     input: UpdateEmployeeInputData,
     currentValue: Employee,
@@ -33,58 +32,25 @@ export default class UpdateEmployeeAction {
     this.validateResignationDate(employee.getResignationDate());
     this.validatePhone(employee.getPhone());
     await employeeRepository.update(employee);
+    await this.updateAddress(input);
   }
 
-  private validatePisPasep(pis_pasep?: string) {
-    if (!pis_pasep) {
-      throw new HttpError(404, 'PIS PASEP inválido');
-    }
-    const isValidPisPasep = pisPasepValidate(pis_pasep);
-    if (!isValidPisPasep) {
-      throw new HttpError(404, 'PIS PASEP inválido');
-    }
-    return;
-  }
-
-  private validateCpf(cpf: string) {
-    if (!cpfValidate(cpf)) {
-      throw new HttpError(400, 'CPF invalido');
-    }
-    return;
-  }
-
-  private validateDate(date: Date) {
-    const currentDate = getDate();
-    if (date >= currentDate) {
-      throw new HttpError(400, 'Data de nascimento invalida');
-    }
-    return;
-  }
-
-  private validateAdmissionDate(date: Date) {
-    const currentDate = getDate();
-    if (date >= currentDate) {
-      throw new HttpError(400, 'Data de contratação invalida');
-    }
-    return;
-  }
-
-  private validateResignationDate(date?: Date) {
-    if (!date) return;
-    const currentDate = getDate();
-    if (date >= currentDate) {
-      throw new HttpError(400, 'Data de demissão invalida');
-    }
-    return;
-  }
-
-  private validatePhone(phone: string) {
-    const ONLY_NUMBERS_REGEX = /^\d+$/;
-    const isOnlyNumbers = ONLY_NUMBERS_REGEX.test(phone);
-    if (!isOnlyNumbers) {
-      throw new HttpError(400, 'Telefone invalido');
+  private async updateAddress(input: UpdateEmployeeInputData) {
+    if (input.address) {
+      const { address: inputData } = input;
+      const address = new Address(
+        inputData.address,
+        inputData.number,
+        inputData.district,
+        inputData.postal_code,
+        inputData.city,
+        inputData.state,
+        inputData.id,
+      );
+      const addressesModel = new AddressesModel();
+      await addressesModel.updateAddress(address);
+      return;
     }
     return;
   }
 }
-//TODO -> adicionar atualização de endereço

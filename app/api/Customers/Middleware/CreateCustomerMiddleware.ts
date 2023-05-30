@@ -24,8 +24,7 @@ const createCustomerMiddleware = (
         city: joi.string().required(),
         state: joi.string().required(),
       })
-      .required()
-      .min(1),
+      .required(),
   });
   const { error } = createSchema.validate(req.body, { messages });
   if (error) {

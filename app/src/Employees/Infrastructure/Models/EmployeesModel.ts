@@ -47,8 +47,7 @@ export default class EmployeesModel {
         employee_id: employee.id,
         address_id: address.id,
       });
-
-      return { ...employee.toJSON(), ...address.toJSON() };
+      return employee;
     } catch (error) {
       if (error instanceof HttpError) throw error;
       throw new HttpError(500, 'Erro ao cadastrar funcionário.', error);

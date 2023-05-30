@@ -61,7 +61,7 @@ export default class EmployeesController extends BaseController {
     try {
       await this.verifyPermission(req, 'employees_read');
       const { id } = req.params;
-      const cacheKey = `employee-${id}`;
+      const cacheKey = `employees-${id}`;
       const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
       const employee = await this.employeesModel.getEmployee(Number(id));

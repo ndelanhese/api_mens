@@ -12,6 +12,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
+      description: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
       observation: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -19,26 +23,13 @@ module.exports = {
       status: {
         type: Sequelize.STRING,
         allowNull: true,
-        defaultValue: 'realizada',
       },
       customer_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: {
             tableName: 'customers',
-          },
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      },
-      employee_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: {
-            tableName: 'employees',
           },
           key: 'id',
         },

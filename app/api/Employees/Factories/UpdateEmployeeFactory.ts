@@ -11,14 +11,15 @@ export default class UpdateEmployeeFactory {
     return new UpdateEmployeeInputData(
       Number(req.params.id),
       req.body.name,
-      removeMask(req.body.cpf),
+      req.body.cpf ? removeMask(req.body.cpf) : undefined,
       getDate(req.body.birth_date),
-      removeMask(req.body.phone),
-      removeMask(req.body.pis_pasep),
+      req.body.phone ? removeMask(req.body.phone) : undefined,
+      req.body.pis_pasep ? removeMask(req.body.pis_pasep) : undefined,
       getDate(req.body.admission_date),
       req.body.status,
-      removeMask(req.body.rg),
+      req.body.rg ? removeMask(req.body.rg) : undefined,
       getDate(req.body.resignation_date),
+      req.body.address,
     );
   }
   static fromCurrentEmployee(employee: IEmployee) {

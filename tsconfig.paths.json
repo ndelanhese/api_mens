@@ -10,7 +10,8 @@
       "@cache/*": ["src/Shared/Infrastructure/Cache/*"],
       "@auth-middleware/*": ["api/Shared/MIddleware/*"],
       "@acl/*": ["api/Shared/MIddleware/*"],
-      "@base-controller/*": ["api/Shared/Controllers/*"]
+      "@base-controller/*": ["api/Shared/Controllers/*"],
+      "@api/*": ["api/*"]
     }
   }
 }

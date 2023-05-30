@@ -15,6 +15,8 @@ import CustomersModel from './CustomersModel';
 import EmployeesAddressesModel from './EmployeesAddressesModel';
 import EmployeeModel from './EmployeesModel';
 import MethodsOfPaymentsModel from './MethodsOfPaymentsModel';
+import OrdersModel from './OrdersModel';
+import OrdersProductsModel from './OrdersProductsModel';
 import PermissionsModel from './PermissionsModel';
 import ProductsModel from './ProductsModel';
 import RolesModel from './RolesModel';
@@ -278,4 +280,44 @@ SalesProductsModel.belongsTo(ProductsModel, {
 ProductsModel.hasMany(SalesProductsModel, {
   foreignKey: 'product_id',
   as: 'sales_products',
+});
+
+// Order x products
+OrdersModel.hasMany(OrdersProductsModel, {
+  foreignKey: 'order_id',
+  as: 'orders_products',
+});
+
+OrdersProductsModel.belongsTo(OrdersModel, {
+  foreignKey: 'order_id',
+});
+
+OrdersProductsModel.belongsTo(ProductsModel, {
+  foreignKey: 'product_id',
+  as: 'product',
+});
+
+ProductsModel.hasMany(OrdersProductsModel, {
+  foreignKey: 'product_id',
+  as: 'orders_products',
+});
+
+OrdersModel.belongsTo(CustomersModel, {
+  foreignKey: 'customer_id',
+  as: 'customer',
+});
+
+CustomersModel.hasMany(OrdersModel, {
+  foreignKey: 'customer_id',
+  as: 'customer_order',
+});
+
+OrdersModel.belongsTo(UsersModel, {
+  foreignKey: 'user_id',
+  as: 'user',
+});
+
+UsersModel.hasMany(OrdersModel, {
+  foreignKey: 'user_id',
+  as: 'user_order',
 });

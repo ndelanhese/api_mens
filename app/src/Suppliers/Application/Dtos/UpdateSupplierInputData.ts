@@ -5,5 +5,14 @@ export default class UpdateSupplierInputData {
     readonly corporate_name?: string,
     readonly cnpj?: string,
     readonly status?: string,
+    readonly address?: {
+      readonly id: number;
+      readonly address: string;
+      readonly number: string;
+      readonly district: string;
+      readonly postal_code: string;
+      readonly city: string;
+      readonly state: string;
+    },
   ) {}
 }

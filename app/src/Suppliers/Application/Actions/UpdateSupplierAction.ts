@@ -1,4 +1,6 @@
+import Address from '../../Domain/Entities/Address';
 import Supplier from '../../Domain/Entities/Supplier';
+import AddressesModel from '../../Infrastructure/Models/AddressesModel';
 import SuppliersRepository from '../../Infrastructure/Repositories/SuppliersRepository';
 import UpdateSupplierInputData from '../Dtos/UpdateSupplierInputData';
 
@@ -20,5 +22,25 @@ export default class UpdateSupplierAction extends SupplierAction {
     );
     await this.validateCep(supplier.getAddress()?.getPostalCode());
     await supplierRepository.update(supplier);
+    await this.updateAddress(input);
+  }
+
+  private async updateAddress(input: UpdateSupplierInputData) {
+    if (input.address) {
+      const { address: inputData } = input;
+      const address = new Address(
+        inputData.address,
+        inputData.number,
+        inputData.district,
+        inputData.postal_code,
+        inputData.city,
+        inputData.state,
+        inputData.id,
+      );
+      const addressesModel = new AddressesModel();
+      await addressesModel.updateAddress(address);
+      return;
+    }
+    return;
   }
 }

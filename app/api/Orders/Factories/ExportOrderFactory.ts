@@ -1,0 +1,14 @@
+import ExportOrdersInputData from '@app/src/Orders/Application/Dtos/ExportOrdersInputData';
+import { Request } from 'express';
+
+export default class ExportOrderFactory {
+  static fromRequest(req: Request) {
+    return new ExportOrdersInputData(
+      req.query.initial_date ? String(req.query.initial_date) : undefined,
+      req.query.final_date ? String(req.query.final_date) : undefined,
+      req.query.status ? String(req.query.status) : undefined,
+      req.query.customers_id ? String(req.query.customers_id) : undefined,
+      req.query.users_id ? String(req.query.users_id) : undefined,
+    );
+  }
+}
