@@ -1,4 +1,4 @@
-export interface ISale {
+export interface IOrder {
   date: Date;
   total_value: number;
   final_value: number;
