@@ -24,7 +24,7 @@ export default class UserModel {
     try {
       const data: any = await userModel.findByPk(id, {
         attributes: {
-          exclude: ['password', 'deleted_at', 'created_at', 'updated_at'],
+          exclude: ['password', 'deletedAt', 'createdAt', 'updatedAt'],
         },
         include: { all: true },
       });
@@ -55,7 +55,7 @@ export default class UserModel {
         attributes: {
           exclude: ['password'],
         },
-        where: { deleted_at: { [Op.not]: null } },
+        where: { deletedAt: { [Op.not]: null } },
         paranoid: false,
       });
     } catch (error) {

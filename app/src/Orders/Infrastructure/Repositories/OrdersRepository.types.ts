@@ -16,9 +16,9 @@ export interface IOrderExportResponse {
   status?: string;
   customer_id: number;
   user_id: number;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
   customer: {
     id: number;
     name: string;

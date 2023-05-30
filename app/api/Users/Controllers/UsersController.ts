@@ -189,9 +189,9 @@ export default class UsersController extends BaseController {
       email: user.email,
       status: user.status,
       password: user.password,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
-      deleted_at: user.deleted_at,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      deletedAt: user.deletedAt,
       employee: {
         name: user.employee.name,
         cpf: user.employee.cpf,

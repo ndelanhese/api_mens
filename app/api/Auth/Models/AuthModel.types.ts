@@ -5,13 +5,13 @@ export interface IUser {
   status: string;
   employee_id?: number;
   password?: string;
-  created_at?: Date;
-  updated_at?: Date;
-  deleted_at?: Date | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
   userRoles?: {
     id: number;
     role_id: number;
-    created_at: Date;
-    updated_at: Date;
+    createdAt: Date;
+    updatedAt: Date;
   }[];
 }

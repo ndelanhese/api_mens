@@ -121,7 +121,7 @@ export default class OrdersModel {
       if (initial_date || final_date) {
         whereClause = {
           ...whereClause,
-          created_at: {
+          createdAt: {
             ...(initial_date && { [Op.gte]: initial_date }),
             ...(final_date && { [Op.lte]: final_date }),
           },

@@ -106,7 +106,7 @@ export default class UserModel {
         attributes: {
           exclude: ['password'],
         },
-        where: { deleted_at: { [Op.not]: null } },
+        where: { deletedAt: { [Op.not]: null } },
         paranoid: false,
         order: [['id', 'ASC']],
       });

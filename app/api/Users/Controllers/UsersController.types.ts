@@ -6,9 +6,9 @@ export interface IUsers {
     phone_number: string;
     email: string;
     status: string;
-    created_at?: Date;
-    updated_at?: Date;
-    deleted_at?: Date | null;
+    createdAt?: Date;
+    updatedAt?: Date;
+    deletedAt?: Date | null;
   }[];
 }
 
@@ -19,9 +19,9 @@ export interface IUser {
   email: string;
   status: string;
   password?: string;
-  created_at?: Date;
-  updated_at?: Date;
-  deleted_at?: Date | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
   employee: {
     name: string;
     cpf: string;

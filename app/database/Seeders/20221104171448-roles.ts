@@ -8,8 +8,8 @@ export async function up(queryInterface: QueryInterface) {
       {
         name: 'superadmin',
         description: 'Super Administrador',
-        created_at: getDate(),
-        updated_at: getDate(),
+        createdAt: getDate(),
+        updatedAt: getDate(),
       },
     ],
     {},

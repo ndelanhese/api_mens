@@ -80,7 +80,7 @@ export default class OrdersModel {
           {
             model: CustomersModel,
             as: 'customer',
-            attributes: { exclude: ['status', 'created_at', 'updated_at'] },
+            attributes: { exclude: ['status', 'createdAt', 'updatedAt'] },
           },
           {
             model: UsersModel,
@@ -103,8 +103,8 @@ export default class OrdersModel {
                 as: 'product',
                 attributes: {
                   exclude: [
-                    'created_at',
-                    'updated_at',
+                    'createdAt',
+                    'updatedAt',
                     'quantity',
                     'purchase_price',
                   ],

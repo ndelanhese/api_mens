@@ -103,7 +103,7 @@ export default class ProductsModel {
       if (initial_value || final_value) {
         whereClause = {
           ...whereClause,
-          created_at: {
+          createdAt: {
             ...(initial_value && { [Op.gte]: initial_value }),
             ...(final_value && { [Op.lte]: final_value }),
           },

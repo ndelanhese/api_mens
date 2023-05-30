@@ -8,8 +8,8 @@ export async function up(queryInterface: QueryInterface) {
       {
         customer_id: 1,
         address_id: 1,
-        created_at: getDate(),
-        updated_at: getDate(),
+        createdAt: getDate(),
+        updatedAt: getDate(),
       },
     ],
     {},
