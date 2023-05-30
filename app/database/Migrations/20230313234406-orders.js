@@ -23,7 +23,6 @@ module.exports = {
       status: {
         type: Sequelize.STRING,
         allowNull: true,
-        defaultValue: 'realizada',
       },
       customer_id: {
         type: Sequelize.INTEGER,

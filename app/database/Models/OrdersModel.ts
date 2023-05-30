@@ -14,10 +14,10 @@ export default class OrdersModel extends Model<
 > {
   public id!: CreationOptional<number>;
   public date!: Date;
+  public description!: CreationOptional<string>;
   public observation!: CreationOptional<string>;
   public status!: CreationOptional<string>;
   public customer_id!: number;
-  public employee_id!: number;
   public user_id!: number;
 }
 
@@ -31,6 +31,10 @@ OrdersModel.init(
     date: {
       type: DataTypes.DATE,
       allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
     observation: {
       type: DataTypes.STRING,
@@ -47,16 +51,6 @@ OrdersModel.init(
       references: {
         model: {
           tableName: 'customers',
-        },
-        key: 'id',
-      },
-    },
-    employee_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: {
-          tableName: 'employees',
         },
         key: 'id',
       },
