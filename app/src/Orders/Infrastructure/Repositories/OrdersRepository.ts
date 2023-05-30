@@ -3,7 +3,7 @@ import { StatusTypesOptions } from '@app/src/Shared/Domain/Enums/StatusTypes.typ
 import Order from '../../Domain/Entities/Order';
 import OrdersModel from '../Models/OrdersModel';
 
-import { IOrderFilter } from './SalesRepository.types';
+import { IOrderFilter } from './OrdersRepository.types';
 
 export default class OrdersRepository {
   private ordersModel: OrdersModel;
