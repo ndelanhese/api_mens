@@ -68,6 +68,6 @@ OrdersModel.init(
   },
   {
     sequelize,
-    tableName: 'or',
+    tableName: 'orders',
   },
 );
