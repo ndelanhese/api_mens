@@ -15,10 +15,11 @@ export default class PromotionsModel extends Model<
   public id!: CreationOptional<number>;
   public name!: string;
   public description!: CreationOptional<string>;
-  public discount_amount!: number;
-  public discount_type!: string;
+  public discount_amount!: CreationOptional<number>;
+  public discount_type!: CreationOptional<string>;
   public initial_date!: CreationOptional<Date>;
   public final_date!: CreationOptional<Date>;
+  public status!: CreationOptional<string>;
   public promotion_category_id!: number;
 }
 
@@ -39,11 +40,11 @@ PromotionsModel.init(
     },
     discount_amount: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     discount_type: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     initial_date: {
       type: DataTypes.DATE,
@@ -52,6 +53,10 @@ PromotionsModel.init(
     final_date: {
       type: DataTypes.DATE,
       allowNull: true,
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     promotion_category_id: {
       type: DataTypes.INTEGER,

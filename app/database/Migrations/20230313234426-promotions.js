@@ -18,11 +18,11 @@ module.exports = {
       },
       discount_amount: {
         type: Sequelize.FLOAT,
-        allowNull: false,
+        allowNull: true,
       },
       discount_type: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       initial_date: {
         type: Sequelize.DATE,
@@ -31,6 +31,10 @@ module.exports = {
       final_date: {
         type: Sequelize.DATE,
         allowNull: true,
+      },
+      status: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       promotion_category_id: {
         type: Sequelize.INTEGER,
