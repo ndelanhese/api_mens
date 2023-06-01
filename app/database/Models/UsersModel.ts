@@ -19,6 +19,8 @@ import OrdersModel from './OrdersModel';
 import OrdersProductsModel from './OrdersProductsModel';
 import PermissionsModel from './PermissionsModel';
 import ProductsModel from './ProductsModel';
+import PromotionsCategoriesModel from './PromotionsCategoriesModel';
+import PromotionsModel from './PromotionsModel';
 import RolesModel from './RolesModel';
 import RolesPermissionsModel from './RolesPermissionsModel';
 import SalesMethodsOfPaymentsModel from './SalesMethodsOfPaymentsModel';
@@ -320,4 +322,15 @@ OrdersModel.belongsTo(UsersModel, {
 UsersModel.hasMany(OrdersModel, {
   foreignKey: 'user_id',
   as: 'user_order',
+});
+
+// Promotion x Promotion Category
+PromotionsModel.belongsTo(PromotionsCategoriesModel, {
+  as: 'category',
+  foreignKey: 'promotion_category_id',
+});
+
+PromotionsCategoriesModel.hasMany(PromotionsModel, {
+  foreignKey: 'promotion_category_id',
+  as: 'category_promotion',
 });

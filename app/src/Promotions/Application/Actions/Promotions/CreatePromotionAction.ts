@@ -1,74 +1,38 @@
-// import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
+import Promotion from '@app/src/Promotions/Domain/Entities/Promotion';
+import PromotionCategory from '@app/src/Promotions/Domain/Entities/PromotionCategory';
+import PromotionProduct from '@app/src/Promotions/Domain/Entities/PromotionProduct';
+import PromotionsCategoriesModel from '@app/src/Promotions/Infrastructure/Models/PromotionCategory';
+import PromotionsRepository from '@app/src/Promotions/Infrastructure/Repositories/PromotionsRepository';
+import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
 
-// import Customer from '../../Domain/Entities/Customer';
-// import Employee from '../../Domain/Entities/Employee';
-// import Payment from '../../Domain/Entities/Payment';
-// import Product from '../../Domain/Entities/Product';
-// import Sale from '../../Domain/Entities/Sale';
-// import User from '../../Domain/Entities/User';
-// import ListCustomersModel from '../../Infrastructure/Models/CustomersModel';
-// import UserModel from '../../Infrastructure/Models/UsersModel';
-// import SalesRepository from '../../Infrastructure/Repositories/SalesRepository';
-// import CreateSaleInputData from '../Dtos/CreateSaleInputData';
+import CreatePromotionInputData from '../../Dtos/Promotions/CreatePromotionInputData';
 
-// export default class CreateSaleAction {
-//   async execute(input: CreateSaleInputData) {
-//     const salesRepository = new SalesRepository();
-//     const customer = await this.getCustomer(input.customer_id);
-//     const user = await this.getUser(input.user_id);
-//     const paymentMethods = input.sale_payment_methods.map(
-//       paymentMethod =>
-//         new Payment(paymentMethod.type, paymentMethod.installment),
-//     );
-//     const products = input.sale_products.map(
-//       product =>
-//         new Product(
-//           product.id,
-//           product.quantity,
-//           product.final_value,
-//           product.discount_amount,
-//           product.discount_type,
-//         ),
-//     );
-//     const sale = new Sale(
-//       getDate(input.date),
-//       input.total_value,
-//       input.final_value,
-//       customer,
-//       user,
-//       paymentMethods,
-//       products,
-//       input.observation,
-//       input.discount_amount,
-//       input.discount_type,
-//       input.status,
-//     );
-//     return await salesRepository.save(sale);
-//   }
+export default class CreatePromotionAction {
+  async execute(input: CreatePromotionInputData) {
+    const promotionsRepository = new PromotionsRepository();
+    const promotionCategory = await this.getCategory(
+      input.promotion_category_id,
+    );
+    const products = input.promotion_products.map(
+      product => new PromotionProduct(product.id),
+    );
+    const promotion = new Promotion(
+      input.name,
+      input.description,
+      promotionCategory,
+      products,
+      input.discount_amount,
+      input.discount_type,
+      getDate(input.initial_date),
+      getDate(input.final_date),
+      input.status,
+    );
+    return await promotionsRepository.save(promotion);
+  }
 
-//   private async getCustomer(customer_id: number) {
-//     const customerModel = new ListCustomersModel();
-//     const customer = await customerModel.getCustomer(customer_id);
-//     return new Customer(
-//       customer.name,
-//       customer.cpf,
-//       customer.birth_date,
-//       customer.phone,
-//       customer.status,
-//       customer.rg,
-//       customer.id,
-//     );
-//   }
-
-//   private async getUser(user_id: number) {
-//     const userModel = new UserModel();
-//     const user = await userModel.getUser(user_id);
-//     const { employee: employeeData } = user;
-//     const employee = new Employee(
-//       employeeData.name,
-//       employeeData.cpf,
-//       employeeData.id,
-//     );
-//     return new User(user.user, user.email, employee);
-//   }
-// }
+  private async getCategory(category_id: number) {
+    const categoryModel = new PromotionsCategoriesModel();
+    const category = await categoryModel.getCategoryById(category_id);
+    return new PromotionCategory(category.name, category.id);
+  }
+}

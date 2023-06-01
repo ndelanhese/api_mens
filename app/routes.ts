@@ -15,6 +15,8 @@ import UsersRoute from '@app/api/Users/Routes/UsersRoute';
 import AuthToken from '@auth-middleware/AuthMiddleware';
 import { Router, Request, Response } from 'express';
 
+import PromotionsRoute from './api/Promotions/Routes/PromotionRoute';
+
 const router = Router();
 
 const prepareInstance = () => {
@@ -32,6 +34,7 @@ const prepareInstance = () => {
   const salesRoute = new SalesRoute();
   const addressesRoute = new AddressesRoute();
   const ordersRoute = new OrdersRoute();
+  const promotionsRoute = new PromotionsRoute();
 
   return {
     loginRoute,
@@ -48,6 +51,7 @@ const prepareInstance = () => {
     salesRoute,
     addressesRoute,
     ordersRoute,
+    promotionsRoute,
   };
 };
 const instances = prepareInstance();
@@ -68,5 +72,6 @@ router.use('/products', AuthToken, instances.productsRoute.productRoute);
 router.use('/sales', AuthToken, instances.salesRoute.saleRoute);
 router.use('/addresses', AuthToken, instances.addressesRoute.addressRoute);
 router.use('/orders', AuthToken, instances.ordersRoute.orderRoute);
+router.use('/promotions', AuthToken, instances.promotionsRoute.promotionRoute);
 
 export default router;
