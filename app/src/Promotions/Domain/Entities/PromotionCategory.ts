@@ -11,7 +11,7 @@ export default class PromotionCategory {
     return this.id;
   }
 
-  public setId?(id: number) {
+  public setId(id: number) {
     this.id = id;
     return this;
   }

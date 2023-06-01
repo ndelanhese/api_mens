@@ -8,23 +8,23 @@ export default class CategoriesRepository {
     this.categoriesModel = new CategoriesModel();
   }
 
-  async save(brand: Category): Promise<Category> {
-    if (brand.getId()) {
-      this.update(brand);
+  async save(category: Category): Promise<Category> {
+    if (category.getId()) {
+      this.update(category);
     }
-    return this.create(brand);
+    return this.create(category);
   }
 
-  async create(brand: Category): Promise<Category> {
-    const { id } = await this.categoriesModel.createCategory(brand);
-    return brand.setId(id);
+  async create(category: Category): Promise<Category> {
+    const { id } = await this.categoriesModel.createCategory(category);
+    return category.setId(id);
   }
 
-  async delete(brandId: number): Promise<void> {
-    await this.categoriesModel.deleteCategory(brandId);
+  async delete(categoryId: number): Promise<void> {
+    await this.categoriesModel.deleteCategory(categoryId);
   }
 
-  async update(brand: Category): Promise<void> {
-    await this.categoriesModel.updateCategory(brand);
+  async update(category: Category): Promise<void> {
+    await this.categoriesModel.updateCategory(category);
   }
 }
