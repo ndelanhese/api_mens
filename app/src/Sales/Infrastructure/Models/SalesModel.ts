@@ -83,6 +83,9 @@ export default class SalesModel {
           },
         },
       );
+      await salesMethodsOfPaymentsModel.destroy({
+        where: { sale_id: payload.getId() },
+      });
       const salesMethodsOfPayments = payload.getPayment();
       if (salesMethodsOfPayments) {
         const payments = salesMethodsOfPayments.map(payment => ({
@@ -92,6 +95,9 @@ export default class SalesModel {
         }));
         await salesMethodsOfPaymentsModel.bulkCreate(payments);
       }
+      await salesProductsModel.destroy({
+        where: { sale_id: payload.getId() },
+      });
       const salesProducts = payload.getProducts();
       if (salesProducts) {
         const products = salesProducts.map(product => ({

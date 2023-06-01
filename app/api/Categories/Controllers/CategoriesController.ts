@@ -21,6 +21,7 @@ export default class CategoriesController extends BaseController {
       const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
       const categoriesModel = new CategoriesModel();
+      //TODO -> Retornar dentro do array de data
       const categories = await categoriesModel.getCategories();
       await this.createCache(cacheKey, categories);
       return res.status(200).json(categories);

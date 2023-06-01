@@ -1,4 +1,5 @@
 import PromotionCategory from './PromotionCategory';
+import PromotionProduct from './PromotionProduct';
 
 export default class Promotion {
   private id?: number;
@@ -10,17 +11,19 @@ export default class Promotion {
   private final_date?: Date;
   private status?: string;
   private promotion_category: PromotionCategory;
+  private products?: Array<PromotionProduct>;
 
   constructor(
-    id: number,
     name: string,
     description: string,
     promotion_category: PromotionCategory,
+    products?: Array<PromotionProduct>,
     discount_amount?: number,
     discount_type?: string,
     initial_date?: Date,
     final_date?: Date,
     status?: string,
+    id?: number,
   ) {
     this.id = id;
     this.name = name;
@@ -31,6 +34,7 @@ export default class Promotion {
     this.final_date = final_date;
     this.status = status;
     this.promotion_category = promotion_category;
+    this.products = products;
   }
 
   public getId() {
@@ -111,6 +115,15 @@ export default class Promotion {
 
   public setPromotionCategory(promotion_category: PromotionCategory) {
     this.promotion_category = promotion_category;
+    return this;
+  }
+
+  public getProducts() {
+    return this.products;
+  }
+
+  public setProducts(products: Array<PromotionProduct>) {
+    this.products = products;
     return this;
   }
 }

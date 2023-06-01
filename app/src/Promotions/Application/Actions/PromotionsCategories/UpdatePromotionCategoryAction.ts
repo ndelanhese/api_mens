@@ -10,8 +10,8 @@ export default class UpdatePromotionCategoryAction {
   ): Promise<void> {
     const categoriesRepository = new PromotionsCategoriesRepository();
     const category = new PromotionCategory(
-      input.name || currentValue.getName(),
-      input.id || currentValue.getId(),
+      input.name ?? currentValue.getName(),
+      input.id ?? currentValue.getId(),
     );
     await categoriesRepository.update(category);
   }

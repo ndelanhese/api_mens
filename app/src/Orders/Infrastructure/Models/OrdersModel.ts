@@ -27,7 +27,6 @@ export default class OrdersModel {
         customer_id: customerId,
         user_id: userId,
       });
-
       const ordersProducts = payload.getProducts();
       if (ordersProducts) {
         const products = ordersProducts.map(product => ({
@@ -62,6 +61,9 @@ export default class OrdersModel {
           },
         },
       );
+      await ordersProductsModel.destroy({
+        where: { order_id: payload.getId() },
+      });
       const ordersProducts = payload.getProducts();
       if (ordersProducts) {
         const products = ordersProducts.map(product => ({
