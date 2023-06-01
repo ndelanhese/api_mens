@@ -34,7 +34,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       promotion_category_id: {
         type: Sequelize.INTEGER,
