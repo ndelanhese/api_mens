@@ -6,10 +6,10 @@ import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
 
-import CreatePromotionFactory from '../Factories/CreatePromotionFactory';
-import DeletePromotionFactory from '../Factories/DeletePromotionFactory';
-import UpdatePromotionDateFactory from '../Factories/UpdatePromotionDataFactory';
-import UpdatePromotionFactory from '../Factories/UpdatePromotionFactory';
+import CreatePromotionFactory from '../Factories/Promotions/CreatePromotionFactory';
+import DeletePromotionFactory from '../Factories/Promotions/DeletePromotionFactory';
+import UpdatePromotionDateFactory from '../Factories/Promotions/UpdatePromotionDataFactory';
+import UpdatePromotionFactory from '../Factories/Promotions/UpdatePromotionFactory';
 import PromotionsModel from '../Models/PromotionsModel';
 
 export default class PromotionsController extends BaseController {
