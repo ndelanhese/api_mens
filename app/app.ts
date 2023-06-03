@@ -46,3 +46,7 @@ export default class App {
 //TODO -> Validar entrada de dados e suas consistência, por exemplo, validar se a data é valida, e essas coisas
 
 //TODO -> Adicionar validação de id na listagem única e criar middleware de validação para listagens múltiplas
+
+//TODO -> Verificar se todas as listagens de múltiplos dados estão dentro de um array de data
+
+//TODO -> Verificar quais tabelas podem ser listadas em ordem DESC

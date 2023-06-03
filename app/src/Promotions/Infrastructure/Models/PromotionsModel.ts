@@ -22,7 +22,7 @@ export default class PromotionsModel {
       if (promotionsProducts) {
         const products = promotionsProducts.map(product => ({
           promotion_id: promotion.id,
-          product_id: Number(product.getId()),
+          product_id: product.getProductId(),
         }));
         await promotionsProductsModel.bulkCreate(products);
       }
@@ -59,7 +59,7 @@ export default class PromotionsModel {
       if (promotionsProducts) {
         const products = promotionsProducts.map(product => ({
           promotion_id: Number(payload.getId()),
-          product_id: Number(product.getId()),
+          product_id: Number(product.getProductId()),
         }));
         await promotionsProductsModel.bulkCreate(products);
       }
