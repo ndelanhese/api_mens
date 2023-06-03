@@ -1,4 +1,4 @@
-import categoriesModel from '@db-models/CategoriesModel';
+import categoriesModel from '@db-models/PromotionsCategoriesModel';
 import HttpError from '@exceptions/HttpError';
 
 import PromotionCategory from '../../Domain/Entities/PromotionCategory';
