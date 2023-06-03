@@ -21,10 +21,10 @@ export default class PromotionCategoriesController extends BaseController {
       const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
       const categoriesModel = new PromotionCategoriesModel();
-      //TODO -> Retornar dentro do array de data
       const categories = await categoriesModel.getPromotionCategories();
-      await this.createCache(cacheKey, categories);
-      return res.status(200).json(categories);
+      const data = this.returnInData(categories);
+      await this.createCache(cacheKey, data);
+      return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

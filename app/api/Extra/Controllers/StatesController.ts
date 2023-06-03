@@ -14,8 +14,9 @@ export default class StatesController extends BaseController {
         return res.status(200).json(cache);
       }
       const states = States.labelsToKeyValue();
-      await this.createCache('states', states);
-      return res.status(200).json(states);
+      const data = this.returnInData(states);
+      await this.createCache('states', data);
+      return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

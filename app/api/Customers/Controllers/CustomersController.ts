@@ -42,8 +42,9 @@ export default class CustomersController extends BaseController {
         const addresses = this.prepareCustomerAddresses(customer.addresses);
         return this.prepareCustomerWithAddresses(customer, addresses);
       });
-      await this.createCache('customers', customerWithAddresses);
-      return res.status(200).json(customerWithAddresses);
+      const data = this.returnInData(customerWithAddresses);
+      await this.createCache('customers', data);
+      return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

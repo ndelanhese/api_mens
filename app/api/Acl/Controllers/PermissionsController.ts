@@ -22,7 +22,10 @@ export default class PermissionsController extends BaseController {
       this.verifyPermission(req, 'acl_read');
       const cache = await this.getCache('admin-permissions');
       if (cache) return res.status(200).json(cache);
-      const data = this.orderPermissions(await this.permissionsModel.findAll());
+      const permissions = this.orderPermissions(
+        await this.permissionsModel.findAll(),
+      );
+      const data = this.returnInData(permissions);
       await this.createCache('admin-permissions', data);
       return res.status(200).json(data);
     } catch (error) {

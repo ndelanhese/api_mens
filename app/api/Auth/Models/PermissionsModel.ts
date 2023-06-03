@@ -20,7 +20,7 @@ export default class PermissionsModel {
     }
   }
 
-  public async getPermissions(): Promise<IPermission[]> {
+  public async getPermissions() {
     try {
       return await permissionModel.findAll({
         attributes: ['id', 'name', 'description'],

@@ -3,12 +3,10 @@ import userPermissionModel from '@db-models/UsersPermissionsModel';
 import userRoleModel from '@db-models/UsersRolesModel';
 import HttpError from '@exceptions/HttpError';
 
-import { IUser } from './AuthModel.types';
-
 export default class UserModel {
-  public async getUserByEmail(email: string): Promise<IUser | undefined> {
+  public async getUserByEmail(email: string) {
     try {
-      const data = await userModel.findOne({
+      return await userModel.findOne({
         where: {
           email,
         },
@@ -23,9 +21,6 @@ export default class UserModel {
           },
         ],
       });
-      if (data) {
-        return data;
-      }
     } catch (error) {
       console.error(error);
       throw new HttpError(500, 'Erro ao buscar usuário.', error);

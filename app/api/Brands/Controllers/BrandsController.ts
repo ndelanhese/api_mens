@@ -21,7 +21,7 @@ export default class BrandsController extends BaseController {
       const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
       const brandsModel = new BrandsModel();
-      const brands = await brandsModel.getBrands();
+      const brands = this.returnInData(await brandsModel.getBrands());
       await this.createCache(cacheKey, brands);
       return res.status(200).json(brands);
     } catch (error) {

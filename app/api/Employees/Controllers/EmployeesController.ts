@@ -45,8 +45,9 @@ export default class EmployeesController extends BaseController {
         );
         return this.prepareEmployeeWithAddresses(employee, addresses);
       });
-      await this.createCache('employees', employeeWithAddresses);
-      return res.status(200).json(employeeWithAddresses);
+      const data = this.returnInData(employeeWithAddresses);
+      await this.createCache('employees', data);
+      return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

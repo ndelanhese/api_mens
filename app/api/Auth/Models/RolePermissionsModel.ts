@@ -8,10 +8,9 @@ export default class RolePermissions {
     roleId: number[],
   ): Promise<IRolePermission[]> {
     try {
-      const rolesPermissions = await rolePermission.findAll({
+      return await rolePermission.findAll({
         where: { role_id: roleId },
       });
-      return rolesPermissions;
     } catch (error) {
       throw new HttpError(500, 'Erro no Servidor.');
     }

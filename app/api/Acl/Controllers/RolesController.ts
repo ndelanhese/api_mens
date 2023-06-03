@@ -30,7 +30,7 @@ export default class RolesController extends BaseController {
       if (cache) {
         return res.status(200).json(cache);
       }
-      const roles = await this.rolesModel.getRoles();
+      const roles = this.returnInData(await this.rolesModel.getRoles());
       await this.createCache('admin-roles', roles);
       return res.status(200).json(roles);
     } catch (error) {
