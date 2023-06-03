@@ -13,7 +13,7 @@ export default class CreatePromotionAction {
     const promotionCategory = await this.getCategory(
       input.promotion_category_id,
     );
-    const products = input.promotion_products.map(
+    const products = input.promotion_products?.map(
       product => new PromotionProduct(product.id),
     );
     const promotion = new Promotion(

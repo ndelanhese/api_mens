@@ -16,7 +16,7 @@ export default class PromotionCategoriesController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      await this.verifyPermission(req, 'promotion_categories_read');
+      await this.verifyPermission(req, 'promotions_categories_read');
       const cacheKey = 'promotions_categories';
       const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
@@ -37,7 +37,7 @@ export default class PromotionCategoriesController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      await this.verifyPermission(req, 'promotion_categories_read');
+      await this.verifyPermission(req, 'promotions_categories_read');
       const { id } = req.params;
       const cacheKey = `promotions_categories-${id}`;
       const cache = await this.getCache(cacheKey);
@@ -58,7 +58,7 @@ export default class PromotionCategoriesController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      await this.verifyPermission(req, 'promotion_categories_create');
+      await this.verifyPermission(req, 'promotions_categories_create');
       const categoryInputData = CreatePromotionCategoryFactory.fromRequest(req);
       const categoryAction = new CreatePromotionCategoryAction();
       const categoryId = (
@@ -78,7 +78,7 @@ export default class PromotionCategoriesController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      await this.verifyPermission(req, 'promotion_categories_update');
+      await this.verifyPermission(req, 'promotions_categories_update');
       const userInputData = UpdatePromotionCategoryFactory.fromRequest(req);
       const userAction = new UpdatePromotionCategoryAction();
       const categoriesModel = new PromotionCategoriesModel();
@@ -106,7 +106,7 @@ export default class PromotionCategoriesController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      await this.verifyPermission(req, 'promotion_categories_delete');
+      await this.verifyPermission(req, 'promotions_categories_delete');
       const userInputData = DeletePromotionCategoryFactory.fromRequest(req);
       const userAction = new DeletePromotionCategoryAction();
       await userAction.execute(userInputData);
