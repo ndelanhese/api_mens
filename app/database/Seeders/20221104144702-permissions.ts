@@ -363,6 +363,62 @@ export async function up(queryInterface: QueryInterface) {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: 'promotions_read',
+        description: 'Ver Promoção',
+        group: 'Promoções',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'promotions_create',
+        description: 'Criar Promoção',
+        group: 'Promoções',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'promotions_update',
+        description: 'Atualizar Promoção',
+        group: 'Promoções',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'promotions_delete',
+        description: 'Deletar Promoção',
+        group: 'Promoções',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'promotions_categories_read',
+        description: 'Ver Categoria Promoção',
+        group: 'Categoria de promoções',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'promotions_categories_create',
+        description: 'Criar Categoria Promoção',
+        group: 'Categoria de promoções',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'promotions_categories_update',
+        description: 'Atualizar Categoria Promoção',
+        group: 'Categoria de promoções',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'promotions_categories_delete',
+        description: 'Deletar Categoria Promoção',
+        group: 'Categoria de promoções',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ],
     {},
   );
@@ -370,3 +426,4 @@ export async function up(queryInterface: QueryInterface) {
 export async function down(queryInterface: QueryInterface) {
   await queryInterface.bulkDelete('permissions', {});
 }
+//TODO -> Verificar se eu preciso de todas essas permissões

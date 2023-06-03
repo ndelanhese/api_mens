@@ -80,4 +80,10 @@ export default class BaseController {
       to: dataSplitted.to,
     };
   }
+
+  protected returnInData(array: Array<object>) {
+    return {
+      data: array,
+    };
+  }
 }

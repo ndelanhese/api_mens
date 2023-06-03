@@ -18,8 +18,9 @@ export default class StatesController extends BaseController {
       const ibgeService = new IBGEService();
       const districts = await ibgeService.getDistricts(state);
       const cities = this.prepareResponse(districts);
-      await this.createCache(`cities-of-${state}`, cities);
-      return res.status(200).json(cities);
+      const data = this.returnInData(cities);
+      await this.createCache(`cities-of-${state}`, data);
+      return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

@@ -1,1 +1,5 @@
-export type PromotionStatusTypesOptions = 'completed' | 'pending' | 'canceled';
+export type PromotionStatusTypesOptions =
+  | 'completed'
+  | 'pending'
+  | 'canceled'
+  | 'started';

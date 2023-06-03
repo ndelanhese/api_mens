@@ -21,7 +21,7 @@ export default class AddressesController extends BaseController {
       const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
       const addressesModel = new AddressesModel();
-      const addresses = await addressesModel.getAddresses();
+      const addresses = this.returnInData(await addressesModel.getAddresses());
       await this.createCache(cacheKey, addresses);
       return res.status(200).json(addresses);
     } catch (error) {

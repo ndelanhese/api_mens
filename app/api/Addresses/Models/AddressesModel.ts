@@ -16,8 +16,7 @@ export default class AddressesModel {
       if (!brand) throw new HttpError(404, 'Endereço não encontrada.');
       return brand;
     } catch (error) {
-      if (error instanceof HttpError)
-        throw new HttpError(error.statusCode, error.message, error);
+      if (error instanceof HttpError) throw error;
       throw new HttpError(500, 'Erro ao buscar enderenço.', error);
     }
   }

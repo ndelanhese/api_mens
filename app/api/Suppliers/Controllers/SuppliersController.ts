@@ -40,8 +40,9 @@ export default class SuppliersController extends BaseController {
         );
         return this.prepareSupplierWithAddresses(supplier, addresses);
       });
-      await this.createCache('suppliers', supplierWithAddresses);
-      return res.status(200).json(supplierWithAddresses);
+      const data = this.returnInData(supplierWithAddresses);
+      await this.createCache('suppliers', data);
+      return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

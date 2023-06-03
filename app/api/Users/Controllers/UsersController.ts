@@ -33,8 +33,9 @@ export default class UsersController extends BaseController {
       const cache = await this.getCache('users');
       if (cache) return res.status(200).json(cache);
       const users = await this.usersModel.findAll();
-      await this.createCache('users', users);
-      return res.status(200).json(users);
+      const data = this.returnInData(users);
+      await this.createCache('users', data);
+      return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

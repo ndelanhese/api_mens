@@ -5,11 +5,13 @@ export class PromotionStatusTypes {
     completed: 'Finalizada',
     pending: 'Pendente',
     canceled: 'Cancelada',
+    started: 'Iniciada',
   };
   public readonly value: PromotionStatusTypesOptions;
   public static completed = new PromotionStatusTypes('completed');
   public static pending = new PromotionStatusTypes('pending');
   public static canceled = new PromotionStatusTypes('canceled');
+  public static started = new PromotionStatusTypes('started');
 
   protected constructor(value: PromotionStatusTypesOptions) {
     this.value = value;

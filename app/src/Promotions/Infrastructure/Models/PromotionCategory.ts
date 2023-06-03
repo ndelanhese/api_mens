@@ -1,4 +1,4 @@
-import categoriesModel from '@db-models/CategoriesModel';
+import categoriesModel from '@db-models/PromotionsCategoriesModel';
 import HttpError from '@exceptions/HttpError';
 
 import PromotionCategory from '../../Domain/Entities/PromotionCategory';
@@ -51,6 +51,20 @@ export default class PromotionsCategoriesModel {
         throw new HttpError(error.statusCode, error.message, error);
 
       throw new HttpError(500, 'Erro ao excluir categoria de promoção.', error);
+    }
+  }
+
+  public async getCategoryById(categoryId: number) {
+    try {
+      const category = await categoriesModel.findByPk(categoryId);
+      if (!category)
+        throw new HttpError(404, 'Categoria de promoção não encontrada.');
+      return category;
+    } catch (error) {
+      if (error instanceof HttpError)
+        throw new HttpError(error.statusCode, error.message, error);
+
+      throw new HttpError(500, 'Erro ao buscar categoria de promoção.', error);
     }
   }
 }
