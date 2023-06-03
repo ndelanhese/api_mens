@@ -1,4 +1,6 @@
+import ProductsModel from '@app/database/Models/ProductsModel';
 import PromotionsCategoriesModel from '@app/database/Models/PromotionsCategoriesModel';
+import PromotionsProductsModel from '@app/database/Models/PromotionsProductsModel';
 import salesModel from '@db-models/PromotionsModel';
 import HttpError from '@exceptions/HttpError';
 
@@ -12,6 +14,16 @@ export default class PromotionsModel {
           {
             model: PromotionsCategoriesModel,
             as: 'category',
+          },
+          {
+            model: PromotionsProductsModel,
+            as: 'products',
+            include: [
+              {
+                model: ProductsModel,
+                as: 'product',
+              },
+            ],
           },
         ],
       });
@@ -27,6 +39,16 @@ export default class PromotionsModel {
           {
             model: PromotionsCategoriesModel,
             as: 'category',
+          },
+          {
+            model: PromotionsProductsModel,
+            as: 'products',
+            include: [
+              {
+                model: ProductsModel,
+                as: 'product',
+              },
+            ],
           },
         ],
       });
