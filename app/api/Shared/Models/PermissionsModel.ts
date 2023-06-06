@@ -15,8 +15,7 @@ export default class PermissionsModel {
       }
       throw new HttpError(404, 'Permissão não encontrada.');
     } catch (error) {
-      if (error instanceof HttpError)
-        throw new HttpError(error.statusCode, error.message, error);
+      if (error instanceof HttpError) throw error;
       throw new HttpError(500, 'erro ao buscar permissão.', error);
     }
   }

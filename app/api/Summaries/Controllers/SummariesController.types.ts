@@ -5,6 +5,12 @@ export interface IProductSummary {
   quantity: number;
 }
 
+export interface IMethodSummary {
+  id: number;
+  name: string;
+  quantity: number;
+}
+
 export interface IProductsResponse {
   id: number;
   quantity: number;
@@ -28,6 +34,21 @@ export interface IProductsResponse {
     category_id?: number;
     brand_id?: number;
     supplier_id?: number;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+}
+
+export interface IPaymentMethodsResponse {
+  id: number;
+  installment: number;
+  sale_id: number;
+  method_id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  method: {
+    id: number;
+    name: string;
     createdAt: Date;
     updatedAt: Date;
   };
