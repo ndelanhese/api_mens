@@ -25,7 +25,7 @@ export default class SummariesController extends BaseController {
   ): Promise<Response<string> | undefined> {
     try {
       const cacheKey = `products-summaries-${JSON.stringify(req.query)}`;
-      // await this.verifyPermission(req, 'summaries_read');
+      await this.verifyPermission(req, 'summaries_read');
       const cache = await this.getCache(cacheKey);
       if (cache) {
         return res.status(200).json(cache);
@@ -53,7 +53,7 @@ export default class SummariesController extends BaseController {
       const cacheKey = `methods-of-payments-summaries-${JSON.stringify(
         req.query,
       )}`;
-      // await this.verifyPermission(req, 'methods_of_payments_read');
+      await this.verifyPermission(req, 'summaries_read');
       const cache = await this.getCache(cacheKey);
       if (cache) {
         return res.status(200).json(cache);
@@ -81,7 +81,7 @@ export default class SummariesController extends BaseController {
       const cacheKey = `products-categories-summaries-${JSON.stringify(
         req.query,
       )}`;
-      // await this.verifyPermission(req, 'summaries_read');
+      await this.verifyPermission(req, 'summaries_read');
       const cache = await this.getCache(cacheKey);
       if (cache) {
         return res.status(200).json(cache);
@@ -107,7 +107,7 @@ export default class SummariesController extends BaseController {
   ): Promise<Response<string> | undefined> {
     try {
       const cacheKey = `products-brands-summaries-${JSON.stringify(req.query)}`;
-      // await this.verifyPermission(req, 'summaries_read');
+      await this.verifyPermission(req, 'summaries_read');
       const cache = await this.getCache(cacheKey);
       if (cache) {
         return res.status(200).json(cache);
