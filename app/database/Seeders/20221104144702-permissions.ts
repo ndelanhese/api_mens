@@ -419,6 +419,13 @@ export async function up(queryInterface: QueryInterface) {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: 'summaries_read',
+        description: 'Ver relatórios do sistema',
+        group: 'Relatórios de sistema',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ],
     {},
   );
