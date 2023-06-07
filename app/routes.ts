@@ -17,6 +17,7 @@ import { Router, Request, Response } from 'express';
 
 import PromotionsCategoriesRoute from './api/Promotions/Routes/CategoriesRoute';
 import PromotionsRoute from './api/Promotions/Routes/PromotionRoute';
+import SummariesRoute from './api/Summaries/Routes/SummariesController';
 
 const router = Router();
 
@@ -37,6 +38,7 @@ const prepareInstance = () => {
   const ordersRoute = new OrdersRoute();
   const promotionsRoute = new PromotionsRoute();
   const promotionsCategoriesRoute = new PromotionsCategoriesRoute();
+  const summariesRoute = new SummariesRoute();
 
   return {
     loginRoute,
@@ -55,6 +57,7 @@ const prepareInstance = () => {
     ordersRoute,
     promotionsRoute,
     promotionsCategoriesRoute,
+    summariesRoute,
   };
 };
 const instances = prepareInstance();
@@ -81,5 +84,6 @@ router.use(
   AuthToken,
   instances.promotionsCategoriesRoute.promotionCategoryRoute,
 );
+router.use('/summaries', AuthToken, instances.summariesRoute.summaryRoute);
 
 export default router;

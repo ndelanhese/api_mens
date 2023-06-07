@@ -3,4 +3,4 @@ import App from './app';
 
 const app = new App();
 
-app.start(Number(3333));
+app.start(3333);
