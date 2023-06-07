@@ -17,6 +17,12 @@ export interface ICategorySummary {
   quantity: number;
 }
 
+export interface IBrandSummary {
+  id: number;
+  name: string;
+  quantity: number;
+}
+
 export interface IProductsResponse {
   id: number;
   quantity: number;
@@ -65,6 +71,17 @@ export interface IProductsCategoriesResponse {
   product: {
     id: number;
     category: {
+      id: number;
+      name: string;
+    };
+  };
+}
+
+export interface IProductsBrandsResponse {
+  id: number;
+  product: {
+    id: number;
+    brand: {
       id: number;
       name: string;
     };
