@@ -3,12 +3,15 @@ import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
 
 import PaymentMethodsModel from '../Models/PaymentsMethods';
+import ProductsCategoriesModel from '../Models/ProductsCategoriesModel';
 import ProductsModel from '../Models/ProductsModel';
 
 import {
+  ICategorySummary,
   IMethodSummary,
   IPaymentMethodsResponse,
   IProductSummary,
+  IProductsCategoriesResponse,
   IProductsResponse,
 } from './SummariesController.types';
 
@@ -18,7 +21,7 @@ export default class SummariesController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      const cacheKey = `summaries-${JSON.stringify(req.query)}`;
+      const cacheKey = `products-summaries-${JSON.stringify(req.query)}`;
       // await this.verifyPermission(req, 'summaries_read');
       const cache = await this.getCache(cacheKey);
       if (cache) {
@@ -44,7 +47,9 @@ export default class SummariesController extends BaseController {
     res: Response,
   ): Promise<Response<string> | undefined> {
     try {
-      const cacheKey = `methods-of-payments-${JSON.stringify(req.query)}`;
+      const cacheKey = `methods-of-payments-summaries-${JSON.stringify(
+        req.query,
+      )}`;
       // await this.verifyPermission(req, 'methods_of_payments_read');
       const cache = await this.getCache(cacheKey);
       if (cache) {
@@ -58,6 +63,34 @@ export default class SummariesController extends BaseController {
       );
       await this.createCache(cacheKey, calculatedPaymentMethodsSummary);
       return res.status(200).json(calculatedPaymentMethodsSummary);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getTopProductsCategories(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      const cacheKey = `products-categories-summaries-${JSON.stringify(
+        req.query,
+      )}`;
+      // await this.verifyPermission(req, 'summaries_read');
+      const cache = await this.getCache(cacheKey);
+      if (cache) {
+        return res.status(200).json(cache);
+      }
+      const summariesModel = new ProductsCategoriesModel();
+      //TODO -> Pegar datas
+      const summaries = await summariesModel.getProducts();
+      const calculatedProductsCategoriesSummary = this.returnInData(
+        this.calculateProductsCategoriesSummary(summaries),
+      );
+      await this.createCache(cacheKey, calculatedProductsCategoriesSummary);
+      return res.status(200).json(calculatedProductsCategoriesSummary);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -106,5 +139,27 @@ export default class SummariesController extends BaseController {
         return summary;
       }, {} as Record<number, IMethodSummary>);
     return Object.values(paymentMethodsSummary);
+  }
+
+  private calculateProductsCategoriesSummary(
+    productsCategories: IProductsCategoriesResponse[],
+  ) {
+    const productsCategoriesSummary: Record<number, ICategorySummary> =
+      productsCategories.reduce((summary, productCategory) => {
+        const { product } = productCategory;
+        const { id, name } = product.category;
+
+        if (summary[id]) {
+          summary[id].quantity += 1;
+        } else {
+          summary[id] = {
+            id,
+            name: name,
+            quantity: 1,
+          };
+        }
+        return summary;
+      }, {} as Record<number, ICategorySummary>);
+    return Object.values(productsCategoriesSummary);
   }
 }

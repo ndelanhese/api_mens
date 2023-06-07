@@ -21,9 +21,14 @@ export default class SummariesRoute {
       this.summariesController.getTopMethodsOfPayments.bind(
         this.summariesController,
       );
+    const getTopProductsCategories =
+      this.summariesController.getTopProductsCategories.bind(
+        this.summariesController,
+      );
 
     this.summaryRoute.get('/top-selling-products', getTopProducts);
     this.summaryRoute.get('/top-payment-methods', getTopMethodsOfPayments);
+    this.summaryRoute.get('/top-products-categories', getTopProductsCategories);
   }
 
   get summaryRoute() {

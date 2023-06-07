@@ -11,6 +11,12 @@ export interface IMethodSummary {
   quantity: number;
 }
 
+export interface ICategorySummary {
+  id: number;
+  name: string;
+  quantity: number;
+}
+
 export interface IProductsResponse {
   id: number;
   quantity: number;
@@ -51,5 +57,16 @@ export interface IPaymentMethodsResponse {
     name: string;
     createdAt: Date;
     updatedAt: Date;
+  };
+}
+
+export interface IProductsCategoriesResponse {
+  id: number;
+  product: {
+    id: number;
+    category: {
+      id: number;
+      name: string;
+    };
   };
 }
