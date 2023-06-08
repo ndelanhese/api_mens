@@ -50,3 +50,7 @@ export default class App {
 //TODO -> Verificar quais tabelas podem ser listadas em ordem DESC
 
 //TODO -> Melhorar os retornos de métodos GET com relacionamento (evitando encadeamento de objetos)
+
+//TODO -> Pegar as listagens que tem status ativo e inativo e adicionar o filtro de status e colocar o ativo como padrão
+
+//TODO -> Pegar as listagens que tem data inicial e final e adicionar o filtro de data e colocar até a data atual como padrão
