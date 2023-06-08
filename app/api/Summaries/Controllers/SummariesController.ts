@@ -214,3 +214,6 @@ export default class SummariesController extends BaseController {
     return Object.values(productsBrandsSummary);
   }
 }
+
+//TODO -> Gerar pdf (exportar)
+//TODO -> Gerar excel (exportar)
