@@ -35,6 +35,6 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "dist", "src_old", "jest.config.ts"],
-  "include": ["app/**/*", "env.d.ts"]
+  "include": ["app/**/*", "env.d.ts"],
+  "exclude": ["node_modules", "dist", "src_old", "jest.config.ts"]
 }
