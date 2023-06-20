@@ -1,6 +1,10 @@
 import express, { Router } from 'express';
 
 import PromotionsController from '../Controllers/PromotionsController';
+import createPromotionMiddleware from '../Middleware/Promotions/CreatePromotionMiddleware';
+import deletePromotionMiddleware from '../Middleware/Promotions/DeletePromotionMiddleware';
+import updatePromotionDateMiddleware from '../Middleware/Promotions/UpdatePromotionDateMiddleware';
+import updatePromotionMiddleware from '../Middleware/Promotions/UpdatePromotionMiddleware';
 
 export default class PromotionsRoute {
   private promotionsRoute: Router;
@@ -34,13 +38,20 @@ export default class PromotionsRoute {
       this.promotionsController,
     );
 
-    //TODO-> Adicionar middleware
     this.promotionRoute.get('/', getPromotions);
     this.promotionRoute.get('/:id', getPromotion);
-    this.promotionRoute.post('/', createPromotion);
-    this.promotionRoute.put('/:id/date', updatePromotionDate);
-    this.promotionRoute.put('/:id', updatePromotion);
-    this.promotionRoute.delete('/:id', deletePromotion);
+    this.promotionRoute.post('/', createPromotionMiddleware, createPromotion);
+    this.promotionRoute.put(
+      '/:id/date',
+      updatePromotionDateMiddleware,
+      updatePromotionDate,
+    );
+    this.promotionRoute.put('/:id', updatePromotionMiddleware, updatePromotion);
+    this.promotionRoute.delete(
+      '/:id',
+      deletePromotionMiddleware,
+      deletePromotion,
+    );
   }
 
   get promotionRoute() {
