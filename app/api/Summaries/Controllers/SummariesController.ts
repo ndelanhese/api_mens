@@ -4,6 +4,7 @@ import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
 
 import ListPaymentMethodsFactory from '../Factories/ListPaymentMethodsFactory';
+import ListProductsBrandsFactory from '../Factories/ListProductsBrandsFactory';
 import ListProductsCategoryFactory from '../Factories/ListProductsCategoryFactory';
 import ListProductsFactory from '../Factories/ListProductsFactory';
 import PaymentMethodsModel from '../Models/PaymentsMethods';
@@ -149,9 +150,19 @@ export default class SummariesController extends BaseController {
         return res.status(200).json(cache);
       }
       const summariesModel = new ProductsBrandsModel();
-      //TODO -> Pegar datas
-      const summaries = await summariesModel.getProducts();
-      const calculatedProductsBrandsSummary = this.returnInData(
+      const { final_date, initial_date } =
+        ListProductsBrandsFactory.fromRequest(req);
+      const { page, perPage, direction, order } =
+        PaginationFactory.fromRequest(req);
+      const summaries = await summariesModel.getProducts(
+        initial_date,
+        final_date,
+        order,
+        direction,
+      );
+      const calculatedProductsBrandsSummary = this.dataPagination(
+        page,
+        perPage,
         this.calculateProductsBrandsSummary(summaries),
       );
       await this.createCache(cacheKey, calculatedProductsBrandsSummary);
