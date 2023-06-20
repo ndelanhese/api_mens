@@ -1,7 +1,12 @@
+import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
 
+import ListPaymentMethodsFactory from '../Factories/ListPaymentMethodsFactory';
+import ListProductsBrandsFactory from '../Factories/ListProductsBrandsFactory';
+import ListProductsCategoryFactory from '../Factories/ListProductsCategoryFactory';
+import ListProductsFactory from '../Factories/ListProductsFactory';
 import PaymentMethodsModel from '../Models/PaymentsMethods';
 import ProductsBrandsModel from '../Models/ProductsBrandsModel';
 import ProductsCategoriesModel from '../Models/ProductsCategoriesModel';
@@ -31,9 +36,21 @@ export default class SummariesController extends BaseController {
         return res.status(200).json(cache);
       }
       const summariesModel = new ProductsModel();
-      //TODO -> Pegar datas
-      const summaries = await summariesModel.getProducts();
-      const calculatedProductsSummary = this.returnInData(
+      const { final_date, final_value, initial_date, initial_value } =
+        ListProductsFactory.fromRequest(req);
+      const { page, perPage, direction, order } =
+        PaginationFactory.fromRequest(req);
+      const summaries = await summariesModel.getProducts(
+        initial_date,
+        final_date,
+        initial_value,
+        final_value,
+        order,
+        direction,
+      );
+      const calculatedProductsSummary = this.dataPagination(
+        page,
+        perPage,
         this.calculateProductSummary(summaries),
       );
       await this.createCache(cacheKey, calculatedProductsSummary);
@@ -59,9 +76,19 @@ export default class SummariesController extends BaseController {
         return res.status(200).json(cache);
       }
       const paymentMethodsModel = new PaymentMethodsModel();
-      //TODO -> Pegar datas
-      const summaries = await paymentMethodsModel.getPaymentMethods();
-      const calculatedPaymentMethodsSummary = this.returnInData(
+      const { final_date, initial_date } =
+        ListPaymentMethodsFactory.fromRequest(req);
+      const { page, perPage, direction, order } =
+        PaginationFactory.fromRequest(req);
+      const summaries = await paymentMethodsModel.getPaymentMethods(
+        initial_date,
+        final_date,
+        order,
+        direction,
+      );
+      const calculatedPaymentMethodsSummary = this.dataPagination(
+        page,
+        perPage,
         this.calculatePaymentMethodsSummary(summaries),
       );
       await this.createCache(cacheKey, calculatedPaymentMethodsSummary);
@@ -87,9 +114,19 @@ export default class SummariesController extends BaseController {
         return res.status(200).json(cache);
       }
       const summariesModel = new ProductsCategoriesModel();
-      //TODO -> Pegar datas
-      const summaries = await summariesModel.getProducts();
-      const calculatedProductsCategoriesSummary = this.returnInData(
+      const { final_date, initial_date } =
+        ListProductsCategoryFactory.fromRequest(req);
+      const { page, perPage, direction, order } =
+        PaginationFactory.fromRequest(req);
+      const summaries = await summariesModel.getProducts(
+        initial_date,
+        final_date,
+        order,
+        direction,
+      );
+      const calculatedProductsCategoriesSummary = this.dataPagination(
+        page,
+        perPage,
         this.calculateProductsCategoriesSummary(summaries),
       );
       await this.createCache(cacheKey, calculatedProductsCategoriesSummary);
@@ -113,9 +150,19 @@ export default class SummariesController extends BaseController {
         return res.status(200).json(cache);
       }
       const summariesModel = new ProductsBrandsModel();
-      //TODO -> Pegar datas
-      const summaries = await summariesModel.getProducts();
-      const calculatedProductsBrandsSummary = this.returnInData(
+      const { final_date, initial_date } =
+        ListProductsBrandsFactory.fromRequest(req);
+      const { page, perPage, direction, order } =
+        PaginationFactory.fromRequest(req);
+      const summaries = await summariesModel.getProducts(
+        initial_date,
+        final_date,
+        order,
+        direction,
+      );
+      const calculatedProductsBrandsSummary = this.dataPagination(
+        page,
+        perPage,
         this.calculateProductsBrandsSummary(summaries),
       );
       await this.createCache(cacheKey, calculatedProductsBrandsSummary);
