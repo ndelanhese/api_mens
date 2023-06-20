@@ -1,7 +1,9 @@
+import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
 
+import ListProductsFactory from '../Factories/ListProductsFactory';
 import PaymentMethodsModel from '../Models/PaymentsMethods';
 import ProductsBrandsModel from '../Models/ProductsBrandsModel';
 import ProductsCategoriesModel from '../Models/ProductsCategoriesModel';
@@ -31,9 +33,21 @@ export default class SummariesController extends BaseController {
         return res.status(200).json(cache);
       }
       const summariesModel = new ProductsModel();
-      //TODO -> Pegar datas
-      const summaries = await summariesModel.getProducts();
-      const calculatedProductsSummary = this.returnInData(
+      const { final_date, final_value, initial_date, initial_value } =
+        ListProductsFactory.fromRequest(req);
+      const { page, perPage, direction, order } =
+        PaginationFactory.fromRequest(req);
+      const summaries = await summariesModel.getProducts(
+        initial_date,
+        final_date,
+        initial_value,
+        final_value,
+        order,
+        direction,
+      );
+      const calculatedProductsSummary = this.dataPagination(
+        page,
+        perPage,
         this.calculateProductSummary(summaries),
       );
       await this.createCache(cacheKey, calculatedProductsSummary);

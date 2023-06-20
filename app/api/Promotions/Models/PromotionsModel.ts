@@ -4,7 +4,6 @@ import PromotionsProductsModel from '@app/database/Models/PromotionsProductsMode
 import salesModel from '@db-models/PromotionsModel';
 import HttpError from '@exceptions/HttpError';
 
-//TODO -> Adicionar filtro por status
 export default class PromotionsModel {
   public async getPromotions() {
     try {
