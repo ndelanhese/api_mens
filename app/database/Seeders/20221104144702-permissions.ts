@@ -1,4 +1,3 @@
-import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
 import { QueryInterface } from 'sequelize';
 
 export async function up(queryInterface: QueryInterface) {
@@ -81,42 +80,6 @@ export async function up(queryInterface: QueryInterface) {
         group: 'Papéis e Permissões',
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
-      //Banners
-      {
-        name: 'banners_read',
-        description: 'Ver banners',
-        group: 'Banners',
-        createdAt: getDate(),
-        updatedAt: getDate(),
-      },
-      {
-        name: 'banners_update',
-        description: 'Atualizar banners',
-        group: 'Banners',
-        createdAt: getDate(),
-        updatedAt: getDate(),
-      },
-      {
-        name: 'banners_reorder',
-        description: 'Reordenação de banners',
-        group: 'Banners',
-        createdAt: getDate(),
-        updatedAt: getDate(),
-      },
-      {
-        name: 'banners_create',
-        description: 'Criar banners',
-        group: 'Banners',
-        createdAt: getDate(),
-        updatedAt: getDate(),
-      },
-      {
-        name: 'banners_delete',
-        description: 'Deletar banners',
-        group: 'Banners',
-        createdAt: getDate(),
-        updatedAt: getDate(),
       },
       {
         name: 'brands_read',
@@ -433,4 +396,3 @@ export async function up(queryInterface: QueryInterface) {
 export async function down(queryInterface: QueryInterface) {
   await queryInterface.bulkDelete('permissions', {});
 }
-//TODO -> Verificar se eu preciso de todas essas permissões
