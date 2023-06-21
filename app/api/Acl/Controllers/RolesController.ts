@@ -97,7 +97,7 @@ export default class RolesController extends BaseController {
       await roleAction.execute(roleInputData);
       await this.deleteCache('roles');
       await this.deleteCache('users');
-      return res.status(200).json('Papel deletado com sucesso.');
+      return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
