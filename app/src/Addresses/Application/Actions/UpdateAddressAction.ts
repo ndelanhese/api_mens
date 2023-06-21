@@ -17,6 +17,7 @@ export default class UpdateAddressAction extends AddressesAction {
       input.postal_code || currentValue.getPostalCode(),
       input.city || currentValue.getCity(),
       input.state || currentValue.getState(),
+      currentValue.getId(),
     );
     await this.validateCep(address.getPostalCode());
     await addressesRepository.update(address);
