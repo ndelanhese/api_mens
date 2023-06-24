@@ -8,7 +8,7 @@ const updateRolesAndPermissionMiddleware = (
   next: NextFunction,
 ) => {
   const updateRoleAndPermissionSchema = joi.object({
-    role_id: joi.array().items(joi.number()).required(),
+    roles: joi.array().items(joi.number()).required(),
     permissions: joi.array().items(joi.number()).required(),
   });
   const userSchema = joi.object({

@@ -1,3 +1,4 @@
+import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import { formatCnpj } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
 import CreateSupplierAction from '@app/src/Suppliers/Application/Actions/CreateSupplierAction';
 import DeleteSupplierAction from '@app/src/Suppliers/Application/Actions/DeleteSupplierAction';
@@ -33,14 +34,19 @@ export default class SuppliersController extends BaseController {
       await this.verifyPermission(req, 'suppliers_read');
       const cache = await this.getCache('suppliers');
       if (cache) return res.status(200).json(cache);
-      const suppliers = await this.suppliersModel.getSuppliers();
+      const { page, perPage, order, direction } =
+        PaginationFactory.fromRequest(req);
+      const suppliers = await this.suppliersModel.getSuppliers(
+        order,
+        direction,
+      );
       const supplierWithAddresses = suppliers.map(supplier => {
         const addresses = this.prepareSupplierAddresses(
           supplier.supplier_addresses,
         );
         return this.prepareSupplierWithAddresses(supplier, addresses);
       });
-      const data = this.returnInData(supplierWithAddresses);
+      const data = this.dataPagination(page, perPage, supplierWithAddresses);
       await this.createCache('suppliers', data);
       return res.status(200).json(data);
     } catch (error) {

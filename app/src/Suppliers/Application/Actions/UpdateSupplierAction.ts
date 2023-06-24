@@ -20,7 +20,6 @@ export default class UpdateSupplierAction extends SupplierAction {
       undefined,
       input.id || currentValue.getId(),
     );
-    await this.validateCep(supplier.getAddress()?.getPostalCode());
     await supplierRepository.update(supplier);
     await this.updateAddress(input);
   }
@@ -28,6 +27,7 @@ export default class UpdateSupplierAction extends SupplierAction {
   private async updateAddress(input: UpdateSupplierInputData) {
     if (input.address) {
       const { address: inputData } = input;
+      await this.validateCep(inputData.postal_code);
       const address = new Address(
         inputData.address,
         inputData.number,

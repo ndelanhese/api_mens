@@ -63,7 +63,6 @@ export default class PromotionsCategoriesModel {
     } catch (error) {
       if (error instanceof HttpError)
         throw new HttpError(error.statusCode, error.message, error);
-
       throw new HttpError(500, 'Erro ao buscar categoria de promoção.', error);
     }
   }

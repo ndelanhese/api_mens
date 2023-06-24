@@ -7,9 +7,13 @@ import HttpError from '@exceptions/HttpError';
 import { ISupplier } from './SuppliersModel.types';
 
 export default class ListSuppliersModel {
-  public async getSuppliers(): Promise<ISupplier[]> {
+  public async getSuppliers(
+    order: string,
+    direction: string,
+  ): Promise<ISupplier[]> {
     try {
       const suppliers: any = await suppliersModel.findAll({
+        order: [[order, direction]],
         include: [
           {
             model: SuppliersAddressesModel,

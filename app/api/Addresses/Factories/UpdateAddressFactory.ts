@@ -16,14 +16,15 @@ export default class UpdateAddressFactory {
       req.body.state,
     );
   }
-  static fromCurrentAddress(brand: IAddress) {
+  static fromCurrentAddress(address: IAddress) {
     return new Address(
-      brand.address,
-      brand.number,
-      brand.district,
-      brand.postal_code,
-      brand.city,
-      brand.state,
+      address.address,
+      address.number,
+      address.district,
+      address.postal_code,
+      address.city,
+      address.state,
+      address.id,
     );
   }
 }

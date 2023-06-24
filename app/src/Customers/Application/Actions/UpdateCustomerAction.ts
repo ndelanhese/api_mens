@@ -32,6 +32,7 @@ export default class UpdateCustomerAction extends CustomerAction {
   private async updateAddress(input: UpdateCustomerInputData) {
     if (input.address) {
       const { address: inputData } = input;
+      await this.validateCep(inputData.postal_code);
       const address = new Address(
         inputData.address,
         inputData.number,
