@@ -5,7 +5,7 @@ export default class UpdateRolesAndPermissionsFactory {
   static fromRequest(req: Request) {
     return new UploadRolesAndPermissionsInputData(
       Number(req.params.id),
-      req.body.role_id,
+      req.body.roles,
       req.body.permissions,
     );
   }
