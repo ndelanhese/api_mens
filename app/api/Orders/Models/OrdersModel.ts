@@ -80,17 +80,15 @@ export default class OrdersModel {
           {
             model: CustomersModel,
             as: 'customer',
-            attributes: { exclude: ['status', 'createdAt', 'updatedAt'] },
           },
           {
             model: UsersModel,
             as: 'user',
-            attributes: ['id'],
+            attributes: { exclude: ['password'] },
             include: [
               {
                 model: EmployeesModel,
                 as: 'employee',
-                attributes: ['id', 'name'],
               },
             ],
           },
@@ -101,22 +99,7 @@ export default class OrdersModel {
               {
                 model: ProductsModel,
                 as: 'product',
-                attributes: {
-                  exclude: [
-                    'createdAt',
-                    'updatedAt',
-                    'quantity',
-                    'purchase_price',
-                  ],
-                },
               },
-            ],
-            attributes: [
-              'id',
-              'quantity',
-              'discount_amount',
-              'discount_type',
-              'final_value',
             ],
           },
         ],
