@@ -38,6 +38,7 @@ export default class UpdateEmployeeAction extends EmployeeAction {
   private async updateAddress(input: UpdateEmployeeInputData) {
     if (input.address) {
       const { address: inputData } = input;
+      await this.validateCep(inputData.postal_code);
       const address = new Address(
         inputData.address,
         inputData.number,
