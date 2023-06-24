@@ -12,3 +12,5 @@ TODO -> Pegar as listagens que tem data inicial e final e adicionar o filtro de 
 
 TODO -> Adicionar endpoint de verificação de estoque (Lista os produtos com estoque baixo),
 adicionar filtro de quantidade, marca, categoria, preço, nome, part_number
+
+TODO -> Adicionar listagem de status para todos os status com ENUM
