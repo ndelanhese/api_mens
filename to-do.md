@@ -14,3 +14,5 @@ TODO -> Adicionar endpoint de verificação de estoque (Lista os produtos com es
 adicionar filtro de quantidade, marca, categoria, preço, nome, part_number
 
 TODO -> Adicionar listagem de status para todos os status com ENUM
+
+TODO -> Ao adicionar uma nova promoção com produto invalido, a promoção é criada, não pode fazer isso
