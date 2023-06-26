@@ -153,7 +153,7 @@ export default class OrdersController extends BaseController {
       const cache = await this.getCache('orders-status');
       if (cache) return res.status(200).json(cache);
       const status = OrderStatusTypes.labelsToKeyValue();
-      await this.createCache('orders', status);
+      await this.createCache('orders-status', status);
       return res.status(200).json(status);
     } catch (error) {
       if (error instanceof HttpError) {

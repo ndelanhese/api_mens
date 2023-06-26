@@ -155,7 +155,7 @@ export default class EmployeesController extends BaseController {
       const cache = await this.getCache('employees-status');
       if (cache) return res.status(200).json(cache);
       const status = EmployeeStatusTypes.labelsToKeyValue();
-      await this.createCache('employees', status);
+      await this.createCache('employees-status', status);
       return res.status(200).json(status);
     } catch (error) {
       if (error instanceof HttpError) {

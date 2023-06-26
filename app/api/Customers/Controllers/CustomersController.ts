@@ -149,7 +149,7 @@ export default class CustomersController extends BaseController {
       const cache = await this.getCache('customers-status');
       if (cache) return res.status(200).json(cache);
       const status = CustomerStatusTypes.labelsToKeyValue();
-      await this.createCache('customers', status);
+      await this.createCache('customers-status', status);
       return res.status(200).json(status);
     } catch (error) {
       if (error instanceof HttpError) {

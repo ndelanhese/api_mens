@@ -37,7 +37,16 @@ export default class PromotionsRoute {
     const deletePromotion = this.promotionsController.deletePromotion.bind(
       this.promotionsController,
     );
+    const getPromotionStatus = this.promotionsController.getStatus.bind(
+      this.promotionsController,
+    );
+    const getPromotionDiscountType =
+      this.promotionsController.getDiscountTypes.bind(
+        this.promotionsController,
+      );
 
+    this.promotionRoute.get('/status', getPromotionStatus);
+    this.promotionRoute.get('/discount-types', getPromotionDiscountType);
     this.promotionRoute.get('/', getPromotions);
     this.promotionRoute.get('/:id', getPromotion);
     this.promotionRoute.post('/', createPromotionMiddleware, createPromotion);
