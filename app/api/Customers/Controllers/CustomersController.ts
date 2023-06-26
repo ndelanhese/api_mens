@@ -1,6 +1,7 @@
 import CreateCustomerAction from '@app/src/Customers/Application/Actions/CreateCustomerAction';
 import DeleteCustomerAction from '@app/src/Customers/Application/Actions/DeleteCustomerAction';
 import UpdateCustomerAction from '@app/src/Customers/Application/Actions/UpdateCustomerAction';
+import { CustomerStatusTypes } from '@app/src/Customers/Domain/Enums/CustomerStatusTypes';
 import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
 import {
   formatPhoneNumber,
@@ -132,6 +133,24 @@ export default class CustomersController extends BaseController {
       await customerAction.execute(customerInputData);
       await this.deleteCache('customers');
       return res.status(204).send();
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getStatus(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'customers_read');
+      const cache = await this.getCache('customers-status');
+      if (cache) return res.status(200).json(cache);
+      const status = CustomerStatusTypes.labelsToKeyValue();
+      await this.createCache('customers', status);
+      return res.status(200).json(status);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

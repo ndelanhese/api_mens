@@ -32,7 +32,11 @@ export default class CustomersRoute {
     const deleteCustomer = this.customerController.deleteCustomer.bind(
       this.customerController,
     );
+    const getCustomerStatus = this.customerController.getStatus.bind(
+      this.customerController,
+    );
 
+    this.customersRoute.get('/status', getCustomerStatus);
     this.customersRoute.get('/', getCustomers);
     this.customersRoute.get('/:id', getCustomer);
     this.customersRoute.post('/', createCustomerMiddleware, createCustomer);
