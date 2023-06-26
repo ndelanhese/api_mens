@@ -21,6 +21,7 @@ export default class ProductsModel extends Model<
   public size!: CreationOptional<string>;
   public color!: CreationOptional<string>;
   public quantity!: number;
+  public status!: CreationOptional<string>;
   public category_id!: number;
   public brand_id!: number;
   public supplier_id!: number;
@@ -67,6 +68,10 @@ ProductsModel.init(
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     category_id: {
       type: DataTypes.INTEGER,
