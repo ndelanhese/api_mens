@@ -41,6 +41,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      status: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       category_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

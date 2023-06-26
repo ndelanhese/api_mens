@@ -4,6 +4,7 @@ import ExportOrderAction from '@app/src/Orders/Application/Actions/ExportOrderAc
 import UpdateOrderAction from '@app/src/Orders/Application/Actions/UpdateOrderAction';
 import UpdateOrderStatusAction from '@app/src/Orders/Application/Actions/UpdateOrderStatusAction';
 import ExportOrdersInputData from '@app/src/Orders/Application/Dtos/ExportOrdersInputData';
+import { OrderStatusTypes } from '@app/src/Orders/Domain/Enums/OrderStatusTypes';
 import { getDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
@@ -136,6 +137,24 @@ export default class OrdersController extends BaseController {
       );
       res.setHeader('Content-Type', 'application/vnd.ms-excel');
       return res.end(orders);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getStatus(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'orders_read');
+      const cache = await this.getCache('orders-status');
+      if (cache) return res.status(200).json(cache);
+      const status = OrderStatusTypes.labelsToKeyValue();
+      await this.createCache('orders-status', status);
+      return res.status(200).json(status);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

@@ -1,6 +1,7 @@
 import CreateEmployeeAction from '@app/src/Employees/Application/Actions/CreateEmployeeAction';
 import DeleteEmployeeAction from '@app/src/Employees/Application/Actions/DeleteEmployeeAction';
 import UpdateEmployeeAction from '@app/src/Employees/Application/Actions/UpdateEmployeeAction';
+import { EmployeeStatusTypes } from '@app/src/Employees/Domain/Enums/EmployeeStatusTypes';
 import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
 import {
   formatPhoneNumber,
@@ -138,6 +139,24 @@ export default class EmployeesController extends BaseController {
       await employeeAction.execute(employeeInputData);
       await this.deleteCache('employees');
       return res.status(204).send();
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getStatus(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'employees_read');
+      const cache = await this.getCache('employees-status');
+      if (cache) return res.status(200).json(cache);
+      const status = EmployeeStatusTypes.labelsToKeyValue();
+      await this.createCache('employees-status', status);
+      return res.status(200).json(status);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

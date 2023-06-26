@@ -19,6 +19,7 @@ export default class CreateProductAction {
       input.description,
       input.price,
       input.quantity,
+      input.status,
       undefined,
       category,
       brand,
@@ -34,6 +35,7 @@ export default class CreateProductAction {
         productCreated.getDescription(),
         productCreated.getPrice(),
         productCreated.getQuantity(),
+        input.status,
         this.generatePartNumber(
           category,
           brand,

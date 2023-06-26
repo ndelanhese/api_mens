@@ -109,4 +109,15 @@ export default class ProductsModel {
       throw new HttpError(500, 'Erro ao buscar produto.', error);
     }
   }
+
+  public async getProductsStock(status?: string, limit?: number) {
+    try {
+      return await productsModel.findAll({
+        where: { status, quantity: { [Op.lte]: limit } },
+        attributes: ['id', 'name', 'part_number', 'description', 'quantity'],
+      });
+    } catch (error) {
+      throw new HttpError(500, 'Erro ao buscar estoque produtos.', error);
+    }
+  }
 }

@@ -4,6 +4,7 @@ import DeleteProductAction from '@app/src/Products/Application/Actions/DeletePro
 import ExportProductsAction from '@app/src/Products/Application/Actions/ExportProductsAction';
 import UpdateProductAction from '@app/src/Products/Application/Actions/UpdateProductAction';
 import UpdateProductStockAction from '@app/src/Products/Application/Actions/UpdateProductStockAction';
+import { ProductStatusTypes } from '@app/src/Products/Domain/Enums/ProductStatusTypes';
 import {
   getDateString,
   getTime,
@@ -16,6 +17,7 @@ import CreateProductFactory from '../Factories/CreateProductFactory';
 import DeleteProductFactory from '../Factories/DeleteProductFactory';
 import ExportProductsFactory from '../Factories/ExportProductsFactory';
 import ListProductsFactory from '../Factories/ListProductsFactory';
+import ListProductsStockFactory from '../Factories/ListProductsStockFactory';
 import UpdateProductFactory from '../Factories/UpdateProductFactory';
 import UpdateProductStockFactory from '../Factories/UpdateProductStockFactory';
 import ProductsModel from '../Models/ProductsModel';
@@ -180,6 +182,49 @@ export default class ProductsController extends BaseController {
       );
       res.setHeader('Content-Type', 'application/vnd.ms-excel');
       return res.end(products);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getProductsStock(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      const cacheKey = `products-stock-${JSON.stringify(req.query)}`;
+      await this.verifyPermission(req, 'products_read');
+      const cache = await this.getCache(cacheKey);
+      if (cache) {
+        return res.status(200).json(cache);
+      }
+      const { page, perPage } = PaginationFactory.fromRequest(req);
+      const { status, limit } = ListProductsStockFactory.fromRequest(req);
+      const productsModel = new ProductsModel();
+      const products = await productsModel.getProductsStock(status, limit);
+      const productsPaginated = this.dataPagination(page, perPage, products);
+      await this.createCache(cacheKey, productsPaginated);
+      return res.status(200).json(productsPaginated);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getStatus(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'products_read');
+      const cache = await this.getCache('products-status');
+      if (cache) return res.status(200).json(cache);
+      const status = ProductStatusTypes.labelsToKeyValue();
+      await this.createCache('products-status', status);
+      return res.status(200).json(status);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

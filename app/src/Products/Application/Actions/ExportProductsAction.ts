@@ -31,6 +31,7 @@ export default class ExportProductsAction {
           product.description,
           product.price,
           product.quantity,
+          product.status,
           product.part_number,
           category,
           brand,

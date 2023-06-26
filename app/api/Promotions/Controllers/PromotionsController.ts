@@ -2,6 +2,8 @@ import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import CreatePromotionAction from '@app/src/Promotions/Application/Actions/Promotions/CreatePromotionAction';
 import DeletePromotionAction from '@app/src/Promotions/Application/Actions/Promotions/DeletePromotionAction';
 import UpdatePromotionAction from '@app/src/Promotions/Application/Actions/Promotions/UpdatePromotionAction';
+import { DiscountTypes } from '@app/src/Promotions/Domain/Enums/DiscountTypes';
+import { PromotionStatusTypes } from '@app/src/Promotions/Domain/Enums/PromotionStatusTypes';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -131,6 +133,42 @@ export default class PromotionsController extends BaseController {
       await promotionAction.execute(promotionInputData);
       await this.deleteCache('promotions');
       return res.status(204).send();
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getStatus(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'promotions_read');
+      const cache = await this.getCache('promotions-status');
+      if (cache) return res.status(200).json(cache);
+      const status = PromotionStatusTypes.labelsToKeyValue();
+      await this.createCache('promotions-status', status);
+      return res.status(200).json(status);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getDiscountTypes(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'promotions_read');
+      const cache = await this.getCache('promotions-discount-type');
+      if (cache) return res.status(200).json(cache);
+      const discountType = DiscountTypes.labelsToKeyValue();
+      await this.createCache('promotions-discount-type', discountType);
+      return res.status(200).json(discountType);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

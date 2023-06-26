@@ -22,6 +22,7 @@ export default class ProductsModel {
         size: payload.getSize(),
         color: payload.getColor(),
         quantity: payload.getQuantity(),
+        status: payload.getStatus(),
         category_id: categoryId,
         brand_id: brandId,
         supplier_id: supplierId,
@@ -46,6 +47,7 @@ export default class ProductsModel {
           size: payload.getSize(),
           color: payload.getColor(),
           quantity: payload.getQuantity(),
+          status: payload.getStatus(),
           category_id: categoryId,
           brand_id: brandId,
           supplier_id: supplierId,
@@ -61,11 +63,16 @@ export default class ProductsModel {
     }
   }
 
-  public async updateProductStock(id: number, quantity: number) {
+  public async updateProductStock(
+    id: number,
+    quantity: number,
+    status?: string,
+  ) {
     try {
       await productModel.update(
         {
           quantity,
+          status,
         },
         {
           where: {

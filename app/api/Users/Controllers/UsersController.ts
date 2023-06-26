@@ -1,3 +1,4 @@
+import { StatusTypes } from '@app/src/Shared/Domain/Enums/StatusTypes';
 import CreateUserAction from '@app/src/Users/Application/Actions/CreateUserAction';
 import DeleteUserAction from '@app/src/Users/Application/Actions/DeleteUserAction';
 import RestoreUserAction from '@app/src/Users/Application/Actions/RestoreUserAction';
@@ -171,6 +172,24 @@ export default class UsersController extends BaseController {
       await userAction.execute(userInputData, currentUserInputData);
       await this.deleteCache('users');
       return res.status(204).send();
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getStatus(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'users_read');
+      const cache = await this.getCache('users-status');
+      if (cache) return res.status(200).json(cache);
+      const status = StatusTypes.labelsToKeyValue();
+      await this.createCache('users-status', status);
+      return res.status(200).json(status);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });

@@ -32,7 +32,11 @@ export default class UsersRoute {
     const updateRolesAndPermission =
       this.userController.updateRolesAndPermission.bind(this.userController);
     const updateUser = this.userController.updateUser.bind(this.userController);
+    const getUsersStatus = this.userController.getStatus.bind(
+      this.userController,
+    );
 
+    this.usersRoute.get('/status', getUsersStatus);
     this.usersRoute.get('/trash', getDeletedUsers);
     this.usersRoute.get('/:id', getUser);
     this.usersRoute.get('/', getUsers);

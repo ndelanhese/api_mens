@@ -18,6 +18,7 @@ export default class SheetService {
       CATEGORIA: item.getCategory()?.getName(),
       MARCA: item.getBrand()?.getName(),
       FORNECEDOR: item.getSupplier()?.getCorporateName(),
+      STATUS: item.getStatus(),
     }));
     const workSheet: xlsx.WorkSheet = xlsx.utils.json_to_sheet(rowsData);
     const workSheetPrepared = resizeColumns(workSheet);

@@ -13,6 +13,7 @@ export async function up(queryInterface: QueryInterface) {
         size: 'GG',
         color: 'Branco',
         quantity: 14,
+        status: 'active',
         category_id: 1,
         brand_id: 1,
         supplier_id: 1,

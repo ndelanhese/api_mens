@@ -7,6 +7,7 @@ export default class CreateProductInputData {
     readonly category_id: number,
     readonly brand_id: number,
     readonly supplier_id: number,
+    readonly status?: string,
     readonly purchase_price?: number,
     readonly size?: string,
     readonly color?: string,

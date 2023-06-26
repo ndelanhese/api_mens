@@ -8,6 +8,7 @@ export interface IProduct {
   size?: string;
   color?: string;
   quantity: number;
+  status?: string;
   category_id: number;
   brand_id: number;
   supplier_id: number;

@@ -32,7 +32,11 @@ export default class EmployeesRoute {
     const deleteEmployee = this.employeeController.deleteEmployee.bind(
       this.employeeController,
     );
+    const getEmployeeStatus = this.employeeController.getStatus.bind(
+      this.employeeController,
+    );
 
+    this.employeesRoute.get('/status', getEmployeeStatus);
     this.employeesRoute.get('/', getEmployees);
     this.employeesRoute.get('/:id', getEmployee);
     this.employeesRoute.post('/', createEmployeeMiddleware, createEmployee);

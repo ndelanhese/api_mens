@@ -33,7 +33,11 @@ export default class OrdersRoute {
     const exportOrders = this.ordersController.exportOrders.bind(
       this.ordersController,
     );
+    const getOrdersStatus = this.ordersController.getStatus.bind(
+      this.ordersController,
+    );
 
+    this.orderRoute.get('/status', getOrdersStatus);
     this.orderRoute.get('/', getOrders);
     this.orderRoute.get('/:id', getOrder);
     this.orderRoute.put(

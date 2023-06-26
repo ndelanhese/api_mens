@@ -31,8 +31,8 @@ export default class ProductRepository {
     return product;
   }
 
-  async updateStock(id: number, quantity: number) {
-    await this.productsModel.updateProductStock(id, quantity);
+  async updateStock(id: number, quantity: number, status?: string) {
+    await this.productsModel.updateProductStock(id, quantity, status);
   }
 
   async export(input: IProductsExportProps) {

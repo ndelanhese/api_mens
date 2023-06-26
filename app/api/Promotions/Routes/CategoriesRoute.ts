@@ -24,7 +24,6 @@ export default class PromotionsCategoriesRoute {
       this.promotionsCategoriesController.getPromotionCategory.bind(
         this.promotionsCategoriesController,
       );
-
     const createCategory =
       this.promotionsCategoriesController.createPromotionCategory.bind(
         this.promotionsCategoriesController,
@@ -37,6 +36,7 @@ export default class PromotionsCategoriesRoute {
       this.promotionsCategoriesController.updatePromotionCategory.bind(
         this.promotionsCategoriesController,
       );
+
     this.promotionsCategoriesRoute.get('/', getPromotionsCategories);
     this.promotionsCategoriesRoute.get('/:id', getCategory);
     this.promotionsCategoriesRoute.post(
