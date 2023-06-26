@@ -32,7 +32,11 @@ export default class SuppliersRoute {
     const deleteSupplier = this.supplierController.deleteSupplier.bind(
       this.supplierController,
     );
+    const getEmployeeStatus = this.supplierController.getStatus.bind(
+      this.supplierController,
+    );
 
+    this.suppliersRoute.get('/status', getEmployeeStatus);
     this.suppliersRoute.get('/', getSuppliers);
     this.suppliersRoute.get('/:id', getSupplier);
     this.suppliersRoute.post('/', createSupplierMiddleware, createSupplier);

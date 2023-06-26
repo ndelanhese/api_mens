@@ -3,6 +3,7 @@ import { formatCnpj } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatte
 import CreateSupplierAction from '@app/src/Suppliers/Application/Actions/CreateSupplierAction';
 import DeleteSupplierAction from '@app/src/Suppliers/Application/Actions/DeleteSupplierAction';
 import UpdateSupplierAction from '@app/src/Suppliers/Application/Actions/UpdateSupplierAction';
+import { SupplierStatusTypes } from '@app/src/Suppliers/Domain/Enums/SupplierStatusTypes';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -139,6 +140,24 @@ export default class SuppliersController extends BaseController {
       await supplierAction.execute(supplierInputData);
       await this.deleteCache('suppliers');
       return res.status(204).send();
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getStatus(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'suppliers_read');
+      const cache = await this.getCache('suppliers-status');
+      if (cache) return res.status(200).json(cache);
+      const status = SupplierStatusTypes.labelsToKeyValue();
+      await this.createCache('suppliers-status', status);
+      return res.status(200).json(status);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
