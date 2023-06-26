@@ -13,8 +13,8 @@ TODO -> [X] Adicionar endpoint de verificação de estoque (Lista os produtos co
 TODO -> [] Adicionar listagem de status para todos os status com ENUM
         - [X] Customers
         - [X] Employees
-        - [] Orders
-        - [] Promotions
+        - [X] Orders
+        - [-] Promotions
         - [] Sales
         - [] Suppliers
         - [] Users
