@@ -4,6 +4,8 @@ import ExportSaleAction from '@app/src/Sales/Application/Actions/ExportSaleActio
 import UpdateSaleAction from '@app/src/Sales/Application/Actions/UpdateSaleAction';
 import UpdateSaleStatusAction from '@app/src/Sales/Application/Actions/UpdateSaleStatusAction';
 import ExportSalesInputData from '@app/src/Sales/Application/Dtos/ExportSaleInputData';
+import { DiscountTypes } from '@app/src/Sales/Domain/Enums/DiscountTypes';
+import { SaleStatusTypes } from '@app/src/Sales/Domain/Enums/SaleStatusTypes';
 import { getDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
@@ -136,6 +138,42 @@ export default class SalesController extends BaseController {
       );
       res.setHeader('Content-Type', 'application/vnd.ms-excel');
       return res.end(sales);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getStatus(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'sales_read');
+      const cache = await this.getCache('sales-status');
+      if (cache) return res.status(200).json(cache);
+      const status = SaleStatusTypes.labelsToKeyValue();
+      await this.createCache('sales-status', status);
+      return res.status(200).json(status);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
+  public async getDiscountTypes(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      await this.verifyPermission(req, 'sales_read');
+      const cache = await this.getCache('sales-discount-type');
+      if (cache) return res.status(200).json(cache);
+      const discountType = DiscountTypes.labelsToKeyValue();
+      await this.createCache('sales-discount-type', discountType);
+      return res.status(200).json(discountType);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
