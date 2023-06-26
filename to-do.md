@@ -9,9 +9,9 @@ TODO -> [-] Pegar as listagens que tem status ativo e inativo e adicionar o filt
         - [X] Employees
         - [X] Orders
         - [X] Promotions
-        - [] Sales
-        - [] Suppliers
-        - [] Users
+        - [X] Sales
+        - [X] Suppliers
+        - [X] Users
         - [] Products
 
 TODO -> [] Pegar as listagens que tem data inicial e final e adicionar o filtro de data e colocar até a data atual como padrão

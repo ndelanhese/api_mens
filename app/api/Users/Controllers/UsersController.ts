@@ -1,3 +1,4 @@
+import ListFactory from '@app/api/Shared/Factories/ListFactory';
 import { StatusTypes } from '@app/src/Shared/Domain/Enums/StatusTypes';
 import CreateUserAction from '@app/src/Users/Application/Actions/CreateUserAction';
 import DeleteUserAction from '@app/src/Users/Application/Actions/DeleteUserAction';
@@ -31,11 +32,13 @@ export default class UsersController extends BaseController {
   ): Promise<Response<string> | undefined> {
     try {
       await this.verifyPermission(req, 'users_read');
-      const cache = await this.getCache('users');
+      const cacheKey = `users-${JSON.stringify(req.query)}`;
+      const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
-      const users = await this.usersModel.findAll();
+      const { status } = ListFactory.fromRequest(req);
+      const users = await this.usersModel.findAll(status);
       const data = this.returnInData(users);
-      await this.createCache('users', data);
+      await this.createCache(cacheKey, data);
       return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {
