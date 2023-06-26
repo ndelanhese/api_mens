@@ -11,6 +11,7 @@ export default class CreateProductFactory {
       req.body.category_id,
       req.body.brand_id,
       req.body.supplier_id,
+      req.body.status ?? 'active',
       req.body.purchase_price,
       req.body.size,
       req.body.color,

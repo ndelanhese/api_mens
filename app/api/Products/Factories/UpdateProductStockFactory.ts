@@ -6,6 +6,7 @@ export default class UpdateProductStockFactory {
     return new UpdateProductStockInputData(
       req.body.quantity,
       Number(req.params.id),
+      req.body.status,
     );
   }
 }

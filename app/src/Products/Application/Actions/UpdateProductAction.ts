@@ -30,6 +30,7 @@ export default class UpdateProductAction {
       input.description ?? currentValue.getDescription(),
       input.price ?? currentValue.getPrice(),
       input.quantity ?? currentValue.getQuantity(),
+      input.status ?? currentValue.getStatus(),
       partNumber,
       category ?? currentValue.getCategory(),
       brand ?? currentValue.getBrand(),

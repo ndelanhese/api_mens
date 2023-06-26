@@ -12,6 +12,7 @@ export default class Product {
   private size?: string;
   private color?: string;
   private quantity: number;
+  private status?: string;
   private category?: Category;
   private brand?: Brand;
   private supplier?: Supplier;
@@ -21,6 +22,7 @@ export default class Product {
     description: string,
     price: number,
     quantity: number,
+    status?: string,
     part_number?: string,
     category?: Category,
     brand?: Brand,
@@ -39,6 +41,7 @@ export default class Product {
     this.size = size;
     this.color = color;
     this.quantity = quantity;
+    this.status = status;
     this.category = category;
     this.brand = brand;
     this.supplier = supplier;
@@ -122,6 +125,15 @@ export default class Product {
 
   public setQuantity(quantity: number) {
     this.quantity = quantity;
+    return this;
+  }
+
+  public getStatus() {
+    return this.status;
+  }
+
+  public setStatus(status: string) {
+    this.status = status;
     return this;
   }
 

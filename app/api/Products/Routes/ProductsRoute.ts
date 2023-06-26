@@ -39,8 +39,12 @@ export default class ProductsRoute {
     const exportProducts = this.productsController.exportProducts.bind(
       this.productsController,
     );
+    const getProductsStock = this.productsController.getProductsStock.bind(
+      this.productsController,
+    );
 
     this.productRoute.get('/', getProducts);
+    this.productRoute.get('/stock', getProductsStock);
     this.productRoute.get('/:id', getProduct);
     this.productRoute.post('/', createProductMiddleware, createProduct);
     this.productRoute.put(
