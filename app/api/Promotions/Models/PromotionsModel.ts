@@ -3,11 +3,15 @@ import PromotionsCategoriesModel from '@app/database/Models/PromotionsCategories
 import PromotionsProductsModel from '@app/database/Models/PromotionsProductsModel';
 import salesModel from '@db-models/PromotionsModel';
 import HttpError from '@exceptions/HttpError';
+import { WhereOptions } from 'sequelize';
 
 export default class PromotionsModel {
-  public async getPromotions() {
+  public async getPromotions(status?: string) {
     try {
+      let whereClause: WhereOptions = {};
+      if (status) whereClause = { status };
       return await salesModel.findAll({
+        where: whereClause,
         order: [['id', 'DESC']],
         include: [
           {
