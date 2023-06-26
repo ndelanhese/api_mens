@@ -1,3 +1,4 @@
+import ListFactory from '@app/api/Shared/Factories/ListFactory';
 import CreateCustomerAction from '@app/src/Customers/Application/Actions/CreateCustomerAction';
 import DeleteCustomerAction from '@app/src/Customers/Application/Actions/DeleteCustomerAction';
 import UpdateCustomerAction from '@app/src/Customers/Application/Actions/UpdateCustomerAction';
@@ -36,15 +37,17 @@ export default class CustomersController extends BaseController {
   ): Promise<Response<string> | undefined> {
     try {
       await this.verifyPermission(req, 'customers_read');
-      const cache = await this.getCache('customers');
+      const cacheKey = `customers-${JSON.stringify(req.query)}`;
+      const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
-      const customers = await this.customersModel.getCustomers();
+      const { status } = ListFactory.fromRequest(req);
+      const customers = await this.customersModel.getCustomers(status);
       const customerWithAddresses = customers.map(customer => {
         const addresses = this.prepareCustomerAddresses(customer.addresses);
         return this.prepareCustomerWithAddresses(customer, addresses);
       });
       const data = this.returnInData(customerWithAddresses);
-      await this.createCache('customers', data);
+      await this.createCache(cacheKey, data);
       return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {

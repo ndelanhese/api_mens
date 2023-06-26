@@ -3,6 +3,7 @@ import SuppliersAddressesModel from '@app/database/Models/SuppliersAddressesMode
 import AddressesModel from '@db-models/AddressesModel';
 import suppliersModel from '@db-models/SuppliersModel';
 import HttpError from '@exceptions/HttpError';
+import { WhereOptions } from 'sequelize';
 
 import { ISupplier } from './SuppliersModel.types';
 
@@ -10,9 +11,13 @@ export default class ListSuppliersModel {
   public async getSuppliers(
     order: string,
     direction: string,
+    status?: string,
   ): Promise<ISupplier[]> {
     try {
+      let whereClause: WhereOptions = {};
+      if (status) whereClause = { status };
       const suppliers: any = await suppliersModel.findAll({
+        where: whereClause,
         order: [[order, direction]],
         include: [
           {

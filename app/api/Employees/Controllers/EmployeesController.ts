@@ -1,3 +1,4 @@
+import ListFactory from '@app/api/Shared/Factories/ListFactory';
 import CreateEmployeeAction from '@app/src/Employees/Application/Actions/CreateEmployeeAction';
 import DeleteEmployeeAction from '@app/src/Employees/Application/Actions/DeleteEmployeeAction';
 import UpdateEmployeeAction from '@app/src/Employees/Application/Actions/UpdateEmployeeAction';
@@ -37,9 +38,11 @@ export default class EmployeesController extends BaseController {
   ): Promise<Response<string> | undefined> {
     try {
       await this.verifyPermission(req, 'employees_read');
-      const cache = await this.getCache('employees');
+      const cacheKey = `employees-${JSON.stringify(req.query)}`;
+      const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
-      const employees = await this.employeesModel.getEmployees();
+      const { status } = ListFactory.fromRequest(req);
+      const employees = await this.employeesModel.getEmployees(status);
       const employeeWithAddresses = employees.map(employee => {
         const addresses = this.prepareEmployeeAddresses(
           employee.employee_addresses,
@@ -47,7 +50,7 @@ export default class EmployeesController extends BaseController {
         return this.prepareEmployeeWithAddresses(employee, addresses);
       });
       const data = this.returnInData(employeeWithAddresses);
-      await this.createCache('employees', data);
+      await this.createCache(cacheKey, data);
       return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {

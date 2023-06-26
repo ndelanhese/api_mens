@@ -58,7 +58,6 @@ SalesModel.init(
     status: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'finalizada',
     },
     customer_id: {
       type: DataTypes.INTEGER,

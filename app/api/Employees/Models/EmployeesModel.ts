@@ -3,13 +3,17 @@ import AddressesModel from '@db-models/AddressesModel';
 import EmployeesAddressesModel from '@db-models/EmployeesAddressesModel';
 import employeesModel from '@db-models/EmployeesModel';
 import HttpError from '@exceptions/HttpError';
+import { WhereOptions } from 'sequelize';
 
 import { IEmployee } from './EmployeesModel.types';
 
 export default class ListEmployeesModel {
-  public async getEmployees(): Promise<IEmployee[]> {
+  public async getEmployees(status?: string): Promise<IEmployee[]> {
     try {
+      let whereClause: WhereOptions = {};
+      if (status) whereClause = { status };
       const employees: any = await employeesModel.findAll({
+        where: whereClause,
         include: [
           {
             model: EmployeesAddressesModel,

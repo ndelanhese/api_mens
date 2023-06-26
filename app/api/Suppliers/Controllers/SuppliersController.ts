@@ -1,3 +1,4 @@
+import ListFactory from '@app/api/Shared/Factories/ListFactory';
 import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import { formatCnpj } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
 import CreateSupplierAction from '@app/src/Suppliers/Application/Actions/CreateSupplierAction';
@@ -33,13 +34,16 @@ export default class SuppliersController extends BaseController {
   ): Promise<Response<string> | undefined> {
     try {
       await this.verifyPermission(req, 'suppliers_read');
-      const cache = await this.getCache('suppliers');
+      const cacheKey = `suppliers-${JSON.stringify(req.query)}`;
+      const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
       const { page, perPage, order, direction } =
         PaginationFactory.fromRequest(req);
+      const { status } = ListFactory.fromRequest(req);
       const suppliers = await this.suppliersModel.getSuppliers(
         order,
         direction,
+        status,
       );
       const supplierWithAddresses = suppliers.map(supplier => {
         const addresses = this.prepareSupplierAddresses(
@@ -48,7 +52,7 @@ export default class SuppliersController extends BaseController {
         return this.prepareSupplierWithAddresses(supplier, addresses);
       });
       const data = this.dataPagination(page, perPage, supplierWithAddresses);
-      await this.createCache('suppliers', data);
+      await this.createCache(cacheKey, data);
       return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {

@@ -67,7 +67,6 @@ EmployeeModel.init(
     status: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'ativo',
     },
   },
   {

@@ -2,13 +2,16 @@
 import employeesModel from '@db-models/EmployeesModel';
 import userModel from '@db-models/UsersModel';
 import HttpError from '@exceptions/HttpError';
-import { Op } from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
 
 import { IUser, IUserData } from './UsersModel.types';
 export default class UserModel {
-  public async findAll() {
+  public async findAll(status?: string) {
     try {
+      let whereClause: WhereOptions = {};
+      if (status) whereClause = { status };
       return await userModel.findAll({
+        where: whereClause,
         attributes: {
           exclude: ['password', 'employee_id'],
         },

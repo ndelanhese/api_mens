@@ -1,3 +1,4 @@
+import ListFactory from '@app/api/Shared/Factories/ListFactory';
 import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import CreatePromotionAction from '@app/src/Promotions/Application/Actions/Promotions/CreatePromotionAction';
 import DeletePromotionAction from '@app/src/Promotions/Application/Actions/Promotions/DeletePromotionAction';
@@ -27,8 +28,9 @@ export default class PromotionsController extends BaseController {
         return res.status(200).json(cache);
       }
       const { page, perPage } = PaginationFactory.fromRequest(req);
+      const { status } = ListFactory.fromRequest(req);
       const promotionsModel = new PromotionsModel();
-      const promotions = await promotionsModel.getPromotions();
+      const promotions = await promotionsModel.getPromotions(status);
       const promotionsPaginated = this.dataPagination(
         page,
         perPage,
