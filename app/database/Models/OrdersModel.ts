@@ -43,7 +43,6 @@ OrdersModel.init(
     status: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'realizada',
     },
     customer_id: {
       type: DataTypes.INTEGER,

@@ -71,7 +71,6 @@ UsersModel.init(
     status: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'ativo',
     },
     employee_id: {
       type: DataTypes.INTEGER,

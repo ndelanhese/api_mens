@@ -37,9 +37,8 @@ export default class CustomersController extends BaseController {
   ): Promise<Response<string> | undefined> {
     try {
       await this.verifyPermission(req, 'customers_read');
-      const cache = await this.getCache(
-        `customers-${JSON.stringify(req.query)}`,
-      );
+      const cacheKey = `customers-${JSON.stringify(req.query)}`;
+      const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
       const { status } = ListFactory.fromRequest(req);
       const customers = await this.customersModel.getCustomers(status);
@@ -48,7 +47,7 @@ export default class CustomersController extends BaseController {
         return this.prepareCustomerWithAddresses(customer, addresses);
       });
       const data = this.returnInData(customerWithAddresses);
-      await this.createCache('customers', data);
+      await this.createCache(cacheKey, data);
       return res.status(200).json(data);
     } catch (error) {
       if (error instanceof HttpError) {
