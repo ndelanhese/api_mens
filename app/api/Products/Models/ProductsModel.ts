@@ -17,6 +17,7 @@ export default class ProductsModel {
     name?: string,
     part_number?: string,
     description?: string,
+    status?: string,
   ) {
     try {
       let whereClause: WhereOptions = {};
@@ -53,6 +54,7 @@ export default class ProductsModel {
       if (supplier_id) {
         whereClause = { ...whereClause, supplier_id };
       }
+      if (status) whereClause = { status };
       return await productsModel.findAll({
         where: whereClause,
         order: [[order, direction]],

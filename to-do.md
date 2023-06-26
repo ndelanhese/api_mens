@@ -4,7 +4,7 @@ TODO -> [] Adicionar validação de id na listagem única e criar middleware de 
 
 TODO -> [] Verificar quais tabelas podem ser listadas em ordem DESC
 
-TODO -> [-] Pegar as listagens que tem status ativo e inativo e adicionar o filtro de status e colocar o ativo como padrão
+TODO -> [X] Pegar as listagens que tem status ativo e inativo e adicionar o filtro de status e colocar o ativo como padrão
         - [X] Customers
         - [X] Employees
         - [X] Orders
@@ -12,7 +12,7 @@ TODO -> [-] Pegar as listagens que tem status ativo e inativo e adicionar o filt
         - [X] Sales
         - [X] Suppliers
         - [X] Users
-        - [] Products
+        - [X] Products
 
 TODO -> [] Pegar as listagens que tem data inicial e final e adicionar o filtro de data e colocar até a data atual como padrão
 

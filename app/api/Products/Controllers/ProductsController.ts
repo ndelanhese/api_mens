@@ -1,3 +1,4 @@
+import ListFactory from '@app/api/Shared/Factories/ListFactory';
 import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import CreateProductAction from '@app/src/Products/Application/Actions/CreateProductAction';
 import DeleteProductAction from '@app/src/Products/Application/Actions/DeleteProductAction';
@@ -36,6 +37,7 @@ export default class ProductsController extends BaseController {
       }
       const { page, perPage, order, direction } =
         PaginationFactory.fromRequest(req);
+      const { status } = ListFactory.fromRequest(req);
       const {
         brand_id,
         category_id,
@@ -58,6 +60,7 @@ export default class ProductsController extends BaseController {
         name,
         part_number,
         description,
+        status,
       );
       const productsPaginated = this.dataPagination(page, perPage, products);
       await this.createCache(cacheKey, productsPaginated);
