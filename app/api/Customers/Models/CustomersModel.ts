@@ -3,13 +3,17 @@ import AddressesModel from '@db-models/AddressesModel';
 import CustomersAddressesModel from '@db-models/CustomersAddressesModel';
 import customersModel from '@db-models/CustomersModel';
 import HttpError from '@exceptions/HttpError';
+import { WhereOptions } from 'sequelize';
 
 import { ICustomer } from './ListCustomersModel.types';
 
 export default class ListCustomersModel {
-  public async getCustomers(): Promise<ICustomer[]> {
+  public async getCustomers(status?: string): Promise<ICustomer[]> {
     try {
+      let whereClause: WhereOptions = {};
+      if (status) whereClause = { status };
       const customers: any = await customersModel.findAll({
+        where: whereClause,
         include: [
           {
             model: CustomersAddressesModel,
