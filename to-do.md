@@ -18,4 +18,4 @@ TODO -> [] Adicionar listagem de status para todos os status com ENUM
         - [X] Sales
         - [X] Suppliers
         - [X] Users
-        - [-] Products
+        - [X] Products

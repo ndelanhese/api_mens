@@ -42,7 +42,11 @@ export default class ProductsRoute {
     const getProductsStock = this.productsController.getProductsStock.bind(
       this.productsController,
     );
+    const getProductsStatus = this.productsController.getStatus.bind(
+      this.productsController,
+    );
 
+    this.productRoute.get('/status', getProductsStatus);
     this.productRoute.get('/', getProducts);
     this.productRoute.get('/stock', getProductsStock);
     this.productRoute.get('/:id', getProduct);
