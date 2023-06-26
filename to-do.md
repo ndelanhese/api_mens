@@ -11,11 +11,11 @@ TODO -> [] Pegar as listagens que tem data inicial e final e adicionar o filtro 
 TODO -> [X] Adicionar endpoint de verificação de estoque (Lista os produtos com estoque baixo)
 
 TODO -> [] Adicionar listagem de status para todos os status com ENUM
-        - Customers
-        - Employees
-        - Orders
-        - Promotions
-        - Sales
-        - Suppliers
-        - Users
-        - Products
+        - [X] Customers
+        - [X] Employees
+        - [] Orders
+        - [] Promotions
+        - [] Sales
+        - [] Suppliers
+        - [] Users
+        - [] Products
