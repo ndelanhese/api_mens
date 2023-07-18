@@ -14,4 +14,7 @@ export interface IUser {
     createdAt: Date;
     updatedAt: Date;
   }[];
+  employee: {
+    name: string;
+  };
 }

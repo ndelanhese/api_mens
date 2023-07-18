@@ -43,7 +43,7 @@ export default class AuthController extends BaseController {
         if (isPwdValid) {
           const userData = {
             id: user.id,
-            name: `${user.user}`,
+            name: user.employee.name,
             email,
           };
           const { token } = this.jwt.generateToken(userData);
