@@ -49,6 +49,24 @@ services:
         links:
             - mens_database
             - mens_redis
+    jenkins:
+        image: jenkins/jenkins:lts-jdk11
+        container_name: jenkins
+        privileged: true
+        user: root
+        ports:
+            - 8081:8080
+            - 50000:50000
+        environment:
+            - DOCKER_HOST=tcp://docker:2376
+            - DOCKER_CERT_PATH=/certs/client
+            - DOCKER_TLS_VERIFY=1
+            - JENKINS_HOME=/var/jenkins_home
+        volumes:
+            - /var/jenkins/caches:/var/jenkins/caches
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /var/jenkins_home:/var/jenkins_home
+
 
 networks:
     default:
