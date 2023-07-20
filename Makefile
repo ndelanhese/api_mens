@@ -50,7 +50,6 @@ api-log:
 .PHONY: api-update
 api-update: stop start api-build api-install
 	@docker exec -it mens_api bash -c "npm run db:migrate && npm run db:seed:all"
-	api-log
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
 # │ REDIS commands                                                              │
