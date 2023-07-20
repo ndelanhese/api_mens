@@ -22,6 +22,12 @@ RUN curl -L "https://github.com/docker/compose/releases/latest/download/docker-c
 # Instalação do Makefile (Se não estiver presente por padrão)
 RUN apt-get -y install make
 
+# Configuração das permissões do usuário do Docker para corresponder ao UID e GID do host
+ARG UID
+ARG GID
+RUN usermod -u $UID jenkins
+RUN groupmod -g $GID jenkins
+
 # Volta ao usuário jenkins
 USER jenkins
 
