@@ -3,7 +3,10 @@ pipeline {
   agent none
   stages {
     stage('Build') {
-      node {
+      agent {
+        label 'node'
+      }
+      stages {
         sh "make api-update"
       }
     }
