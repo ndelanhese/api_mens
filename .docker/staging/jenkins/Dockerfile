@@ -3,7 +3,7 @@ FROM jenkins/jenkins:lts
 
 # Informações sobre o mantenedor
 LABEL maintainer="Nathan Delanhese nnathanh3@gmail.com"
-
+  
 # Altere para o usuário root para instalar dependências
 USER root
 
@@ -22,11 +22,8 @@ RUN curl -L "https://github.com/docker/compose/releases/latest/download/docker-c
 # Instalação do Makefile (Se não estiver presente por padrão)
 RUN apt-get -y install make
 
-# Configuração das permissões do usuário do Docker para corresponder ao UID e GID do host
-ARG UID
-ARG GID
-RUN usermod -u $UID jenkins
-RUN groupmod -g $GID jenkins
+# Adiciona o usuário "jenkins" ao grupo "docker"
+RUN usermod -aG docker jenkins
 
 # Volta ao usuário jenkins
 USER jenkins
@@ -41,5 +38,8 @@ USER jenkins
 # COPY config.xml /var/jenkins_home/
 
 # O Jenkins estará acessível na porta 8080 (pode ser mapeada para uma porta diferente ao iniciar o contêiner)
+
+# Monta o socket do Docker do host para dentro do contêiner
+VOLUME /var/run/docker.sock:/var/run/docker.sock
 
 # Outras configurações e personalizações podem ser adicionadas conforme necessário.
