@@ -1,14 +1,8 @@
-#!/usr/bin/env groovy
 pipeline {
-  agent none
-  stages {
-    stage('Build') {
-      agent {
-        label 'node'
+  agent any
+  stages { 
+      steps { 
+        sh 'make api-update' 
       }
-      stages {
-        sh "make api-update"
-      }
-    }
   }
 }
