@@ -1,5 +1,11 @@
 pipeline {
-  agent any
+  agent {
+        docker {
+            image 'jenkins/jenkins:lts-jdk11'
+            args '-u root'
+            reuseNode true
+        }
+  }
   stages {
         stage('Prune Docker data'){
           steps {
