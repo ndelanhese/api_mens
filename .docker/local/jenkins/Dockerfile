@@ -3,7 +3,7 @@ FROM jenkins/jenkins:lts
 
 # Informações sobre o mantenedor
 LABEL maintainer="Nathan Delanhese nnathanh3@gmail.com"
-
+  
 # Altere para o usuário root para instalar dependências
 USER root
 
