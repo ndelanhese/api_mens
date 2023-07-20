@@ -1,8 +1,10 @@
 pipeline {
   agent any
-  stages { 
-      steps { 
-        sh 'make api-update' 
+  stages {
+    stage('Build') {
+      steps {
+        sh 'make api-update'
       }
+    }
   }
 }
