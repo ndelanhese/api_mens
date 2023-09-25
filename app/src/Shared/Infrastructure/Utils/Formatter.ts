@@ -28,3 +28,18 @@ export const formatPhoneNumber = (phoneNumber: string): string => {
   }
   return phoneNumber.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, '($1) $2$3-$4');
 };
+
+export const formatPostaCode = (postalCode: string | undefined): string => {
+  if (!postalCode) return '';
+
+  const postaCodeLength = postalCode.length;
+  if (postaCodeLength < 2) {
+    return postalCode;
+  }
+
+  if (postaCodeLength <= 8) {
+    return postalCode.replace(/(\d{5})(\d{3})/, '$1-$2');
+  }
+
+  return postalCode;
+};
