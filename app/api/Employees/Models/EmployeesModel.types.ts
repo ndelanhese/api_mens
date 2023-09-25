@@ -15,6 +15,7 @@ export interface IEmployee {
 }
 
 interface IAddress {
+  id: number;
   address: string;
   number: string;
   district: string;

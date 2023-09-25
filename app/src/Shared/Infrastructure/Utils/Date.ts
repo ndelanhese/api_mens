@@ -70,9 +70,9 @@ export const getTime = (dateInput?: Date): number => {
 };
 
 export const formatLocaleDateString = (
-  dateInput?: Date | string | undefined,
+  dateInput?: Date | string | undefined | null,
   timeZone?: Intl.LocalesArgument,
-): string => {
+): string | null => {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: '2-digit',
@@ -80,8 +80,7 @@ export const formatLocaleDateString = (
   };
 
   if (!dateInput) {
-    const currentDate = new Date();
-    return currentDate.toLocaleString(timeZone ?? 'pt-BR', options);
+    return null;
   }
 
   if (typeof dateInput === 'string') {
