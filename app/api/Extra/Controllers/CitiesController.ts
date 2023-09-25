@@ -36,7 +36,7 @@ export default class StatesController extends BaseController {
         ...(!isMunicipality && {
           name_with_municipality: `${city.nome} - ${city.municipio.nome}`,
         }),
-        isMunicipality,
+        is_municipality: isMunicipality,
       };
     });
     return citiesData;
