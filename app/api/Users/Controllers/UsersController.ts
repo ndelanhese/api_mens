@@ -1,5 +1,12 @@
 import ListFactory from '@app/api/Shared/Factories/ListFactory';
 import { StatusTypes } from '@app/src/Shared/Domain/Enums/StatusTypes';
+import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
+import { formatLocaleDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
+import {
+  formatPhoneNumber,
+  formatPisPasep,
+  formatRG,
+} from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import CreateUserAction from '@app/src/Users/Application/Actions/CreateUserAction';
 import DeleteUserAction from '@app/src/Users/Application/Actions/DeleteUserAction';
 import RestoreUserAction from '@app/src/Users/Application/Actions/RestoreUserAction';
@@ -16,7 +23,7 @@ import UpdateRolesAndPermissionsFactory from '../Factories/UpdateRolesAndPermiss
 import UpdateUserFactory from '../Factories/UpdateUserFactory';
 import UserModel from '../Models/UsersModel';
 
-import { IUser } from './UsersController.types';
+import { IUser, IUserResponse } from './UsersController.types';
 
 export default class UsersController extends BaseController {
   private usersModel: UserModel;
@@ -37,7 +44,8 @@ export default class UsersController extends BaseController {
       if (cache) return res.status(200).json(cache);
       const { status } = ListFactory.fromRequest(req);
       const users = await this.usersModel.findAll(status);
-      const data = this.returnInData(users);
+      const convertedUsers = this.prepareUsersResponse(users);
+      const data = this.returnInData(convertedUsers);
       await this.createCache(cacheKey, data);
       return res.status(200).json(data);
     } catch (error) {
@@ -201,26 +209,57 @@ export default class UsersController extends BaseController {
   }
 
   private userRolesAndPermissions(user: IUser) {
-    const permissions = user.users_permissions.map(
+    const permissions = user?.users_permissions?.map(
       permission => permission.permission_id,
     );
-    const roles = user.users_roles.map(role => role.role_id);
+    const roles = user?.users_roles?.map(role => role.role_id);
     return {
       id: user.id,
       user: user.user,
-      phone_number: user.phone_number,
       email: user.email,
       status: user.status,
-      password: user.password,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
       deletedAt: user.deletedAt,
       employee: {
+        id: user.employee.id,
         name: user.employee.name,
-        cpf: user.employee.cpf,
+        cpf: formatCpf(user.employee.cpf),
+        rg: formatRG(user.employee.rg ?? ''),
+        birth_date: formatLocaleDateString(user.employee.birth_date),
+        phone: formatPhoneNumber(user.employee.phone),
+        pis_pasep: formatPisPasep(user.employee.pis_pasep),
+        admission_date: formatLocaleDateString(user.employee.admission_date),
+        resignation_date: formatLocaleDateString(
+          user.employee.resignation_date,
+        ),
+        status: user.employee.status,
       },
       users_roles: roles,
       permissions: permissions,
     };
+  }
+
+  private prepareUsersResponse(users: IUser[]): IUserResponse[] {
+    return users.map(user => ({
+      id: user.id,
+      user: user.user,
+      email: user.email,
+      status: user.status,
+      employee: {
+        id: user.employee.id,
+        name: user.employee.name,
+        cpf: formatCpf(user.employee.cpf),
+        rg: formatRG(user.employee.rg ?? ''),
+        birth_date: formatLocaleDateString(user.employee.birth_date),
+        phone: formatPhoneNumber(user.employee.phone),
+        pis_pasep: formatPisPasep(user.employee.pis_pasep),
+        admission_date: formatLocaleDateString(user.employee.admission_date),
+        resignation_date: formatLocaleDateString(
+          user.employee.resignation_date,
+        ),
+        status: user.employee.status,
+      },
+    }));
   }
 }

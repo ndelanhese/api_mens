@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import BrandsModel from '@db-models/BrandsModel';
 import categoriesModel from '@db-models/CategoriesModel';
 import productsModel from '@db-models/ProductsModel';
 import SuppliersModel from '@db-models/SuppliersModel';
 import HttpError from '@exceptions/HttpError';
 import { WhereOptions, Op } from 'sequelize';
+
+import { Product } from './ProductsModel.types';
 
 export default class ProductsModel {
   public async getProducts(
@@ -55,7 +58,7 @@ export default class ProductsModel {
         whereClause = { ...whereClause, supplier_id };
       }
       if (status) whereClause = { status };
-      return await productsModel.findAll({
+      const products: any = await productsModel.findAll({
         where: whereClause,
         order: [[order, direction]],
         attributes: { exclude: ['category_id', 'brand_id', 'supplier_id'] },
@@ -77,6 +80,7 @@ export default class ProductsModel {
           },
         ],
       });
+      return products as Product[];
     } catch (error) {
       throw new HttpError(500, 'Erro ao buscar produtos.', error);
     }
@@ -84,7 +88,7 @@ export default class ProductsModel {
 
   public async getProduct(id: number) {
     try {
-      const product = await productsModel.findByPk(id, {
+      const product: any = await productsModel.findByPk(id, {
         attributes: { exclude: ['category_id', 'brand_id', 'supplier_id'] },
         include: [
           {
@@ -105,7 +109,7 @@ export default class ProductsModel {
         ],
       });
       if (!product) throw new HttpError(404, 'Produto não encontrado.');
-      return product;
+      return product as Product;
     } catch (error) {
       if (error instanceof HttpError) throw error;
       throw new HttpError(500, 'Erro ao buscar produto.', error);

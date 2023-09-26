@@ -49,7 +49,7 @@ export default class CustomersModel {
         address_id: address.id,
       });
 
-      return { ...customer.toJSON(), ...address.toJSON() };
+      return customer;
     } catch (error) {
       if (error instanceof HttpError) throw error;
       throw new HttpError(500, 'Erro ao cadastrar cliente.', error);

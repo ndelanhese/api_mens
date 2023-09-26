@@ -4,8 +4,10 @@ import DeleteCustomerAction from '@app/src/Customers/Application/Actions/DeleteC
 import UpdateCustomerAction from '@app/src/Customers/Application/Actions/UpdateCustomerAction';
 import { CustomerStatusTypes } from '@app/src/Customers/Domain/Enums/CustomerStatusTypes';
 import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
+import { formatLocaleDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
 import {
   formatPhoneNumber,
+  formatPostaCode,
   formatRG,
 } from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import BaseController from '@base-controller/BaseController';
@@ -174,10 +176,18 @@ export default class CustomersController extends BaseController {
       name: customer.name,
       cpf: formatCpf(customer.cpf),
       rg: formatRG(customer.rg ?? ''),
-      birth_date: customer.birth_date,
+      birth_date: formatLocaleDateString(customer.birth_date),
       phone: formatPhoneNumber(customer.phone),
       status: customer.status,
-      addresses: addresses,
+      addresses: addresses.map(address => ({
+        id: address.id,
+        address: address.address,
+        number: address.number,
+        district: address.district,
+        postal_code: formatPostaCode(address.postal_code),
+        city: address.city,
+        state: address.state,
+      })),
     };
   }
 }

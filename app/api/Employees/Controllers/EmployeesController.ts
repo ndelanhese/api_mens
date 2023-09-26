@@ -4,9 +4,11 @@ import DeleteEmployeeAction from '@app/src/Employees/Application/Actions/DeleteE
 import UpdateEmployeeAction from '@app/src/Employees/Application/Actions/UpdateEmployeeAction';
 import { EmployeeStatusTypes } from '@app/src/Employees/Domain/Enums/EmployeeStatusTypes';
 import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
+import { formatLocaleDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
 import {
   formatPhoneNumber,
   formatPisPasep,
+  formatPostaCode,
   formatRG,
 } from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import BaseController from '@base-controller/BaseController';
@@ -180,13 +182,21 @@ export default class EmployeesController extends BaseController {
       name: employee.name,
       cpf: formatCpf(employee.cpf),
       rg: formatRG(employee.rg ?? ''),
-      birth_date: employee.birth_date,
+      birth_date: formatLocaleDateString(employee.birth_date),
       phone: formatPhoneNumber(employee.phone),
       pis_pasep: formatPisPasep(employee.pis_pasep),
-      admission_date: employee.admission_date,
-      resignation_date: employee.resignation_date,
+      admission_date: formatLocaleDateString(employee.admission_date),
+      resignation_date: formatLocaleDateString(employee.resignation_date),
       status: employee.status,
-      addresses: addresses,
+      addresses: addresses.map(address => ({
+        id: address.id,
+        address: address.address,
+        number: address.number,
+        district: address.district,
+        postal_code: formatPostaCode(address.postal_code),
+        city: address.city,
+        state: address.state,
+      })),
     };
   }
 }

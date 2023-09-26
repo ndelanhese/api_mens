@@ -69,4 +69,29 @@ export const getTime = (dateInput?: Date): number => {
   return date.getTime();
 };
 
+export const formatLocaleDateString = (
+  dateInput?: Date | string | undefined | null,
+  timeZone?: Intl.LocalesArgument,
+): string | null => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  };
+
+  if (!dateInput) {
+    return null;
+  }
+
+  if (typeof dateInput === 'string') {
+    return new Date(dateInput).toLocaleString(timeZone ?? 'pt-BR', options);
+  }
+
+  const teste = new Date(dateInput).toLocaleString(
+    timeZone ?? 'pt-BR',
+    options,
+  );
+  return teste;
+};
+
 export default getDate;

@@ -12,6 +12,7 @@ export interface ICustomer {
 }
 
 interface IAddress {
+  id: number;
   address: string;
   number: string;
   district: string;
