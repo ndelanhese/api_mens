@@ -6,6 +6,7 @@ import ExportProductsAction from '@app/src/Products/Application/Actions/ExportPr
 import UpdateProductAction from '@app/src/Products/Application/Actions/UpdateProductAction';
 import UpdateProductStockAction from '@app/src/Products/Application/Actions/UpdateProductStockAction';
 import { ProductStatusTypes } from '@app/src/Products/Domain/Enums/ProductStatusTypes';
+import { formatCnpj } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
 import {
   getDateString,
   getTime,
@@ -22,6 +23,8 @@ import ListProductsStockFactory from '../Factories/ListProductsStockFactory';
 import UpdateProductFactory from '../Factories/UpdateProductFactory';
 import UpdateProductStockFactory from '../Factories/UpdateProductStockFactory';
 import ProductsModel from '../Models/ProductsModel';
+
+import { Product } from './ProductsController.types';
 
 export default class ProductsController extends BaseController {
   public async getProducts(
@@ -62,7 +65,12 @@ export default class ProductsController extends BaseController {
         description,
         status,
       );
-      const productsPaginated = this.dataPagination(page, perPage, products);
+      const preparedProducts = this.prepareProductsResponse(products);
+      const productsPaginated = this.dataPagination(
+        page,
+        perPage,
+        preparedProducts,
+      );
       await this.createCache(cacheKey, productsPaginated);
       return res.status(200).json(productsPaginated);
     } catch (error) {
@@ -85,8 +93,9 @@ export default class ProductsController extends BaseController {
       }
       const productsModel = new ProductsModel();
       const product = await productsModel.getProduct(Number(req.params.id));
-      await this.createCache(cacheKey, product);
-      return res.status(200).json(product);
+      const preparedProduct = this.prepareProductResponse(product);
+      await this.createCache(cacheKey, preparedProduct);
+      return res.status(200).json(preparedProduct);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -233,5 +242,55 @@ export default class ProductsController extends BaseController {
         return res.status(error.statusCode).send({ message: error.message });
       }
     }
+  }
+
+  private prepareProductResponse(product: Product) {
+    return {
+      id: product.id,
+      name: product.name,
+      part_number: product.part_number,
+      description: product.description,
+      quantity: product.quantity,
+      status: product.status,
+      category: {
+        id: product.category.id,
+        name: product.category.name,
+      },
+      brand: {
+        id: product.brand.id,
+        name: product.brand.name,
+      },
+      supplier: {
+        id: product.supplier.id,
+        contact_name: product.supplier.contact_name,
+        corporate_name: product.supplier.corporate_name,
+        cnpj: formatCnpj(product.supplier.cnpj),
+      },
+    };
+  }
+
+  private prepareProductsResponse(products: Product[]) {
+    return products.map(product => ({
+      id: product.id,
+      name: product.name,
+      part_number: product.part_number,
+      description: product.description,
+      quantity: product.quantity,
+      status: product.status,
+      category: {
+        id: product.category.id,
+        name: product.category.name,
+      },
+      brand: {
+        id: product.brand.id,
+        name: product.brand.name,
+      },
+      supplier: {
+        id: product.supplier.id,
+        contact_name: product.supplier.contact_name,
+        corporate_name: product.supplier.corporate_name,
+        cnpj: formatCnpj(product.supplier.cnpj),
+      },
+    }));
   }
 }
