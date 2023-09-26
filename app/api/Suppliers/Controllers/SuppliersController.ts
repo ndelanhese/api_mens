@@ -1,6 +1,7 @@
 import ListFactory from '@app/api/Shared/Factories/ListFactory';
 import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import { formatCnpj } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
+import { formatPostaCode } from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import CreateSupplierAction from '@app/src/Suppliers/Application/Actions/CreateSupplierAction';
 import DeleteSupplierAction from '@app/src/Suppliers/Application/Actions/DeleteSupplierAction';
 import UpdateSupplierAction from '@app/src/Suppliers/Application/Actions/UpdateSupplierAction';
@@ -183,7 +184,15 @@ export default class SuppliersController extends BaseController {
       corporate_name: supplier.corporate_name,
       cnpj: formatCnpj(supplier.cnpj),
       status: supplier.status,
-      addresses: addresses,
+      addresses: addresses.map(address => ({
+        id: address.id,
+        address: address.address,
+        number: address.number,
+        district: address.district,
+        postal_code: formatPostaCode(address.postal_code),
+        city: address.city,
+        state: address.state,
+      })),
     };
   }
 }
