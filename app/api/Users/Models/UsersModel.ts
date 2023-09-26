@@ -10,7 +10,7 @@ export default class UserModel {
     try {
       let whereClause: WhereOptions = {};
       if (status) whereClause = { status };
-      return await userModel.findAll({
+      const users: any = await userModel.findAll({
         where: whereClause,
         attributes: {
           exclude: ['password', 'employee_id'],
@@ -18,6 +18,8 @@ export default class UserModel {
         order: [['id', 'ASC']],
         include: { model: employeesModel, as: 'employee' },
       });
+
+      return users as IUser[];
     } catch (error) {
       throw new HttpError(500, 'Erro ao listar usuários.', error);
     }
