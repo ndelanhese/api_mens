@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ProductsModel from '@app/database/Models/ProductsModel';
 import PromotionsCategoriesModel from '@app/database/Models/PromotionsCategoriesModel';
 import PromotionsProductsModel from '@app/database/Models/PromotionsProductsModel';
+import PromotionCategory from '@app/src/Promotions/Domain/Entities/PromotionCategory';
 import salesModel from '@db-models/PromotionsModel';
 import HttpError from '@exceptions/HttpError';
 import { WhereOptions } from 'sequelize';
+
+import { Product, Promotion } from './PromotionsModel.types';
 
 export default class PromotionsModel {
   public async getPromotions(status?: string) {
     try {
       let whereClause: WhereOptions = {};
       if (status) whereClause = { status };
-      return await salesModel.findAll({
+      const promotions: any = await salesModel.findAll({
         where: whereClause,
         order: [['id', 'DESC']],
         include: [
@@ -30,6 +34,21 @@ export default class PromotionsModel {
           },
         ],
       });
+      const simplifiedPromotions = promotions.map((promotion: any) => {
+        const promotionData = promotion.toJSON() as Promotion;
+        const categoryData = promotion.category.toJSON() as PromotionCategory;
+        const productData = promotion.products.map((product: any) =>
+          product.product.toJSON(),
+        ) as Product[];
+
+        return {
+          ...promotionData,
+          category: categoryData,
+          products: productData,
+        };
+      });
+
+      return simplifiedPromotions;
     } catch (error) {
       throw new HttpError(500, 'Erro ao listar promoções.', error);
     }

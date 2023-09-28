@@ -5,6 +5,7 @@ import DeletePromotionAction from '@app/src/Promotions/Application/Actions/Promo
 import UpdatePromotionAction from '@app/src/Promotions/Application/Actions/Promotions/UpdatePromotionAction';
 import { DiscountTypes } from '@app/src/Promotions/Domain/Enums/DiscountTypes';
 import { PromotionStatusTypes } from '@app/src/Promotions/Domain/Enums/PromotionStatusTypes';
+import { formatLocaleDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -14,6 +15,8 @@ import DeletePromotionFactory from '../Factories/Promotions/DeletePromotionFacto
 import UpdatePromotionDateFactory from '../Factories/Promotions/UpdatePromotionDataFactory';
 import UpdatePromotionFactory from '../Factories/Promotions/UpdatePromotionFactory';
 import PromotionsModel from '../Models/PromotionsModel';
+
+import { Promotion } from './PromotionsController.types';
 
 export default class PromotionsController extends BaseController {
   public async getPromotions(
@@ -30,7 +33,9 @@ export default class PromotionsController extends BaseController {
       const { page, perPage } = PaginationFactory.fromRequest(req);
       const { status } = ListFactory.fromRequest(req);
       const promotionsModel = new PromotionsModel();
-      const promotions = await promotionsModel.getPromotions(status);
+      const promotions: Promotion[] = await promotionsModel.getPromotions(
+        status,
+      );
       const promotionsPaginated = this.dataPagination(
         page,
         perPage,
@@ -176,5 +181,32 @@ export default class PromotionsController extends BaseController {
         return res.status(error.statusCode).send({ message: error.message });
       }
     }
+  }
+
+  private formatPromotion(promotion: Promotion) {
+    const { products, category, ...rest } = promotion;
+    const {
+      initial_date,
+      final_date,
+      status,
+      discount_amount,
+      discount_type,
+      ...restPromotion
+    } = rest;
+    return {
+      ...restPromotion,
+      initial_date: formatLocaleDateString(initial_date),
+      final_date: formatLocaleDateString(final_date),
+      // TODO -> add values converted
+      status,
+      discount_amount,
+      discount_type,
+      category: {
+        ...category,
+      },
+      products: {
+        ...products,
+      },
+    };
   }
 }
