@@ -1,6 +1,11 @@
 import { formatMoneyByCurrencySymbol } from './money';
 
-export const formatDiscount = (value: number, discountType: string) => {
+export const formatDiscount = (
+  value: number | null,
+  discountType: string | null,
+) => {
+  if (!value) return null;
+
   if (discountType === 'percentage') {
     return `${value}%`;
   }
@@ -9,5 +14,5 @@ export const formatDiscount = (value: number, discountType: string) => {
     return formatMoneyByCurrencySymbol(value);
   }
 
-  return '';
+  return null;
 };

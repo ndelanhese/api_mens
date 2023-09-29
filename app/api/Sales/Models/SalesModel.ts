@@ -63,6 +63,7 @@ export default class SalesModel {
               {
                 model: EmployeesModel,
                 as: 'employee',
+                attributes: ['id', 'name', 'cpf'],
               },
             ],
           },
@@ -158,7 +159,7 @@ export default class SalesModel {
               {
                 model: EmployeesModel,
                 as: 'employee',
-                attributes: ['id', 'name'],
+                attributes: ['id', 'name', 'cpf'],
               },
             ],
           },
