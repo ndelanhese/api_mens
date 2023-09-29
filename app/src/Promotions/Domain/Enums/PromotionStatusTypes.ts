@@ -1,7 +1,7 @@
 import { PromotionStatusTypesOptions } from './PromotionStatusTypes.types';
 
 export class PromotionStatusTypes {
-  public static labels = {
+  public static labels: { [key: string]: string } = {
     completed: 'Finalizada',
     pending: 'Pendente',
     canceled: 'Cancelada',
@@ -23,6 +23,10 @@ export class PromotionStatusTypes {
 
   public label(): string {
     return PromotionStatusTypes.labels[this.value];
+  }
+
+  public static getLabel(key: string): string | undefined {
+    return PromotionStatusTypes.labels[key];
   }
 
   public static isValid(value: string): boolean {

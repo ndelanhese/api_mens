@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import ListFactory from '@app/api/Shared/Factories/ListFactory';
 import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import CreatePromotionAction from '@app/src/Promotions/Application/Actions/Promotions/CreatePromotionAction';
@@ -68,7 +67,7 @@ export default class PromotionsController extends BaseController {
         return res.status(200).json(cache);
       }
       const promotionsModel = new PromotionsModel();
-      const promotion: any = await promotionsModel.getPromotion(id);
+      const promotion: unknown = await promotionsModel.getPromotion(id);
       const formattedPromotion = this.formatPromotion(promotion as Promotion);
       await this.createCache(cacheKey, formattedPromotion);
       return res.status(200).json(formattedPromotion);
@@ -204,9 +203,7 @@ export default class PromotionsController extends BaseController {
       ...restPromotion,
       initial_date: formatLocaleDateString(initial_date),
       final_date: formatLocaleDateString(final_date),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      status: PromotionStatusTypes.labels[status],
+      status: PromotionStatusTypes.getLabel(status),
       discount_amount,
       discount_type,
       formatted_discount: formatDiscount(discount_amount, discount_type),
