@@ -11,6 +11,7 @@ import {
   getDateString,
   getTime,
 } from '@app/src/Shared/Infrastructure/Utils/Date';
+import { formatMoneyByCurrencySymbol } from '@app/src/Shared/Infrastructure/Utils/helpers/money';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -251,7 +252,19 @@ export default class ProductsController extends BaseController {
       part_number: product.part_number,
       description: product.description,
       quantity: product.quantity,
-      status: product.status,
+      original_price: product.purchase_price ?? product.price,
+      original_price_formatted: formatMoneyByCurrencySymbol(
+        product.purchase_price ?? product.price,
+      ),
+      price: product.price,
+      price_formatted: formatMoneyByCurrencySymbol(product.price),
+      discount: product.purchase_price
+        ? product.purchase_price - product.price
+        : null,
+      discount_formatted: product.purchase_price
+        ? formatMoneyByCurrencySymbol(product.purchase_price - product.price)
+        : null,
+      status: ProductStatusTypes.getLabel(product.status),
       category: {
         id: product.category.id,
         name: product.category.name,
@@ -276,7 +289,19 @@ export default class ProductsController extends BaseController {
       part_number: product.part_number,
       description: product.description,
       quantity: product.quantity,
-      status: product.status,
+      original_price: product.purchase_price ?? product.price,
+      original_price_formatted: formatMoneyByCurrencySymbol(
+        product.purchase_price ?? product.price,
+      ),
+      price: product.price,
+      price_formatted: formatMoneyByCurrencySymbol(product.price),
+      discount: product.purchase_price
+        ? product.purchase_price - product.price
+        : null,
+      discount_formatted: product.purchase_price
+        ? formatMoneyByCurrencySymbol(product.purchase_price - product.price)
+        : null,
+      status: ProductStatusTypes.getLabel(product.status),
       category: {
         id: product.category.id,
         name: product.category.name,
