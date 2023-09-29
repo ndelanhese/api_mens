@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ListFactory from '@app/api/Shared/Factories/ListFactory';
 import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import CreatePromotionAction from '@app/src/Promotions/Application/Actions/Promotions/CreatePromotionAction';
@@ -6,6 +7,7 @@ import UpdatePromotionAction from '@app/src/Promotions/Application/Actions/Promo
 import { DiscountTypes } from '@app/src/Promotions/Domain/Enums/DiscountTypes';
 import { PromotionStatusTypes } from '@app/src/Promotions/Domain/Enums/PromotionStatusTypes';
 import { formatLocaleDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
+import { formatDiscount } from '@app/src/Shared/Infrastructure/Utils/helpers/discountFormatter';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -36,10 +38,13 @@ export default class PromotionsController extends BaseController {
       const promotions: Promotion[] = await promotionsModel.getPromotions(
         status,
       );
+      const formattedPromotions = promotions.map(promotion => {
+        return this.formatPromotion(promotion);
+      });
       const promotionsPaginated = this.dataPagination(
         page,
         perPage,
-        promotions,
+        formattedPromotions,
       );
       await this.createCache(cacheKey, promotionsPaginated);
       return res.status(200).json(promotionsPaginated);
@@ -63,9 +68,10 @@ export default class PromotionsController extends BaseController {
         return res.status(200).json(cache);
       }
       const promotionsModel = new PromotionsModel();
-      const promotion = await promotionsModel.getPromotion(id);
-      await this.createCache(cacheKey, promotion);
-      return res.status(200).json(promotion);
+      const promotion: any = await promotionsModel.getPromotion(id);
+      const formattedPromotion = this.formatPromotion(promotion as Promotion);
+      await this.createCache(cacheKey, formattedPromotion);
+      return res.status(200).json(formattedPromotion);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -193,14 +199,17 @@ export default class PromotionsController extends BaseController {
       discount_type,
       ...restPromotion
     } = rest;
+
     return {
       ...restPromotion,
       initial_date: formatLocaleDateString(initial_date),
       final_date: formatLocaleDateString(final_date),
-      // TODO -> add values converted
-      status,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      status: PromotionStatusTypes.labels[status],
       discount_amount,
       discount_type,
+      formatted_discount: formatDiscount(discount_amount, discount_type),
       category: {
         ...category,
       },

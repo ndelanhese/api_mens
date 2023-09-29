@@ -12,19 +12,19 @@ type Product = {
   category_id: number;
   brand_id: number;
   supplier_id: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 type Category = {
-  id: number;
+  id?: number;
   name: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type Promotion = {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   discount_amount: number;
@@ -33,8 +33,8 @@ export type Promotion = {
   final_date: string;
   status: string;
   promotion_category_id: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
   category: Category;
   products: Product[];
 };
