@@ -1,3 +1,8 @@
+import {
+  capitalizeFirstLetter,
+  capitalizeWords,
+} from '@app/src/Shared/Infrastructure/Utils/String';
+
 import Brand from '../../Domain/Entities/Brand';
 import Category from '../../Domain/Entities/Category';
 import Product from '../../Domain/Entities/Product';
@@ -26,8 +31,8 @@ export default class UpdateProductAction {
       : currentValue.getPartNumber();
     const productRepository = new ProductRepository();
     const product = new Product(
-      input.name ?? currentValue.getName(),
-      input.description ?? currentValue.getDescription(),
+      capitalizeWords(input.name) ?? currentValue.getName(),
+      capitalizeFirstLetter(input.description) ?? currentValue.getDescription(),
       input.price ?? currentValue.getPrice(),
       input.quantity ?? currentValue.getQuantity(),
       input.status ?? currentValue.getStatus(),
@@ -59,8 +64,8 @@ export default class UpdateProductAction {
     const supplierModel = new SuppliersModel();
     const supplier = await supplierModel.getSupplier(supplierId);
     return new Supplier(
-      supplier.contact_name,
-      supplier.corporate_name,
+      capitalizeWords(supplier.contact_name),
+      capitalizeWords(supplier.corporate_name),
       supplier.cnpj,
       supplier.status,
       supplier.id,

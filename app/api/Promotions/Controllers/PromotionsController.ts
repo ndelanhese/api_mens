@@ -5,6 +5,8 @@ import DeletePromotionAction from '@app/src/Promotions/Application/Actions/Promo
 import UpdatePromotionAction from '@app/src/Promotions/Application/Actions/Promotions/UpdatePromotionAction';
 import { DiscountTypes } from '@app/src/Promotions/Domain/Enums/DiscountTypes';
 import { PromotionStatusTypes } from '@app/src/Promotions/Domain/Enums/PromotionStatusTypes';
+import { formatLocaleDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
+import { formatDiscount } from '@app/src/Shared/Infrastructure/Utils/helpers/discountFormatter';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -14,6 +16,8 @@ import DeletePromotionFactory from '../Factories/Promotions/DeletePromotionFacto
 import UpdatePromotionDateFactory from '../Factories/Promotions/UpdatePromotionDataFactory';
 import UpdatePromotionFactory from '../Factories/Promotions/UpdatePromotionFactory';
 import PromotionsModel from '../Models/PromotionsModel';
+
+import { Promotion } from './PromotionsController.types';
 
 export default class PromotionsController extends BaseController {
   public async getPromotions(
@@ -30,11 +34,16 @@ export default class PromotionsController extends BaseController {
       const { page, perPage } = PaginationFactory.fromRequest(req);
       const { status } = ListFactory.fromRequest(req);
       const promotionsModel = new PromotionsModel();
-      const promotions = await promotionsModel.getPromotions(status);
+      const promotions: Promotion[] = await promotionsModel.getPromotions(
+        status,
+      );
+      const formattedPromotions = promotions.map(promotion => {
+        return this.formatPromotion(promotion);
+      });
       const promotionsPaginated = this.dataPagination(
         page,
         perPage,
-        promotions,
+        formattedPromotions,
       );
       await this.createCache(cacheKey, promotionsPaginated);
       return res.status(200).json(promotionsPaginated);
@@ -58,9 +67,10 @@ export default class PromotionsController extends BaseController {
         return res.status(200).json(cache);
       }
       const promotionsModel = new PromotionsModel();
-      const promotion = await promotionsModel.getPromotion(id);
-      await this.createCache(cacheKey, promotion);
-      return res.status(200).json(promotion);
+      const promotion: unknown = await promotionsModel.getPromotion(id);
+      const formattedPromotion = this.formatPromotion(promotion as Promotion);
+      await this.createCache(cacheKey, formattedPromotion);
+      return res.status(200).json(formattedPromotion);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -176,5 +186,33 @@ export default class PromotionsController extends BaseController {
         return res.status(error.statusCode).send({ message: error.message });
       }
     }
+  }
+
+  private formatPromotion(promotion: Promotion) {
+    const { products, category, ...rest } = promotion;
+    const {
+      initial_date,
+      final_date,
+      status,
+      discount_amount,
+      discount_type,
+      ...restPromotion
+    } = rest;
+
+    return {
+      ...restPromotion,
+      initial_date: formatLocaleDateString(initial_date),
+      final_date: formatLocaleDateString(final_date),
+      status: PromotionStatusTypes.getLabel(status),
+      discount_amount,
+      discount_type,
+      formatted_discount: formatDiscount(discount_amount, discount_type),
+      category: {
+        ...category,
+      },
+      products: {
+        ...products,
+      },
+    };
   }
 }

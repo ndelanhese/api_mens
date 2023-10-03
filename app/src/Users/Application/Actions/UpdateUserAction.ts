@@ -6,8 +6,8 @@ export default class UpdateUserAction {
   async execute(input: UpdateUserInputData, currentValue: User): Promise<void> {
     const userRepository = new UserRepository();
     const user = new User(
-      input.user || currentValue.getUser(),
-      input.email || currentValue.getEmail(),
+      input.user?.trim()?.toLowerCase() || currentValue.getUser(),
+      input.email?.trim()?.toLowerCase() || currentValue.getEmail(),
       input.password || currentValue.getPassword(),
       input.status || currentValue.getStatus(),
       input.employee_id || currentValue.getEmployeeId(),

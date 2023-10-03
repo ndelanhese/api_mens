@@ -1,3 +1,8 @@
+import {
+  capitalizeFirstLetter,
+  capitalizeWords,
+} from '@app/src/Shared/Infrastructure/Utils/String';
+
 import Role from '../../Domain/Entities/Role';
 import RolePermissions from '../../Domain/Entities/RolePermissions';
 import RolePermissionsRepository from '../../Infrastructure/Repositories/RolePermissionsRepository';
@@ -8,8 +13,8 @@ export default class UpdateRoleAction {
   async execute(input: UpdateRoleInputData, currentValue: Role): Promise<Role> {
     const roleRepository = new RoleRepository();
     const role = new Role(
-      input.name || currentValue.getName(),
-      input.description || currentValue.getDescription(),
+      capitalizeWords(input.name) || currentValue.getName(),
+      capitalizeFirstLetter(input.description) || currentValue.getDescription(),
       input.id || currentValue.getId(),
     );
     if (input.permissions) {

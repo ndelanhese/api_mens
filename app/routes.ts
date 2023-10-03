@@ -10,6 +10,7 @@ import AclRoute from '@app/api/Acl/Routes/AclRoute';
 import LoginRoute from '@app/api/Auth/Routes/AuthRoute';
 import BrandsRoute from '@app/api/Brands/Routes/BrandsRoute';
 import CitiesRoute from '@app/api/Extra/Routes/CitiesRoute';
+import DiscountTypesRoute from '@app/api/Extra/Routes/DiscountTypesSelectRoute';
 import StatesRoute from '@app/api/Extra/Routes/StatesRoute';
 import UsersRoute from '@app/api/Users/Routes/UsersRoute';
 import AuthToken from '@auth-middleware/AuthMiddleware';
@@ -39,6 +40,7 @@ const prepareInstance = () => {
   const promotionsRoute = new PromotionsRoute();
   const promotionsCategoriesRoute = new PromotionsCategoriesRoute();
   const summariesRoute = new SummariesRoute();
+  const discountTypesRoute = new DiscountTypesRoute();
 
   return {
     loginRoute,
@@ -58,6 +60,7 @@ const prepareInstance = () => {
     promotionsRoute,
     promotionsCategoriesRoute,
     summariesRoute,
+    discountTypesRoute,
   };
 };
 const instances = prepareInstance();
@@ -85,5 +88,10 @@ router.use(
   instances.promotionsCategoriesRoute.promotionCategoryRoute,
 );
 router.use('/summaries', AuthToken, instances.summariesRoute.summaryRoute);
+router.use(
+  '/extra/selects/discount-types',
+  AuthToken,
+  instances.discountTypesRoute.discountTypeRoute,
+);
 
 export default router;

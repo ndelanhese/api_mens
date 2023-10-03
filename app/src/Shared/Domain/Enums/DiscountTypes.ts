@@ -1,7 +1,7 @@
 import { DiscountTypesOption } from './DiscountTypes.types';
 
 export class DiscountTypes {
-  public static labels: { [key: string]: string } = {
+  public static labels = {
     percentage: 'Porcentagem',
     fixed: 'Fixo',
   };
@@ -19,10 +19,6 @@ export class DiscountTypes {
 
   public label(): string {
     return DiscountTypes.labels[this.value];
-  }
-
-  public static getLabel(key: string): string | undefined {
-    return DiscountTypes.labels[key];
   }
 
   public static isValid(value: string): boolean {

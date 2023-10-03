@@ -1,7 +1,7 @@
 import { SaleStatusTypesOptions } from './SaleStatusTypes.types';
 
 export class SaleStatusTypes {
-  public static labels = {
+  public static labels: { [key: string]: string } = {
     completed: 'Finalizada',
     refunded: 'Estornada',
     pending: 'Pendente',
@@ -25,6 +25,10 @@ export class SaleStatusTypes {
 
   public label(): string {
     return SaleStatusTypes.labels[this.value];
+  }
+
+  public static getLabel(key: string): string | undefined {
+    return SaleStatusTypes.labels[key];
   }
 
   public static isValid(value: string): boolean {

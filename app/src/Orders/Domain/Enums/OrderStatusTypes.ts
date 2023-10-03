@@ -1,7 +1,7 @@
 import { OrderStatusTypesOptions } from './OrderStatusTypes.types';
 
 export class OrderStatusTypes {
-  public static labels = {
+  public static labels: { [key: string]: string } = {
     completed: 'Finalizada',
     pending: 'Pendente',
     canceled: 'Cancelada',
@@ -21,6 +21,10 @@ export class OrderStatusTypes {
 
   public label(): string {
     return OrderStatusTypes.labels[this.value];
+  }
+
+  public static getLabel(key: string): string | undefined {
+    return OrderStatusTypes.labels[key];
   }
 
   public static isValid(value: string): boolean {

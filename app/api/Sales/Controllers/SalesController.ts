@@ -1,4 +1,5 @@
 import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
+import { ProductStatusTypes } from '@app/src/Products/Domain/Enums/ProductStatusTypes';
 import CreateSaleAction from '@app/src/Sales/Application/Actions/CreateSaleAction';
 import ExportSaleAction from '@app/src/Sales/Application/Actions/ExportSaleAction';
 import UpdateSaleAction from '@app/src/Sales/Application/Actions/UpdateSaleAction';
@@ -6,7 +7,17 @@ import UpdateSaleStatusAction from '@app/src/Sales/Application/Actions/UpdateSal
 import ExportSalesInputData from '@app/src/Sales/Application/Dtos/ExportSaleInputData';
 import { DiscountTypes } from '@app/src/Sales/Domain/Enums/DiscountTypes';
 import { SaleStatusTypes } from '@app/src/Sales/Domain/Enums/SaleStatusTypes';
-import { getDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
+import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
+import {
+  formatLocaleDateString,
+  getDateString,
+} from '@app/src/Shared/Infrastructure/Utils/Date';
+import {
+  formatPhoneNumber,
+  formatRG,
+} from '@app/src/Shared/Infrastructure/Utils/Formatter';
+import { formatDiscount } from '@app/src/Shared/Infrastructure/Utils/helpers/discountFormatter';
+import { formatMoneyByCurrencySymbol } from '@app/src/Shared/Infrastructure/Utils/helpers/money';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -17,6 +28,8 @@ import ListSaleFactory from '../Factories/ListSaleFactory';
 import UpdateSaleFactory from '../Factories/UpdateSaleFactory';
 import UpdateSaleStatusFactory from '../Factories/UpdateSaleStatusFactory';
 import SalesModel from '../Models/SalesModel';
+
+import { Sale } from './SalesController.types';
 
 export default class SalesController extends BaseController {
   public async getSales(
@@ -34,7 +47,8 @@ export default class SalesController extends BaseController {
       const inputData = ListSaleFactory.fromRequest(req);
       const salesModel = new SalesModel();
       const sales = await salesModel.getSales(inputData);
-      const salesPaginated = this.dataPagination(page, perPage, sales);
+      const preparedSales = sales.map(sale => this.prepareSale(sale));
+      const salesPaginated = this.dataPagination(page, perPage, preparedSales);
       await this.createCache(cacheKey, salesPaginated);
       return res.status(200).json(salesPaginated);
     } catch (error) {
@@ -58,8 +72,9 @@ export default class SalesController extends BaseController {
       }
       const salesModel = new SalesModel();
       const sale = await salesModel.getSale(id);
-      await this.createCache(cacheKey, sale);
-      return res.status(200).json(sale);
+      const preparedSale = this.prepareSale(sale);
+      await this.createCache(cacheKey, preparedSale);
+      return res.status(200).json(preparedSale);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -210,5 +225,76 @@ export default class SalesController extends BaseController {
       return '';
     }
     return name.join('-');
+  }
+
+  private prepareSale(sale: Sale) {
+    const {
+      date,
+      discount_amount,
+      discount_type,
+      final_value,
+      status,
+      customer,
+      employee,
+      id,
+      methods_of_payments,
+      observation,
+      products,
+      total_value,
+      createdAt,
+    } = sale;
+
+    const {
+      birth_date: customerBirthDate,
+      cpf: customerCpf,
+      phone: customerPhone,
+      rg: customerRg,
+      ...restCustomer
+    } = customer;
+
+    const preparedCustomer = {
+      ...restCustomer,
+      birth_date: formatLocaleDateString(customerBirthDate),
+      cpf: formatCpf(customerCpf),
+      rg: formatRG(customerRg),
+      phone: formatPhoneNumber(customerPhone),
+    };
+
+    const { cpf: cpfEmployee, ...restEmployee } = employee;
+
+    const preparedEmployee = {
+      ...restEmployee,
+      cpf: formatCpf(cpfEmployee),
+    };
+
+    const preparedProducts = products.map(product => {
+      const { status, purchase_price, price, ...restProduct } = product;
+      return {
+        ...restProduct,
+        status: ProductStatusTypes.getLabel(status),
+        purchase_price,
+        purchase_price_formatted: formatMoneyByCurrencySymbol(purchase_price),
+        price,
+        price_formatted: formatMoneyByCurrencySymbol(price),
+      };
+    });
+
+    return {
+      id,
+      date: formatLocaleDateString(date),
+      discount_amount,
+      discount_type,
+      formatted_discount: formatDiscount(discount_amount, discount_type),
+      final_value,
+      formatted_final_value: formatMoneyByCurrencySymbol(final_value),
+      status: SaleStatusTypes.getLabel(status),
+      customer: preparedCustomer,
+      employee: preparedEmployee,
+      methods_of_payments,
+      observation,
+      products: preparedProducts,
+      total_value,
+      createdAt,
+    };
   }
 }

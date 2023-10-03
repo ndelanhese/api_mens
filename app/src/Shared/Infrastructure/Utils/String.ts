@@ -20,3 +20,25 @@ export const extractNumbersFromString = (input: string): string => {
   const numbersOnly = input.replace(EXTRACT_ONLY_NUMBERS_REGEX, '');
   return numbersOnly;
 };
+
+export const capitalizeFirstLetter = <T extends string | null | undefined>(
+  input: T,
+): T => {
+  if (!input) return input as T;
+
+  return (input.trim().charAt(0).toUpperCase() + input.slice(1)) as T;
+};
+
+export const capitalizeWords = <T extends string | null | undefined>(
+  input: T,
+): T => {
+  if (!input) return input as T;
+
+  const words = input.trim().split(' ');
+
+  const capitalizedWords = words.map(word => {
+    return word[0].toUpperCase() + word.slice(1);
+  });
+
+  return capitalizedWords.join(' ') as T;
+};

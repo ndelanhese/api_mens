@@ -1,3 +1,5 @@
+import { capitalizeWords } from '@app/src/Shared/Infrastructure/Utils/String';
+
 import Address from '../../Domain/Entities/Address';
 import Supplier from '../../Domain/Entities/Supplier';
 import AddressesModel from '../../Infrastructure/Models/AddressesModel';
@@ -13,8 +15,8 @@ export default class UpdateSupplierAction extends SupplierAction {
   ): Promise<void> {
     const supplierRepository = new SuppliersRepository();
     const supplier = new Supplier(
-      input.contact_name || currentValue.getContactName(),
-      input.corporate_name || currentValue.getCorporateName(),
+      capitalizeWords(input.contact_name) || currentValue.getContactName(),
+      capitalizeWords(input.corporate_name) || currentValue.getCorporateName(),
       input.cnpj || currentValue.getCnpj(),
       input.status || currentValue.getStatus(),
       undefined,
@@ -29,12 +31,12 @@ export default class UpdateSupplierAction extends SupplierAction {
       const { address: inputData } = input;
       await this.validateCep(inputData.postal_code);
       const address = new Address(
-        inputData.address,
+        capitalizeWords(inputData.address),
         inputData.number,
-        inputData.district,
+        capitalizeWords(inputData.district),
         inputData.postal_code,
-        inputData.city,
-        inputData.state,
+        capitalizeWords(inputData.city),
+        capitalizeWords(inputData.state),
         inputData.id,
       );
       const addressesModel = new AddressesModel();

@@ -1,3 +1,5 @@
+import { capitalizeWords } from '@app/src/Shared/Infrastructure/Utils/String';
+
 import Customer from '../../Domain/Entities/Customer';
 import Employee from '../../Domain/Entities/Employee';
 import Order from '../../Domain/Entities/Order';
@@ -38,7 +40,7 @@ export default class UpdateOrderAction {
     const customerModel = new CustomersModel();
     const customer = await customerModel.getCustomer(id);
     return new Customer(
-      customer.name,
+      capitalizeWords(customer.name),
       customer.cpf,
       customer.birth_date,
       customer.phone,
@@ -51,7 +53,7 @@ export default class UpdateOrderAction {
     const userModel = new UserModel();
     const user = await userModel.getUser(id);
     const employee = new Employee(
-      user.employee.name,
+      capitalizeWords(user.employee.name),
       user.employee.cpf,
       user.employee.id,
     );

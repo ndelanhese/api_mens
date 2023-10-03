@@ -1,3 +1,5 @@
+import { capitalizeWords } from '@app/src/Shared/Infrastructure/Utils/String';
+
 import Address from '../../Domain/Entities/Address';
 import Employee from '../../Domain/Entities/Employee';
 import AddressesModel from '../../Infrastructure/Models/AddressesModel';
@@ -13,7 +15,7 @@ export default class UpdateEmployeeAction extends EmployeeAction {
   ): Promise<void> {
     const employeeRepository = new EmployeesRepository();
     const employee = new Employee(
-      input.name || currentValue.getName(),
+      capitalizeWords(input.name) || currentValue.getName(),
       input.cpf || currentValue.getCpf(),
       input.birth_date || currentValue.getBirthDate(),
       input.phone || currentValue.getPhone(),
@@ -40,12 +42,12 @@ export default class UpdateEmployeeAction extends EmployeeAction {
       const { address: inputData } = input;
       await this.validateCep(inputData.postal_code);
       const address = new Address(
-        inputData.address,
+        capitalizeWords(inputData.address),
         inputData.number,
-        inputData.district,
+        capitalizeWords(inputData.district),
         inputData.postal_code,
-        inputData.city,
-        inputData.state,
+        capitalizeWords(inputData.city),
+        capitalizeWords(inputData.state),
         inputData.id,
       );
       const addressesModel = new AddressesModel();
