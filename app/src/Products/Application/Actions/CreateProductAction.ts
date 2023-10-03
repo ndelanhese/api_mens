@@ -1,3 +1,8 @@
+import {
+  capitalizeFirstLetter,
+  capitalizeWords,
+} from '@app/src/Shared/Infrastructure/Utils/String';
+
 import Brand from '../../Domain/Entities/Brand';
 import Category from '../../Domain/Entities/Category';
 import Product from '../../Domain/Entities/Product';
@@ -15,8 +20,8 @@ export default class CreateProductAction {
     const brand = await this.getBrand(input.brand_id);
     const supplier = await this.getSupplier(input.supplier_id);
     const product = new Product(
-      input.name,
-      input.description,
+      capitalizeFirstLetter(input.name),
+      capitalizeFirstLetter(input.description),
       input.price,
       input.quantity,
       input.status,
@@ -68,8 +73,8 @@ export default class CreateProductAction {
     const supplierModel = new SuppliersModel();
     const supplier = await supplierModel.getSupplier(supplierId);
     return new Supplier(
-      supplier.contact_name,
-      supplier.corporate_name,
+      capitalizeWords(supplier.contact_name),
+      capitalizeWords(supplier.corporate_name),
       supplier.cnpj,
       supplier.status,
       supplier.id,

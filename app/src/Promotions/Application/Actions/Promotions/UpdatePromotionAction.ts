@@ -3,6 +3,10 @@ import PromotionCategory from '@app/src/Promotions/Domain/Entities/PromotionCate
 import PromotionProduct from '@app/src/Promotions/Domain/Entities/PromotionProduct';
 import PromotionsCategoriesModel from '@app/src/Promotions/Infrastructure/Models/PromotionCategory';
 import PromotionsRepository from '@app/src/Promotions/Infrastructure/Repositories/PromotionsRepository';
+import {
+  capitalizeFirstLetter,
+  capitalizeWords,
+} from '@app/src/Shared/Infrastructure/Utils/String';
 
 import UpdatePromotionInputData from '../../Dtos/Promotions/UpdatePromotionInputData';
 
@@ -14,8 +18,8 @@ export default class UpdatePromotionAction {
     const category = await this.getCategory(categoryId);
     const products = this.prepareProducts(input);
     const promotion = new Promotion(
-      input.name ?? currentPromotion.name,
-      input.description ?? currentPromotion.description,
+      capitalizeWords(input.name) ?? currentPromotion.name,
+      capitalizeFirstLetter(input.description) ?? currentPromotion.description,
       category,
       products,
       input.discount_amount ?? currentPromotion.discount_amount,

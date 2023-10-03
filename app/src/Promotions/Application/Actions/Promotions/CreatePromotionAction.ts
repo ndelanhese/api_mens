@@ -4,6 +4,10 @@ import PromotionProduct from '@app/src/Promotions/Domain/Entities/PromotionProdu
 import PromotionsCategoriesModel from '@app/src/Promotions/Infrastructure/Models/PromotionCategory';
 import PromotionsRepository from '@app/src/Promotions/Infrastructure/Repositories/PromotionsRepository';
 import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
+import {
+  capitalizeFirstLetter,
+  capitalizeWords,
+} from '@app/src/Shared/Infrastructure/Utils/String';
 
 import CreatePromotionInputData from '../../Dtos/Promotions/CreatePromotionInputData';
 
@@ -17,8 +21,8 @@ export default class CreatePromotionAction {
       product => new PromotionProduct(product.id),
     );
     const promotion = new Promotion(
-      input.name,
-      input.description,
+      capitalizeWords(input.name),
+      capitalizeFirstLetter(input.description),
       promotionCategory,
       products,
       input.discount_amount,
