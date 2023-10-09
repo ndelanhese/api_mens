@@ -1,7 +1,7 @@
 import { EmployeeStatusTypesOptions } from './EmployeeStatusTypes.types';
 
 export class EmployeeStatusTypes {
-  public static labels = {
+  public static labels: { [key: string]: string } = {
     active: 'Ativo',
     inactive: 'Inativo',
   };
@@ -19,6 +19,10 @@ export class EmployeeStatusTypes {
 
   public label(): string {
     return EmployeeStatusTypes.labels[this.value];
+  }
+
+  public static getLabel(key: string): string | undefined {
+    return EmployeeStatusTypes.labels[key];
   }
 
   public static isValid(value: string): boolean {

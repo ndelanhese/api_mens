@@ -178,7 +178,7 @@ export default class CustomersController extends BaseController {
       rg: formatRG(customer.rg ?? ''),
       birth_date: formatLocaleDateString(customer.birth_date),
       phone: formatPhoneNumber(customer.phone),
-      status: customer.status,
+      status: CustomerStatusTypes.getLabel(customer.status),
       addresses: addresses.map(address => ({
         id: address.id,
         address: address.address,

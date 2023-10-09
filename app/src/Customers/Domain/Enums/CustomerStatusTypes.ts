@@ -1,7 +1,7 @@
 import { CustomerStatusTypesOptions } from './CustomerStatusTypes.types';
 
 export class CustomerStatusTypes {
-  public static labels = {
+  public static labels: { [key: string]: string } = {
     active: 'Ativo',
     inactive: 'Inativo',
   };
@@ -19,6 +19,10 @@ export class CustomerStatusTypes {
 
   public label(): string {
     return CustomerStatusTypes.labels[this.value];
+  }
+
+  public static getLabel(key: string): string | undefined {
+    return CustomerStatusTypes.labels[key];
   }
 
   public static isValid(value: string): boolean {
