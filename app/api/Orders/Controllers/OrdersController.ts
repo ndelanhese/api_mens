@@ -5,7 +5,18 @@ import UpdateOrderAction from '@app/src/Orders/Application/Actions/UpdateOrderAc
 import UpdateOrderStatusAction from '@app/src/Orders/Application/Actions/UpdateOrderStatusAction';
 import ExportOrdersInputData from '@app/src/Orders/Application/Dtos/ExportOrdersInputData';
 import { OrderStatusTypes } from '@app/src/Orders/Domain/Enums/OrderStatusTypes';
-import { getDateString } from '@app/src/Shared/Infrastructure/Utils/Date';
+import { ProductStatusTypes } from '@app/src/Products/Domain/Enums/ProductStatusTypes';
+import { formatCpf } from '@app/src/Shared/Infrastructure/Utils/CpfCnpjFormatter';
+import {
+  formatLocaleDateString,
+  getDateString,
+} from '@app/src/Shared/Infrastructure/Utils/Date';
+import {
+  formatRG,
+  formatPhoneNumber,
+  formatPisPasep,
+} from '@app/src/Shared/Infrastructure/Utils/Formatter';
+import { formatMoneyByCurrencySymbol } from '@app/src/Shared/Infrastructure/Utils/helpers/money';
 import BaseController from '@base-controller/BaseController';
 import HttpError from '@exceptions/HttpError';
 import { Request, Response } from 'express';
@@ -16,6 +27,8 @@ import ListOrderFactory from '../Factories/ListOrderFactory';
 import UpdateOrderFactory from '../Factories/UpdateOrderFactory';
 import UpdateOrderStatusFactory from '../Factories/UpdateOrderStatusFactory';
 import OrdersModel from '../Models/OrdersModel';
+
+import { Order } from './OrdersController.types';
 
 export default class OrdersController extends BaseController {
   public async getOrders(
@@ -33,7 +46,14 @@ export default class OrdersController extends BaseController {
       const inputData = ListOrderFactory.fromRequest(req);
       const ordersModel = new OrdersModel();
       const orders = await ordersModel.getOrders(inputData);
-      const ordersPaginated = this.dataPagination(page, perPage, orders);
+      const preparedOrders = orders.map((order: Order) =>
+        this.prepareOrder(order),
+      );
+      const ordersPaginated = this.dataPagination(
+        page,
+        perPage,
+        preparedOrders,
+      );
       await this.createCache(cacheKey, ordersPaginated);
       return res.status(200).json(ordersPaginated);
     } catch (error) {
@@ -57,8 +77,9 @@ export default class OrdersController extends BaseController {
       }
       const ordersModel = new OrdersModel();
       const order = await ordersModel.getOrder(id);
-      await this.createCache(cacheKey, order);
-      return res.status(200).json(order);
+      const preparedOrder = this.prepareOrder(order);
+      await this.createCache(cacheKey, preparedOrder);
+      return res.status(200).json(preparedOrder);
     } catch (error) {
       if (error instanceof HttpError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -191,5 +212,86 @@ export default class OrdersController extends BaseController {
       return '';
     }
     return name.join('-');
+  }
+
+  private prepareOrder(order: Order) {
+    const {
+      id,
+      date,
+      observation,
+      description,
+      status,
+      createdAt,
+      customer,
+      employee,
+      orders_products,
+    } = order;
+
+    const {
+      birth_date: customerBirthDate,
+      cpf: customerCpf,
+      phone: customerPhone,
+      rg: customerRg,
+      ...restCustomer
+    } = customer;
+
+    const preparedCustomer = {
+      ...restCustomer,
+      birth_date: formatLocaleDateString(customerBirthDate),
+      cpf: formatCpf(customerCpf),
+      rg: formatRG(customerRg),
+      phone: formatPhoneNumber(customerPhone),
+    };
+
+    const {
+      cpf: cpfEmployee,
+      admission_date: employeeAdmissionDate,
+      birth_date: employeeBirthDate,
+      phone: employeePhone,
+      pis_pasep: employeePisPasep,
+      resignation_date: employeeResignationDate,
+      rg: employeeRg,
+      ...restEmployee
+    } = employee;
+
+    const preparedEmployee = {
+      ...restEmployee,
+      cpf: formatCpf(cpfEmployee),
+      rg: formatRG(employeeRg),
+      phone: formatPhoneNumber(employeePhone),
+      birth_date: formatLocaleDateString(employeeBirthDate),
+      admission_date: formatLocaleDateString(employeeAdmissionDate),
+      resignation_date: formatLocaleDateString(employeeResignationDate),
+      pis_pasep: formatPisPasep(employeePisPasep),
+    };
+
+    const preparedProducts = orders_products.map(orderProduct => {
+      const {
+        product: { status, purchase_price, price, ...restProduct },
+        ...restOrderProduct
+      } = orderProduct;
+
+      return {
+        ...restProduct,
+        status: ProductStatusTypes.getLabel(status ?? ''),
+        purchase_price,
+        purchase_price_formatted: formatMoneyByCurrencySymbol(purchase_price),
+        price,
+        price_formatted: formatMoneyByCurrencySymbol(price),
+        ...restOrderProduct,
+      };
+    });
+
+    return {
+      id,
+      date: formatLocaleDateString(date),
+      observation,
+      description,
+      status: OrderStatusTypes.getLabel(status ?? ''),
+      createdAt,
+      customer: preparedCustomer,
+      employee: preparedEmployee,
+      orders_products: preparedProducts,
+    };
   }
 }
