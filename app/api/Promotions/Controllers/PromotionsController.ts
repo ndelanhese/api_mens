@@ -205,9 +205,7 @@ export default class PromotionsController extends BaseController {
       category: {
         ...category,
       },
-      products: {
-        ...products,
-      },
+      products: [...products],
     };
   }
 }
