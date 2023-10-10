@@ -1,4 +1,3 @@
-import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import CreateOrderAction from '@app/src/Orders/Application/Actions/CreateOrderAction';
 import ExportOrderAction from '@app/src/Orders/Application/Actions/ExportOrderAction';
 import UpdateOrderAction from '@app/src/Orders/Application/Actions/UpdateOrderAction';
@@ -12,9 +11,9 @@ import {
   getDateString,
 } from '@app/src/Shared/Infrastructure/Utils/Date';
 import {
-  formatRG,
   formatPhoneNumber,
   formatPisPasep,
+  formatRG,
 } from '@app/src/Shared/Infrastructure/Utils/Formatter';
 import { formatMoneyByCurrencySymbol } from '@app/src/Shared/Infrastructure/Utils/helpers/money';
 import BaseController from '@base-controller/BaseController';
@@ -42,18 +41,14 @@ export default class OrdersController extends BaseController {
       if (cache) {
         return res.status(200).json(cache);
       }
-      const { page, perPage } = PaginationFactory.fromRequest(req);
+      // const { page, perPage } = PaginationFactory.fromRequest(req);
       const inputData = ListOrderFactory.fromRequest(req);
       const ordersModel = new OrdersModel();
       const orders = await ordersModel.getOrders(inputData);
       const preparedOrders = orders.map((order: Order) =>
         this.prepareOrder(order),
       );
-      const ordersPaginated = this.dataPagination(
-        page,
-        perPage,
-        preparedOrders,
-      );
+      const ordersPaginated = this.returnInData(preparedOrders);
       await this.createCache(cacheKey, ordersPaginated);
       return res.status(200).json(ordersPaginated);
     } catch (error) {

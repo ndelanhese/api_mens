@@ -38,8 +38,7 @@ export default class SummariesController extends BaseController {
       const summariesModel = new ProductsModel();
       const { final_date, final_value, initial_date, initial_value } =
         ListProductsFactory.fromRequest(req);
-      const { page, perPage, direction, order } =
-        PaginationFactory.fromRequest(req);
+      const { direction, order } = PaginationFactory.fromRequest(req);
       const summaries = await summariesModel.getProducts(
         initial_date,
         final_date,
@@ -48,9 +47,7 @@ export default class SummariesController extends BaseController {
         order,
         direction,
       );
-      const calculatedProductsSummary = this.dataPagination(
-        page,
-        perPage,
+      const calculatedProductsSummary = this.returnInData(
         this.calculateProductSummary(summaries),
       );
       await this.createCache(cacheKey, calculatedProductsSummary);
@@ -78,17 +75,14 @@ export default class SummariesController extends BaseController {
       const paymentMethodsModel = new PaymentMethodsModel();
       const { final_date, initial_date } =
         ListPaymentMethodsFactory.fromRequest(req);
-      const { page, perPage, direction, order } =
-        PaginationFactory.fromRequest(req);
+      const { direction, order } = PaginationFactory.fromRequest(req);
       const summaries = await paymentMethodsModel.getPaymentMethods(
         initial_date,
         final_date,
         order,
         direction,
       );
-      const calculatedPaymentMethodsSummary = this.dataPagination(
-        page,
-        perPage,
+      const calculatedPaymentMethodsSummary = this.returnInData(
         this.calculatePaymentMethodsSummary(summaries),
       );
       await this.createCache(cacheKey, calculatedPaymentMethodsSummary);
@@ -116,17 +110,14 @@ export default class SummariesController extends BaseController {
       const summariesModel = new ProductsCategoriesModel();
       const { final_date, initial_date } =
         ListProductsCategoryFactory.fromRequest(req);
-      const { page, perPage, direction, order } =
-        PaginationFactory.fromRequest(req);
+      const { direction, order } = PaginationFactory.fromRequest(req);
       const summaries = await summariesModel.getProducts(
         initial_date,
         final_date,
         order,
         direction,
       );
-      const calculatedProductsCategoriesSummary = this.dataPagination(
-        page,
-        perPage,
+      const calculatedProductsCategoriesSummary = this.returnInData(
         this.calculateProductsCategoriesSummary(summaries),
       );
       await this.createCache(cacheKey, calculatedProductsCategoriesSummary);
@@ -152,17 +143,14 @@ export default class SummariesController extends BaseController {
       const summariesModel = new ProductsBrandsModel();
       const { final_date, initial_date } =
         ListProductsBrandsFactory.fromRequest(req);
-      const { page, perPage, direction, order } =
-        PaginationFactory.fromRequest(req);
+      const { direction, order } = PaginationFactory.fromRequest(req);
       const summaries = await summariesModel.getProducts(
         initial_date,
         final_date,
         order,
         direction,
       );
-      const calculatedProductsBrandsSummary = this.dataPagination(
-        page,
-        perPage,
+      const calculatedProductsBrandsSummary = this.returnInData(
         this.calculateProductsBrandsSummary(summaries),
       );
       await this.createCache(cacheKey, calculatedProductsBrandsSummary);

@@ -1,4 +1,3 @@
-import PaginationFactory from '@app/api/Shared/Factories/PaginationFactory';
 import { ProductStatusTypes } from '@app/src/Products/Domain/Enums/ProductStatusTypes';
 import CreateSaleAction from '@app/src/Sales/Application/Actions/CreateSaleAction';
 import ExportSaleAction from '@app/src/Sales/Application/Actions/ExportSaleAction';
@@ -43,12 +42,12 @@ export default class SalesController extends BaseController {
       if (cache) {
         return res.status(200).json(cache);
       }
-      const { page, perPage } = PaginationFactory.fromRequest(req);
+      // const { page, perPage } = PaginationFactory.fromRequest(req);
       const inputData = ListSaleFactory.fromRequest(req);
       const salesModel = new SalesModel();
       const sales = await salesModel.getSales(inputData);
       const preparedSales = sales.map(sale => this.prepareSale(sale));
-      const salesPaginated = this.dataPagination(page, perPage, preparedSales);
+      const salesPaginated = this.returnInData(preparedSales);
       await this.createCache(cacheKey, salesPaginated);
       return res.status(200).json(salesPaginated);
     } catch (error) {

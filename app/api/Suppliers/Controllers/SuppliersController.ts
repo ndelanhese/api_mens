@@ -38,8 +38,7 @@ export default class SuppliersController extends BaseController {
       const cacheKey = `suppliers-${JSON.stringify(req.query)}`;
       const cache = await this.getCache(cacheKey);
       if (cache) return res.status(200).json(cache);
-      const { page, perPage, order, direction } =
-        PaginationFactory.fromRequest(req);
+      const { order, direction } = PaginationFactory.fromRequest(req);
       const { status } = ListFactory.fromRequest(req);
       const suppliers = await this.suppliersModel.getSuppliers(
         order,
@@ -52,7 +51,7 @@ export default class SuppliersController extends BaseController {
         );
         return this.prepareSupplierWithAddresses(supplier, addresses);
       });
-      const data = this.dataPagination(page, perPage, supplierWithAddresses);
+      const data = this.returnInData(supplierWithAddresses);
       await this.createCache(cacheKey, data);
       return res.status(200).json(data);
     } catch (error) {
