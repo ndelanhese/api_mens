@@ -39,8 +39,7 @@ export default class ProductsController extends BaseController {
       if (cache) {
         return res.status(200).json(cache);
       }
-      const { page, perPage, order, direction } =
-        PaginationFactory.fromRequest(req);
+      const { order, direction } = PaginationFactory.fromRequest(req);
       const { status } = ListFactory.fromRequest(req);
       const {
         brand_id,
@@ -67,11 +66,7 @@ export default class ProductsController extends BaseController {
         status,
       );
       const preparedProducts = this.prepareProductsResponse(products);
-      const productsPaginated = this.dataPagination(
-        page,
-        perPage,
-        preparedProducts,
-      );
+      const productsPaginated = this.returnInData(preparedProducts);
       await this.createCache(cacheKey, productsPaginated);
       return res.status(200).json(productsPaginated);
     } catch (error) {
@@ -213,11 +208,11 @@ export default class ProductsController extends BaseController {
       if (cache) {
         return res.status(200).json(cache);
       }
-      const { page, perPage } = PaginationFactory.fromRequest(req);
+      // const { page, perPage } = PaginationFactory.fromRequest(req);
       const { status, limit } = ListProductsStockFactory.fromRequest(req);
       const productsModel = new ProductsModel();
       const products = await productsModel.getProductsStock(status, limit);
-      const productsPaginated = this.dataPagination(page, perPage, products);
+      const productsPaginated = this.returnInData(products);
       await this.createCache(cacheKey, productsPaginated);
       return res.status(200).json(productsPaginated);
     } catch (error) {
