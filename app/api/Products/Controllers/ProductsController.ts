@@ -247,6 +247,8 @@ export default class ProductsController extends BaseController {
       part_number: product.part_number,
       description: product.description,
       quantity: product.quantity,
+      size: product?.size,
+      color: product?.color,
       original_price: product.purchase_price ?? product.price,
       original_price_formatted: formatMoneyByCurrencySymbol(
         product.purchase_price ?? product.price,
@@ -284,6 +286,8 @@ export default class ProductsController extends BaseController {
       part_number: product.part_number,
       description: product.description,
       quantity: product.quantity,
+      size: product?.size,
+      color: product?.color,
       original_price: product.purchase_price ?? product.price,
       original_price_formatted: formatMoneyByCurrencySymbol(
         product.purchase_price ?? product.price,
