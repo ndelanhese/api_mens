@@ -241,25 +241,34 @@ export default class UsersController extends BaseController {
   }
 
   private prepareUsersResponse(users: IUser[]): IUserResponse[] {
-    return users.map(user => ({
-      id: user.id,
-      user: user.user,
-      email: user.email,
-      status: user.status,
-      employee: {
-        id: user.employee.id,
-        name: user.employee.name,
-        cpf: formatCpf(user.employee.cpf),
-        rg: formatRG(user.employee.rg ?? ''),
-        birth_date: formatLocaleDateString(user.employee.birth_date),
-        phone: formatPhoneNumber(user.employee.phone),
-        pis_pasep: formatPisPasep(user.employee.pis_pasep),
-        admission_date: formatLocaleDateString(user.employee.admission_date),
-        resignation_date: formatLocaleDateString(
-          user.employee.resignation_date,
-        ),
-        status: user.employee.status,
-      },
-    }));
+    return users.map(user => {
+      const permissions = user?.users_permissions?.map(
+        permission => permission.permission_id,
+      );
+      const roles = user?.users_roles?.map(role => role.role_id);
+
+      return {
+        id: user.id,
+        user: user.user,
+        email: user.email,
+        status: user.status,
+        employee: {
+          id: user.employee.id,
+          name: user.employee.name,
+          cpf: formatCpf(user.employee.cpf),
+          rg: formatRG(user.employee.rg ?? ''),
+          birth_date: formatLocaleDateString(user.employee.birth_date),
+          phone: formatPhoneNumber(user.employee.phone),
+          pis_pasep: formatPisPasep(user.employee.pis_pasep),
+          admission_date: formatLocaleDateString(user.employee.admission_date),
+          resignation_date: formatLocaleDateString(
+            user.employee.resignation_date,
+          ),
+          status: user.employee.status,
+        },
+        users_roles: roles,
+        permissions: permissions,
+      };
+    });
   }
 }
