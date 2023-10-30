@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import employeesModel from '@db-models/EmployeesModel';
 import userModel from '@db-models/UsersModel';
 import HttpError from '@exceptions/HttpError';
 import { Op, WhereOptions } from 'sequelize';
@@ -16,7 +15,7 @@ export default class UserModel {
           exclude: ['password', 'employee_id'],
         },
         order: [['id', 'ASC']],
-        include: { model: employeesModel, as: 'employee' },
+        include: { all: true },
       });
 
       return users as IUser[];
