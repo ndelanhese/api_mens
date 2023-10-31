@@ -12,7 +12,7 @@ export default class BrasilApiService {
   public async getAddressByCep(cep: string) {
     const ONLY_NUMBER_CEP = cep.replace(/\D/g, '');
     const data: ICepResponde = await axios
-      .get(`${this.baseUrl}/cep/v2/${ONLY_NUMBER_CEP}`, { timeout: 5000 })
+      .get(`${this.baseUrl}/cep/v1/${ONLY_NUMBER_CEP}`, { timeout: 5000 })
       .then(response => response.data)
       .catch(() => null);
     return data;
