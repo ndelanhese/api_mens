@@ -59,3 +59,13 @@ export interface IUserResponse {
   status: string;
   employee: IEmployeeResponse;
 }
+
+export interface IUserRolesReturn {
+  id: number;
+  name: string;
+}
+
+export interface IUserPermissions {
+  id?: number;
+  name: string;
+}
