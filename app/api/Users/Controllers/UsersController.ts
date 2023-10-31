@@ -21,9 +21,15 @@ import DeleteUserFactory from '../Factories/DeleteUserFactory';
 import RestoreUserFactory from '../Factories/RestoreUserFactory';
 import UpdateRolesAndPermissionsFactory from '../Factories/UpdateRolesAndPermissionsFactory';
 import UpdateUserFactory from '../Factories/UpdateUserFactory';
+import UserPermissionModel from '../Models/UserPermissionsModel';
+import UserRolesModel from '../Models/UserRolesModel';
 import UserModel from '../Models/UsersModel';
 
-import { IUser, IUserResponse } from './UsersController.types';
+import {
+  IUser,
+  IUserPermissions,
+  IUserRolesReturn,
+} from './UsersController.types';
 
 export default class UsersController extends BaseController {
   private usersModel: UserModel;
@@ -44,7 +50,7 @@ export default class UsersController extends BaseController {
       if (cache) return res.status(200).json(cache);
       const { status } = ListFactory.fromRequest(req);
       const users = await this.usersModel.findAll(status);
-      const convertedUsers = this.prepareUsersResponse(users);
+      const convertedUsers = await this.prepareUsersResponse(users);
       const data = this.returnInData(convertedUsers);
       await this.createCache(cacheKey, data);
       return res.status(200).json(data);
@@ -64,7 +70,7 @@ export default class UsersController extends BaseController {
       const { id } = req.params;
       const cache = await this.getCache(`users-${id}`);
       if (cache) return res.status(200).json(cache);
-      const user = this.userRolesAndPermissions(
+      const user = await this.userRolesAndPermissions(
         await this.usersModel.getUserByPk(Number(id)),
       );
       await this.createCache(`users-${id}`, user);
@@ -208,11 +214,41 @@ export default class UsersController extends BaseController {
     }
   }
 
-  private userRolesAndPermissions(user: IUser) {
-    const permissions = user?.users_permissions?.map(
-      permission => permission.permission_id,
-    );
-    const roles = user?.users_roles?.map(role => role.role_id);
+  private async getRolesByUser(
+    userId: number,
+  ): Promise<IUserRolesReturn[] | undefined> {
+    try {
+      const userRolesModel = new UserRolesModel();
+      const roles = await userRolesModel.listRolesByUser(userId);
+      return roles.map(role => ({
+        id: role.role_id,
+        name: role.RolesModel.description,
+      }));
+    } catch (error) {
+      if (error instanceof HttpError) {
+        throw new HttpError(error.statusCode, error.message);
+      }
+    }
+  }
+
+  private async getPermissionsByUser(
+    userId: number,
+  ): Promise<IUserPermissions[] | undefined> {
+    try {
+      const userPermissionsModel = new UserPermissionModel();
+      const permissions = await userPermissionsModel.getUserPermissions(userId);
+      return permissions.map(permission => ({
+        id: permission.permission_id,
+        name: permission.PermissionsModel.description,
+      }));
+    } catch (error) {
+      if (error instanceof HttpError) {
+        throw new HttpError(error.statusCode, error.message);
+      }
+    }
+  }
+
+  private async userRolesAndPermissions(user: IUser) {
     return {
       id: user.id,
       user: user.user,
@@ -235,24 +271,15 @@ export default class UsersController extends BaseController {
         ),
         status: user.employee.status,
       },
-      users_roles: roles,
-      permissions: permissions,
+      user_roles: await this.getRolesByUser(user.id),
+      permissions: await this.getPermissionsByUser(user.id),
     };
   }
 
-  private prepareUsersResponse(users: IUser[]): IUserResponse[] {
-    return users.map(user => {
-      const permissions = user?.users_permissions?.map(
-        permission => permission.permission_id,
-      );
-      const roles = user?.users_roles?.map(role => role.role_id);
-
-      return {
-        id: user.id,
-        user: user.user,
-        email: user.email,
-        status: user.status,
-        employee: {
+  private async prepareUsersResponse(users: IUser[]) {
+    const preparedUsers = await Promise.all(
+      users.map(async user => {
+        const employee = {
           id: user.employee.id,
           name: user.employee.name,
           cpf: formatCpf(user.employee.cpf),
@@ -265,10 +292,23 @@ export default class UsersController extends BaseController {
             user.employee.resignation_date,
           ),
           status: user.employee.status,
-        },
-        users_roles: roles,
-        permissions: permissions,
-      };
-    });
+        };
+
+        const user_roles = await this.getRolesByUser(user.id);
+        const permissions = await this.getPermissionsByUser(user.id);
+
+        return {
+          id: user.id,
+          user: user.user,
+          email: user.email,
+          status: user.status,
+          employee,
+          user_roles,
+          permissions,
+        };
+      }),
+    );
+
+    return preparedUsers;
   }
 }

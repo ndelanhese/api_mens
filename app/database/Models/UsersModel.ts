@@ -136,6 +136,10 @@ PermissionsModel.hasMany(RolesPermissionsModel, {
   foreignKey: 'permission_id',
 });
 
+UsersPermissionsModel.belongsTo(PermissionsModel, {
+  foreignKey: 'permission_id',
+});
+
 //CUSTOMER
 CustomersAddressesModel.belongsTo(CustomerModel, {
   foreignKey: 'customer_id',
