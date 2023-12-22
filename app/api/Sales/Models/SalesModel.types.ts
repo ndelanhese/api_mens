@@ -112,3 +112,8 @@ export interface Sale {
   methods_of_payments: MethodOfPayment[];
   sales_products: SaleProduct[];
 }
+
+export interface MethodOfPayment {
+  id: number;
+  name: string;
+}

@@ -195,6 +195,27 @@ export default class SalesController extends BaseController {
     }
   }
 
+  public async getMethodsOfPayments(
+    req: Request,
+    res: Response,
+  ): Promise<Response<string> | undefined> {
+    try {
+      const cacheKey = 'sales-methods-of-payments';
+
+      await this.verifyPermission(req, 'sales_read');
+      const cache = await this.getCache(cacheKey);
+      if (cache) return res.status(200).json(cache);
+      const methodsOfPaymentsModel = new SalesModel();
+      const methods = await methodsOfPaymentsModel.getMethodsOfPayment();
+      await this.createCache(cacheKey, methods);
+      return res.status(200).json(methods);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+    }
+  }
+
   private prepareFileName(input: ExportSalesInputData) {
     const name = [''];
     if (input.initial_date) {
