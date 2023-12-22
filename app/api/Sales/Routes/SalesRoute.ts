@@ -37,9 +37,13 @@ export default class SalesRoute {
     const getPromotionDiscountType = this.salesController.getDiscountTypes.bind(
       this.salesController,
     );
+    const getMethodsOfPayments = this.salesController.getMethodsOfPayments.bind(
+      this.salesController,
+    );
 
     this.saleRoute.get('/status', getPromotionStatus);
     this.saleRoute.get('/discount-types', getPromotionDiscountType);
+    this.saleRoute.get('/methods-of-payments', getMethodsOfPayments);
     this.saleRoute.get('/', getSales);
     this.saleRoute.get('/:id', getSale);
     this.saleRoute.put(

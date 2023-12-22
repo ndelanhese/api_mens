@@ -244,4 +244,15 @@ export default class SalesModel {
       throw new HttpError(500, 'Erro ao buscar venda.', error);
     }
   }
+
+  public async getMethodsOfPayment() {
+    try {
+      return MethodsOfPaymentsModel.findAll({
+        attributes: ['id', 'name'],
+      });
+    } catch (error) {
+      if (error instanceof HttpError) throw error;
+      throw new HttpError(500, 'Erro ao buscar métodos de pagamento.', error);
+    }
+  }
 }
