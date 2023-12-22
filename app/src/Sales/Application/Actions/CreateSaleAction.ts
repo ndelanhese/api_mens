@@ -69,6 +69,6 @@ export default class CreateSaleAction {
       employeeData.cpf,
       employeeData.id,
     );
-    return new User(user.user, user.email, employee);
+    return new User(user.user, user.email, employee, user.id);
   }
 }
