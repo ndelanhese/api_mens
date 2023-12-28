@@ -30,8 +30,8 @@ export class SupplierStatusTypes {
     const keys = Object.keys(SupplierStatusTypes.labels);
     const values = Object.values(SupplierStatusTypes.labels);
     return keys.map((key, index) => ({
-      key,
-      value: values[index],
+      value: key,
+      label: values[index],
     }));
   }
 

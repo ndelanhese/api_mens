@@ -38,8 +38,8 @@ export class PromotionStatusTypes {
     const keys = Object.keys(PromotionStatusTypes.labels);
     const values = Object.values(PromotionStatusTypes.labels);
     return keys.map((key, index) => ({
-      key,
-      value: values[index],
+      value: key,
+      label: values[index],
     }));
   }
 

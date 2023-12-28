@@ -80,8 +80,8 @@ export class States {
     const keys = Object.keys(States.labels);
     const values = Object.values(States.labels);
     return keys.map((key, index) => ({
-      key,
-      value: values[index],
+      value: key,
+      label: values[index],
     }));
   }
 

@@ -36,8 +36,8 @@ export class OrderStatusTypes {
     const keys = Object.keys(OrderStatusTypes.labels);
     const values = Object.values(OrderStatusTypes.labels);
     return keys.map((key, index) => ({
-      key,
-      value: values[index],
+      value: key,
+      label: values[index],
     }));
   }
 
