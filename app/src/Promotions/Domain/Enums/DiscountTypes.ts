@@ -34,8 +34,8 @@ export class DiscountTypes {
     const keys = Object.keys(DiscountTypes.labels);
     const values = Object.values(DiscountTypes.labels);
     return keys.map((key, index) => ({
-      key,
-      value: values[index],
+      value: key,
+      label: values[index],
     }));
   }
 

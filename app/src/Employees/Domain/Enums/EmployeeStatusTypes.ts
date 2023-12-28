@@ -34,8 +34,8 @@ export class EmployeeStatusTypes {
     const keys = Object.keys(EmployeeStatusTypes.labels);
     const values = Object.values(EmployeeStatusTypes.labels);
     return keys.map((key, index) => ({
-      key,
-      value: values[index],
+      value: key,
+      label: values[index],
     }));
   }
 
