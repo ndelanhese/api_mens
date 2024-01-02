@@ -13,10 +13,10 @@ const createSaleMiddleware = (
 ) => {
   const createSchema = joi.object({
     date: joi.string().required(),
-    observation: joi.string().allow(null),
+    observation: joi.string().allow(null, ''),
     total_value: joi.number().required(),
     discount_amount: joi.number().allow(null),
-    discount_type: joi.string().allow(null),
+    discount_type: joi.string().allow(null, ''),
     final_value: joi.number().required(),
     status: joi.string(),
     customer_id: joi.number().required(),
@@ -37,7 +37,7 @@ const createSaleMiddleware = (
           id: joi.number().required(),
           quantity: joi.number().required().min(1),
           discount_amount: joi.number().allow(null),
-          discount_type: joi.string().allow(null),
+          discount_type: joi.string().allow(null, ''),
           final_value: joi.number().required(),
         }),
       )

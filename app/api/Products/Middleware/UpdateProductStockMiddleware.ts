@@ -10,7 +10,7 @@ const updateProductStockMiddleware = (
 ) => {
   const updateSchema = joi.object({
     quantity: joi.number().min(0),
-    status: joi.string().allow(null),
+    status: joi.string().allow(null, ''),
   });
   const updateIdSchema = joi.object({
     id: joi.number().required(),
