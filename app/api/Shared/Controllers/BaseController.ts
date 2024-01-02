@@ -10,6 +10,7 @@ import {
 } from '@cache/Cache';
 import NotAuthorizedHttpError from '@exceptions/NotAuthorizedHttpError';
 import { Request } from 'express';
+import 'dotenv/config';
 
 export default class BaseController {
   protected getUser(token?: string): IUserAdminDataToken {
@@ -31,7 +32,8 @@ export default class BaseController {
   protected async getCache(key: string): Promise<boolean | object> {
     const cacheClient = this.createNewCacheClient();
     const cache = await getCache(cacheClient, key);
-    return cache;
+    const env = process.env?.NODE_ENV ?? 'development';
+    return env === 'development' ? false : cache;
   }
 
   protected async createCache(key: string, data: object) {

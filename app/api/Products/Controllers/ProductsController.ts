@@ -40,6 +40,9 @@ export default class ProductsController extends BaseController {
         return res.status(200).json(cache);
       }
       const { order, direction } = PaginationFactory.fromRequest(req);
+      const showSoldOutProducts = req.query?.show_sold_out
+        ? req.query?.show_sold_out === 'true'
+        : false;
       const { status } = ListFactory.fromRequest(req);
       const {
         brand_id,
@@ -64,6 +67,7 @@ export default class ProductsController extends BaseController {
         part_number,
         description,
         status,
+        showSoldOutProducts,
       );
       const preparedProducts = this.prepareProductsResponse(products);
       const productsPaginated = this.returnInData(preparedProducts);

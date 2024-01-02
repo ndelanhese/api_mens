@@ -21,6 +21,7 @@ export default class ProductsModel {
     part_number?: string,
     description?: string,
     status?: string,
+    showSoldOutProducts = false,
   ) {
     try {
       let whereClause: WhereOptions = {};
@@ -56,6 +57,9 @@ export default class ProductsModel {
       }
       if (supplier_id) {
         whereClause = { ...whereClause, supplier_id };
+      }
+      if (!showSoldOutProducts) {
+        whereClause = { ...whereClause, quantity: { [Op.gte]: 1 } };
       }
       if (status) whereClause = { status };
       const products: any = await productsModel.findAll({
