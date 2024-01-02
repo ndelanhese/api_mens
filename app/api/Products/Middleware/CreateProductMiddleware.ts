@@ -11,14 +11,7 @@ const createProductMiddleware = (
   const createSchema = joi.object({
     name: joi.string().required(),
     description: joi.string().required(),
-    purchase_price: joi
-      .number()
-      .allow(null)
-      .when('price', {
-        is: joi.number().required(),
-        then: joi.number().greater(joi.ref('price')).required(),
-        otherwise: joi.number().allow(null),
-      }),
+    purchase_price: joi.number().allow(null),
     price: joi.number().required(),
     size: joi.string().allow(null),
     color: joi.string().allow(null),
