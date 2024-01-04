@@ -31,9 +31,6 @@ const updateSaleMiddleware = (
       joi.object({
         id: joi.number().required(),
         quantity: joi.number().min(1).required(),
-        discount_amount: joi.number().allow(null),
-        discount_type: joi.string().allow(null, ''),
-        final_value: joi.number().required(),
       }),
     ),
   });
