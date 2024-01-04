@@ -32,3 +32,9 @@ export interface Product {
   brand: Brand;
   supplier: Supplier;
 }
+
+export interface Promotion {
+  discount_type: string;
+  discount_amount: number;
+  discount_formatted: string;
+}

@@ -27,7 +27,7 @@ import ProductsModel from '../Models/ProductsModel';
 import { PromotionProductsModel } from '../Models/PromotionProductsModel';
 import { PromotionsModel } from '../Models/PromotionsModel';
 
-import { Product } from './ProductsController.types';
+import { Product, Promotion } from './ProductsController.types';
 
 export default class ProductsController extends BaseController {
   public async getProducts(
@@ -95,7 +95,7 @@ export default class ProductsController extends BaseController {
       }
       const productsModel = new ProductsModel();
       const product = await productsModel.getProduct(Number(req.params.id));
-      const preparedProduct = this.prepareProductResponse(product);
+      const preparedProduct = await this.prepareProductResponse(product);
       await this.createCache(cacheKey, preparedProduct);
       return res.status(200).json(preparedProduct);
     } catch (error) {
@@ -256,21 +256,77 @@ export default class ProductsController extends BaseController {
     return await promotionsModel.getPromotion(promotionId);
   }
 
-  private async prepareProductDiscount(productId: number) {
+  private calculateDiscount(productPrice: number, promotion: Promotion | null) {
+    if (!promotion) return { discount: 0, finalPrice: productPrice };
+
+    let discount: number;
+    if (promotion.discount_type === 'fixed') {
+      discount = Math.min(promotion.discount_amount, productPrice);
+    } else {
+      const percentageDiscount =
+        (productPrice * promotion.discount_amount) / 100;
+      discount = Math.min(percentageDiscount, productPrice);
+    }
+
+    const finalPrice = productPrice - discount;
+
+    return { discount, finalPrice };
+  }
+
+  private async prepareProductDiscount(
+    productId: number,
+    productPrice: number,
+  ) {
     const productPromotions = await this.getPromotionsByProduct(productId);
 
-    if (!productPromotions || productPromotions.length < 1) return;
+    if (!productPromotions || productPromotions.length < 1) return {};
 
     const promotionPromises = productPromotions.map(
       async promotion => await this.getPromotionById(promotion.promotion_id),
     );
-    const promotions = await Promise.all(promotionPromises);
+    const promotions: Promotion[] = (await Promise.all(
+      promotionPromises,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    )) as any;
 
-    return promotions;
-    // TODO -> Add discount here
+    if (!promotions || promotions.length < 1) return {};
+
+    let minFinalPrice = Infinity;
+    let minFinalPricePromotion: Promotion | undefined;
+
+    for (const promotion of promotions) {
+      const { finalPrice } = this.calculateDiscount(
+        productPrice,
+        promotion as Promotion,
+      );
+
+      if (finalPrice < minFinalPrice) {
+        minFinalPrice = finalPrice;
+        minFinalPricePromotion = promotion;
+      }
+    }
+
+    if (minFinalPricePromotion) {
+      const { discount_type, discount_amount } = minFinalPricePromotion;
+      return {
+        discount_type,
+        discount_amount,
+        discount_formatted:
+          discount_type === 'percentage'
+            ? `${discount_amount}%`
+            : formatMoneyByCurrencySymbol(discount_amount),
+        final_price: formatMoneyByCurrencySymbol(minFinalPrice),
+      };
+    }
+
+    return {};
   }
 
-  private prepareProductResponse(product: Product) {
+  private async prepareProductResponse(product: Product) {
+    const discount = await this.prepareProductDiscount(
+      product.id,
+      product.price,
+    );
     return {
       id: product.id,
       name: product.name,
@@ -285,12 +341,7 @@ export default class ProductsController extends BaseController {
       ),
       price: product.price,
       price_formatted: formatMoneyByCurrencySymbol(product.price),
-      discount: product.purchase_price
-        ? product.purchase_price - product.price
-        : null,
-      discount_formatted: product.purchase_price
-        ? formatMoneyByCurrencySymbol(product.purchase_price - product.price)
-        : null,
+      ...discount,
       status: ProductStatusTypes.getLabel(product.status),
       category: {
         id: product.category.id,
@@ -311,7 +362,10 @@ export default class ProductsController extends BaseController {
 
   private async prepareProductsResponse(products: Product[]) {
     const productsPromise = products.map(async product => {
-      await this.prepareProductDiscount(product.id);
+      const discount = await this.prepareProductDiscount(
+        product.id,
+        product.price,
+      );
       return {
         id: product.id,
         name: product.name,
@@ -326,12 +380,7 @@ export default class ProductsController extends BaseController {
         ),
         price: product.price,
         price_formatted: formatMoneyByCurrencySymbol(product.price),
-        discount: product.purchase_price
-          ? product.purchase_price - product.price
-          : null,
-        discount_formatted: product.purchase_price
-          ? formatMoneyByCurrencySymbol(product.purchase_price - product.price)
-          : null,
+        ...discount,
         status: ProductStatusTypes.getLabel(product.status),
         category: {
           id: product.category.id,
