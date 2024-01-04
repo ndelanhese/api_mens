@@ -24,6 +24,8 @@ import ListProductsStockFactory from '../Factories/ListProductsStockFactory';
 import UpdateProductFactory from '../Factories/UpdateProductFactory';
 import UpdateProductStockFactory from '../Factories/UpdateProductStockFactory';
 import ProductsModel from '../Models/ProductsModel';
+import { PromotionProductsModel } from '../Models/PromotionProductsModel';
+import { PromotionsModel } from '../Models/PromotionsModel';
 
 import { Product } from './ProductsController.types';
 
@@ -69,7 +71,7 @@ export default class ProductsController extends BaseController {
         status,
         showSoldOutProducts,
       );
-      const preparedProducts = this.prepareProductsResponse(products);
+      const preparedProducts = await this.prepareProductsResponse(products);
       const productsPaginated = this.returnInData(preparedProducts);
       await this.createCache(cacheKey, productsPaginated);
       return res.status(200).json(productsPaginated);
@@ -244,6 +246,30 @@ export default class ProductsController extends BaseController {
     }
   }
 
+  private async getPromotionsByProduct(productId: number) {
+    const productsPromotionsModel = new PromotionProductsModel();
+    return await productsPromotionsModel.getPromotionsByProduct(productId);
+  }
+
+  private async getPromotionById(promotionId: number) {
+    const promotionsModel = new PromotionsModel();
+    return await promotionsModel.getPromotion(promotionId);
+  }
+
+  private async prepareProductDiscount(productId: number) {
+    const productPromotions = await this.getPromotionsByProduct(productId);
+
+    if (!productPromotions || productPromotions.length < 1) return;
+
+    const promotionPromises = productPromotions.map(
+      async promotion => await this.getPromotionById(promotion.promotion_id),
+    );
+    const promotions = await Promise.all(promotionPromises);
+
+    return promotions;
+    // TODO -> Add discount here
+  }
+
   private prepareProductResponse(product: Product) {
     return {
       id: product.id,
@@ -283,42 +309,46 @@ export default class ProductsController extends BaseController {
     };
   }
 
-  private prepareProductsResponse(products: Product[]) {
-    return products.map(product => ({
-      id: product.id,
-      name: product.name,
-      part_number: product.part_number,
-      description: product.description,
-      quantity: product.quantity,
-      size: product?.size,
-      color: product?.color,
-      original_price: product.purchase_price ?? product.price,
-      original_price_formatted: formatMoneyByCurrencySymbol(
-        product.purchase_price ?? product.price,
-      ),
-      price: product.price,
-      price_formatted: formatMoneyByCurrencySymbol(product.price),
-      discount: product.purchase_price
-        ? product.purchase_price - product.price
-        : null,
-      discount_formatted: product.purchase_price
-        ? formatMoneyByCurrencySymbol(product.purchase_price - product.price)
-        : null,
-      status: ProductStatusTypes.getLabel(product.status),
-      category: {
-        id: product.category.id,
-        name: product.category.name,
-      },
-      brand: {
-        id: product.brand.id,
-        name: product.brand.name,
-      },
-      supplier: {
-        id: product.supplier.id,
-        contact_name: product.supplier.contact_name,
-        corporate_name: product.supplier.corporate_name,
-        cnpj: formatCnpj(product.supplier.cnpj),
-      },
-    }));
+  private async prepareProductsResponse(products: Product[]) {
+    const productsPromise = products.map(async product => {
+      await this.prepareProductDiscount(product.id);
+      return {
+        id: product.id,
+        name: product.name,
+        part_number: product.part_number,
+        description: product.description,
+        quantity: product.quantity,
+        size: product?.size,
+        color: product?.color,
+        original_price: product.purchase_price ?? product.price,
+        original_price_formatted: formatMoneyByCurrencySymbol(
+          product.purchase_price ?? product.price,
+        ),
+        price: product.price,
+        price_formatted: formatMoneyByCurrencySymbol(product.price),
+        discount: product.purchase_price
+          ? product.purchase_price - product.price
+          : null,
+        discount_formatted: product.purchase_price
+          ? formatMoneyByCurrencySymbol(product.purchase_price - product.price)
+          : null,
+        status: ProductStatusTypes.getLabel(product.status),
+        category: {
+          id: product.category.id,
+          name: product.category.name,
+        },
+        brand: {
+          id: product.brand.id,
+          name: product.brand.name,
+        },
+        supplier: {
+          id: product.supplier.id,
+          contact_name: product.supplier.contact_name,
+          corporate_name: product.supplier.corporate_name,
+          cnpj: formatCnpj(product.supplier.cnpj),
+        },
+      };
+    });
+    return await Promise.all(productsPromise);
   }
 }
