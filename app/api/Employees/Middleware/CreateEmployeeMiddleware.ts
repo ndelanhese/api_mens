@@ -26,7 +26,7 @@ const createEmployeeMiddleware = (
     phone: joi.string().required(),
     pis_pasep: joi.string().required(),
     admission_date: joi.string().required(),
-    resignation_date: joi.string(),
+    resignation_date: joi.string().allow(null, ''),
     status: joi.string(),
     address: joi
       .object({

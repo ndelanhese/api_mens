@@ -186,7 +186,7 @@ export default class EmployeesController extends BaseController {
       phone: formatPhoneNumber(employee.phone),
       pis_pasep: formatPisPasep(employee.pis_pasep),
       admission_date: formatLocaleDateString(employee.admission_date),
-      resignation_date: formatLocaleDateString(employee.resignation_date),
+      resignation_date: formatLocaleDateString(employee?.resignation_date),
       status: EmployeeStatusTypes.getLabel(employee.status),
       addresses: addresses.map(address => ({
         id: address.id,
