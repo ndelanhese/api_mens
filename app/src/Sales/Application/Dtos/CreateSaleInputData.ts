@@ -15,9 +15,6 @@ export default class CreateSaleInputData {
     }>,
     readonly sale_products: Array<{
       readonly quantity: number;
-      readonly discount_amount?: number;
-      readonly discount_type?: DiscountTypesOption;
-      readonly final_value: number;
       readonly id: number;
     }>,
     readonly observation?: string,
