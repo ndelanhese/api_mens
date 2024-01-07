@@ -1,3 +1,4 @@
+import HttpError from '@app/src/Shared/Domain/Exceptions/HttpError';
 import getDate from '@app/src/Shared/Infrastructure/Utils/Date';
 
 import Customer from '../../Domain/Entities/Customer';
@@ -35,6 +36,10 @@ export default class CreateSaleAction {
         product.id,
         productData.price,
       );
+
+      if (productData.quantity < product.quantity) {
+        throw new HttpError(400, 'Quantidade de produtos indisponível.');
+      }
 
       return new Product(
         product.id,

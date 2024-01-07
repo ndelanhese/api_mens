@@ -1,3 +1,5 @@
+import HttpError from '@app/src/Shared/Domain/Exceptions/HttpError';
+
 import Customer from '../../Domain/Entities/Customer';
 import Employee from '../../Domain/Entities/Employee';
 import Payment from '../../Domain/Entities/Payment';
@@ -171,6 +173,10 @@ export default class UpdateSaleAction {
         product.id,
         productData.price,
       );
+
+      if (productData.quantity < product.quantity) {
+        throw new HttpError(400, 'Quantidade de produtos indisponível.');
+      }
 
       return new Product(
         product.id,
