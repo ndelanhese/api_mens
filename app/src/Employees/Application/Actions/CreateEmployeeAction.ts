@@ -24,6 +24,9 @@ export default class CreateEmployeeAction extends EmployeeAction {
     this.validatePisPasep(employee.getPisPasep());
     this.validateCpf(employee.getCpf());
     this.validateDate(employee.getBirthDate());
+    this.validateDate(employee.getAdmissionDate());
+    employee.getResignationDate() &&
+      this.validateDate(employee.getResignationDate() ?? new Date());
     this.validateAdmissionDate(employee.getAdmissionDate());
     this.validateResignationDate(employee.getResignationDate());
     this.validatePhone(employee.getPhone());

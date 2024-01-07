@@ -6,5 +6,6 @@
     "municipio",
     "pasep",
     "Pasep"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

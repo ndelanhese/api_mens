@@ -29,7 +29,7 @@ export default class CreateProductAction {
       category,
       brand,
       supplier,
-      input.purchase_price,
+      input.purchase_price ?? input.price,
       input.size,
       input.color,
     );

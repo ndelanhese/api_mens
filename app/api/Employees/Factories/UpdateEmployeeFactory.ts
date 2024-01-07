@@ -18,7 +18,7 @@ export default class UpdateEmployeeFactory {
       getDate(req.body.admission_date),
       req.body.status,
       req.body.rg ? removeMask(req.body.rg) : undefined,
-      getDate(req.body.resignation_date),
+      getDate(req.body?.resignation_date),
       req.body.address,
     );
   }

@@ -29,12 +29,9 @@ export interface Product {
   createdAt: string;
   updatedAt: string;
   category: Category;
+  category_id: number;
   brand: Brand;
+  brand_id: number;
   supplier: Supplier;
-}
-
-export interface Promotion {
-  discount_type: string;
-  discount_amount: number;
-  discount_formatted: string;
+  supplier_id: number;
 }

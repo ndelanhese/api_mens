@@ -21,11 +21,11 @@ const createPromotionMiddleware = (
         }),
       )
       .allow(null),
-    initial_date: joi.string().allow(null),
-    final_date: joi.string().allow(null),
-    status: joi.string().allow(null),
+    initial_date: joi.string().allow(null, ''),
+    final_date: joi.string().allow(null, ''),
+    status: joi.string().allow(null, ''),
     discount_amount: joi.number().allow(null),
-    discount_type: joi.string().allow(null),
+    discount_type: joi.string().allow(null, ''),
   });
   const { error } = createSchema.validate(req.body, { messages });
   if (error) {

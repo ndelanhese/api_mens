@@ -10,8 +10,8 @@ const createOrderMiddleware = (
 ) => {
   const createSchema = joi.object({
     date: joi.string().required(),
-    observation: joi.string().allow(null),
-    description: joi.string().allow(null),
+    observation: joi.string().allow(null, ''),
+    description: joi.string().allow(null, ''),
     status: joi.string(),
     customer_id: joi.number().required(),
     user_id: joi.number().required(),
