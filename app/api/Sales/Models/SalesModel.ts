@@ -103,9 +103,12 @@ export default class SalesModel {
             };
           },
         );
-        const productData = sale.sales_products.map(
-          (product: any) => product.product.toJSON() as Product,
-        );
+        const productData = sale.sales_products.map((product: any) => {
+          return {
+            sold_product_qty: product.quantity,
+            ...(product.product.toJSON() as Product),
+          };
+        });
 
         const {
           id,
@@ -208,9 +211,12 @@ export default class SalesModel {
           installment: method.installment,
         };
       });
-      const productData = sale.sales_products.map(
-        (product: any) => product.product.toJSON() as Product,
-      );
+      const productData = sale.sales_products.map((product: any) => {
+        return {
+          sold_product_qty: product.quantity,
+          ...(product.product.toJSON() as Product),
+        };
+      });
 
       const {
         id: saleId,

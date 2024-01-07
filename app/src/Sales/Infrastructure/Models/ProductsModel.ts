@@ -15,4 +15,18 @@ export default class ProductsModel {
       throw new HttpError(500, 'Erro ao buscar produto.', error);
     }
   }
+
+  public async updateProductStock(id: number, quantity: number) {
+    try {
+      await productsModel.update(
+        {
+          quantity,
+        },
+        { where: { id } },
+      );
+    } catch (error) {
+      if (error instanceof HttpError) throw error;
+      throw new HttpError(500, 'Erro ao atualizar estoque do produto.', error);
+    }
+  }
 }

@@ -41,6 +41,11 @@ export default class CreateSaleAction {
         throw new HttpError(400, 'Quantidade de produtos indisponível.');
       }
 
+      await this.updateProductStock(
+        product.id,
+        productData.quantity - product.quantity,
+      );
+
       return new Product(
         product.id,
         product.quantity,
@@ -90,6 +95,11 @@ export default class CreateSaleAction {
       employeeData.id,
     );
     return new User(user.user, user.email, employee, user.id);
+  }
+
+  private async updateProductStock(id: number, quantity: number) {
+    const productModel = new ProductsModel();
+    await productModel.updateProductStock(id, quantity);
   }
 
   private async getProduct(product_id: number) {
