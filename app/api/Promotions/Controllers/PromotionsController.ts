@@ -85,6 +85,7 @@ export default class PromotionsController extends BaseController {
         await promotionAction.execute(promotionInputData)
       ).getId();
       await this.deleteCache('promotions');
+      await this.deleteCache('products');
       return res.status(201).json(promotionId);
     } catch (error) {
       if (error instanceof HttpError) {
@@ -103,6 +104,7 @@ export default class PromotionsController extends BaseController {
       const promotionAction = new DeletePromotionAction();
       await promotionAction.execute(promotionInputData);
       await this.deleteCache('promotions');
+      await this.deleteCache('products');
       return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
@@ -121,6 +123,7 @@ export default class PromotionsController extends BaseController {
       const promotionAction = new UpdatePromotionAction();
       await promotionAction.execute(promotionInputData);
       await this.deleteCache('promotions');
+      await this.deleteCache('products');
       return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
@@ -139,6 +142,7 @@ export default class PromotionsController extends BaseController {
       const promotionAction = new UpdatePromotionAction();
       await promotionAction.execute(promotionInputData);
       await this.deleteCache('promotions');
+      await this.deleteCache('products');
       return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {

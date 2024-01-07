@@ -65,6 +65,8 @@ export default class PromotionCategoriesController extends BaseController {
         await categoryAction.execute(categoryInputData)
       ).getId();
       await this.deleteCache('promotions_categories');
+      await this.deleteCache('promotions');
+      await this.deleteCache('products');
       return res.status(201).json(categoryId);
     } catch (error) {
       if (error instanceof HttpError) {
@@ -93,6 +95,8 @@ export default class PromotionCategoriesController extends BaseController {
         currentPromotionCategoriesInputData,
       );
       await this.deleteCache('promotions_categories');
+      await this.deleteCache('promotions');
+      await this.deleteCache('products');
       return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
@@ -111,6 +115,8 @@ export default class PromotionCategoriesController extends BaseController {
       const userAction = new DeletePromotionCategoryAction();
       await userAction.execute(userInputData);
       await this.deleteCache('promotions_categories');
+      await this.deleteCache('promotions');
+      await this.deleteCache('products');
       return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
