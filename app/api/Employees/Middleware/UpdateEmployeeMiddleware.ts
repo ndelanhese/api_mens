@@ -23,7 +23,7 @@ const updateEmployeeMiddleware = (
     phone: joi.string(),
     pis_pasep: joi.string(),
     admission_date: joi.string(),
-    resignation_date: joi.string(),
+    resignation_date: joi.string().allow(null, ''),
     status: joi.string(),
     address: joi.object({
       id: joi.number().required(),
