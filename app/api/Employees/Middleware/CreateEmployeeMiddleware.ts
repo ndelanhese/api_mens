@@ -21,7 +21,7 @@ const createEmployeeMiddleware = (
         return value;
       })
       .required(),
-    rg: joi.string(),
+    rg: joi.string().allow(null, ''),
     birth_date: joi.string().required(),
     phone: joi.string().required(),
     pis_pasep: joi.string().required(),

@@ -18,7 +18,7 @@ const updateEmployeeMiddleware = (
       }
       return value;
     }),
-    rg: joi.string(),
+    rg: joi.string().allow(null, ''),
     birth_date: joi.string(),
     phone: joi.string(),
     pis_pasep: joi.string(),
