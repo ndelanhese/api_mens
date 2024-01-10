@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { formatMoneyByCurrencySymbol } from '@app/src/Shared/Infrastructure/Utils/helpers/money';
 import CustomersModel from '@db-models/CustomersModel';
 import EmployeesModel from '@db-models/EmployeesModel';
 import MethodsOfPaymentsModel from '@db-models/MethodsOfPaymentsModel';
@@ -106,6 +107,14 @@ export default class SalesModel {
         const productData = sale.sales_products.map((product: any) => {
           return {
             sold_product_qty: product.quantity,
+            product_final_value_unity: product.final_value,
+            product_final_value_unity_formatted: formatMoneyByCurrencySymbol(
+              product.final_value,
+            ),
+            products_final_value: product.final_value * product.quantity,
+            products_final_value_formatted: formatMoneyByCurrencySymbol(
+              product.final_value * product.quantity,
+            ),
             ...(product.product.toJSON() as Product),
           };
         });
@@ -214,6 +223,14 @@ export default class SalesModel {
       const productData = sale.sales_products.map((product: any) => {
         return {
           sold_product_qty: product.quantity,
+          product_final_value_unity: product.final_value,
+          product_final_value_unity_formatted: formatMoneyByCurrencySymbol(
+            product.final_value,
+          ),
+          products_final_value: product.final_value * product.quantity,
+          products_final_value_formatted: formatMoneyByCurrencySymbol(
+            product.final_value * product.quantity,
+          ),
           ...(product.product.toJSON() as Product),
         };
       });
