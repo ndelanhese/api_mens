@@ -107,13 +107,15 @@ export default class SalesModel {
         const productData = sale.sales_products.map((product: any) => {
           return {
             sold_product_qty: product.quantity,
-            product_final_value_unity: product.final_value,
+            product_final_value_unity: Number(product.final_value.toFixed(2)),
             product_final_value_unity_formatted: formatMoneyByCurrencySymbol(
-              product.final_value,
+              Number(product.final_value.toFixed(2)),
             ),
-            products_final_value: product.final_value * product.quantity,
+            products_final_value: Number(
+              (product.final_value * product.quantity).toFixed(2),
+            ),
             products_final_value_formatted: formatMoneyByCurrencySymbol(
-              product.final_value * product.quantity,
+              Number((product.final_value * product.quantity).toFixed(2)),
             ),
             ...(product.product.toJSON() as Product),
           };
@@ -223,13 +225,15 @@ export default class SalesModel {
       const productData = sale.sales_products.map((product: any) => {
         return {
           sold_product_qty: product.quantity,
-          product_final_value_unity: product.final_value,
+          product_final_value_unity: Number(product.final_value.toFixed(2)),
           product_final_value_unity_formatted: formatMoneyByCurrencySymbol(
-            product.final_value,
+            Number(product.final_value.toFixed(2)),
           ),
-          products_final_value: product.final_value * product.quantity,
+          products_final_value: Number(
+            (product.final_value * product.quantity).toFixed(2),
+          ),
           products_final_value_formatted: formatMoneyByCurrencySymbol(
-            product.final_value * product.quantity,
+            Number((product.final_value * product.quantity).toFixed(2)),
           ),
           ...(product.product.toJSON() as Product),
         };
