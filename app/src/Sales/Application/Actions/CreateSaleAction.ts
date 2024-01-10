@@ -172,7 +172,7 @@ export default class CreateSaleAction {
       return {
         discount_type,
         discount_amount,
-        final_price: minFinalPrice,
+        final_price: Number(minFinalPrice.toFixed(2)),
       };
     }
 
