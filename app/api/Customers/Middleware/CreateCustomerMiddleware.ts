@@ -11,10 +11,10 @@ const createCustomerMiddleware = (
   const createSchema = joi.object({
     name: joi.string().required(),
     cpf: joi.string().required(),
-    rg: joi.string(),
+    rg: joi.string().allow(null, ''),
     birth_date: joi.string().required(),
     phone: joi.string().required(),
-    status: joi.string(),
+    status: joi.string().default('active'),
     address: joi
       .object({
         address: joi.string().required(),

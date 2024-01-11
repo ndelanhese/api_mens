@@ -18,10 +18,10 @@ const updateCustomerMiddleware = (
       }
       return value;
     }),
-    rg: joi.string(),
+    rg: joi.string().allow(null, ''),
     birth_date: joi.string(),
     phone: joi.string(),
-    status: joi.string(),
+    status: joi.string().default('active'),
     address: joi.object({
       id: joi.number().required(),
       address: joi.string().required(),
