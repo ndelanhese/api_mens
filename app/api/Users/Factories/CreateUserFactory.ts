@@ -4,7 +4,7 @@ import { Request } from 'express';
 
 export default class CreateUserFactory {
   static fromRequest(req: Request) {
-    const password = hashSync(String(req.body.password), 10);
+    const password = hashSync(String(req.body.password));
     return new CreateUserInputData(
       req.body.user,
       req.body.email,
