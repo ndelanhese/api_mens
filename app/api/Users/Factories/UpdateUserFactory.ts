@@ -10,8 +10,10 @@ export default class UpdateUserFactory {
     const password = req.body.password
       ? hashSync(String(req.body.password), 10)
       : undefined;
+
     return new UpdateUserInputData(
       Number(req.params.id),
+      req.body.current_password,
       req.body.user,
       req.body.email,
       password,
