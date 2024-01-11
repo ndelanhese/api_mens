@@ -13,7 +13,6 @@ export default class UpdateUserFactory {
 
     return new UpdateUserInputData(
       Number(req.params.id),
-      req.body.current_password,
       req.body.user,
       req.body.email,
       password,
