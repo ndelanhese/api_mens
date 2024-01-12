@@ -12,7 +12,6 @@ const updateUserMiddleware = (
     user: joi.string().min(3).required(),
     email: joi.string().email().required(),
     password: joi.string().min(6).required(),
-    current_password: joi.string().required(),
     status: joi.string().required(),
     employee_id: joi.number().required(),
   });
