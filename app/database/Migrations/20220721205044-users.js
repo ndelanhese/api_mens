@@ -25,6 +25,7 @@ module.exports = {
       status: {
         type: Sequelize.STRING,
         allowNull: true,
+        defaultValue: 'active',
       },
       employee_id: {
         type: Sequelize.INTEGER,

@@ -35,6 +35,7 @@ module.exports = {
       status: {
         type: Sequelize.STRING,
         allowNull: true,
+        defaultValue: 'pending',
       },
       customer_id: {
         type: Sequelize.INTEGER,
