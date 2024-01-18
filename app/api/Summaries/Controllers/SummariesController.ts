@@ -294,7 +294,7 @@ export default class SummariesController extends BaseController {
 
     const monthlyData: IMonthlyData[] = [];
 
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 12; i > 0; i--) {
       const targetMonth = (currentMonth - i + 12) % 12;
       const targetYear = currentYear - Math.floor((currentMonth - i + 12) / 12);
 
