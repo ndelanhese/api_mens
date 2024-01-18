@@ -1,10 +1,17 @@
 import categoriesModel from '@db-models/PromotionsCategoriesModel';
 import HttpError from '@exceptions/HttpError';
+import { Op } from 'sequelize';
 
 export default class PromotionCategoriesModel {
   public async getPromotionCategories() {
     try {
-      return await categoriesModel.findAll();
+      return await categoriesModel.findAll({
+        where: {
+          status: {
+            [Op.not]: 'inactive',
+          },
+        },
+      });
     } catch (error) {
       throw new HttpError(500, 'Erro ao buscar categorias de promoção.', error);
     }

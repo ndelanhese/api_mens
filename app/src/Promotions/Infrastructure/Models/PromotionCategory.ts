@@ -41,9 +41,12 @@ export default class PromotionsCategoriesModel {
 
   public async deletePromotionCategory(categoryId: number): Promise<number> {
     try {
-      const deleted = await categoriesModel.destroy({
-        where: { id: categoryId },
-      });
+      const [deleted] = await categoriesModel.update(
+        { status: 'inactive' },
+        {
+          where: { id: categoryId },
+        },
+      );
       if (deleted === 0) throw new HttpError(404, 'Categoria não encontrada.');
       return deleted;
     } catch (error) {

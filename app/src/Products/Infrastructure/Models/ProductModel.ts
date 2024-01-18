@@ -91,11 +91,14 @@ export default class ProductsModel {
 
   public async deleteProduct(id: number): Promise<void> {
     try {
-      await productModel.destroy({
-        where: {
-          id,
+      await productModel.update(
+        { status: 'inactive' },
+        {
+          where: {
+            id,
+          },
         },
-      });
+      );
     } catch (error) {
       throw new HttpError(500, 'Erro ao deletar o produto.', error);
     }

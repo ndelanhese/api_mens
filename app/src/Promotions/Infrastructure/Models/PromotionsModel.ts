@@ -92,12 +92,14 @@ export default class PromotionsModel {
 
   public async deletePromotion(id: number): Promise<void> {
     try {
-      await promotionsModel.destroy({
-        where: {
-          id,
+      await promotionsModel.update(
+        { status: 'canceled' },
+        {
+          where: {
+            id,
+          },
         },
-        cascade: true,
-      });
+      );
     } catch (error) {
       throw new HttpError(500, 'Erro ao deletar o promoção.', error);
     }

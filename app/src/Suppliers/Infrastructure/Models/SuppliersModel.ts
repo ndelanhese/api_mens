@@ -77,9 +77,12 @@ export default class SuppliersModel {
       if (!supplier) {
         throw new HttpError(404, 'Fornecedor não encontrado.');
       }
-      await supplierModel.destroy({
-        where: { id: supplierId },
-      });
+      await supplierModel.update(
+        { status: 'inactive' },
+        {
+          where: { id: supplierId },
+        },
+      );
       const supplierAddress = await suppliersAddressesModel.findAll({
         where: { supplier_id: supplierId },
       });
