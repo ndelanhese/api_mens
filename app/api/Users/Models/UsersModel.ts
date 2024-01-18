@@ -8,7 +8,13 @@ export default class UserModel {
   public async findAll(status?: string) {
     try {
       let whereClause: WhereOptions = {};
-      if (status) whereClause = { status };
+      if (status)
+        whereClause = {
+          status: {
+            [Op.eq]: status,
+            [Op.not]: 'blocked',
+          },
+        };
       const users: any = await userModel.findAll({
         where: whereClause,
         attributes: {

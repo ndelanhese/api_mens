@@ -89,8 +89,11 @@ export default class UserModel {
 
   public async deleteUser(userId: number): Promise<number> {
     try {
-      const deleted = await userModel.destroy({ where: { id: userId } });
-      if (deleted === 0) throw new HttpError(404, 'Usuário não encontrado.');
+      const [deleted] = await userModel.update(
+        { status: 'blocked' },
+        { where: { id: userId } },
+      );
+      if (!deleted) throw new HttpError(404, 'Usuário não encontrado.');
       return deleted;
     } catch (error) {
       if (error instanceof HttpError) {

@@ -61,7 +61,13 @@ export default class ProductsModel {
       if (!showSoldOutProducts) {
         whereClause = { ...whereClause, quantity: { [Op.gte]: 1 } };
       }
-      if (status) whereClause = { status };
+      if (status)
+        whereClause = {
+          status: {
+            [Op.eq]: status,
+            [Op.not]: 'inactive',
+          },
+        };
       const products: any = await productsModel.findAll({
         where: whereClause,
         order: [[order, direction]],

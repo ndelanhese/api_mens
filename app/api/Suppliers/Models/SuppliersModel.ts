@@ -3,7 +3,7 @@ import SuppliersAddressesModel from '@app/database/Models/SuppliersAddressesMode
 import AddressesModel from '@db-models/AddressesModel';
 import suppliersModel from '@db-models/SuppliersModel';
 import HttpError from '@exceptions/HttpError';
-import { WhereOptions } from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
 
 import { ISupplier } from './SuppliersModel.types';
 
@@ -15,7 +15,13 @@ export default class ListSuppliersModel {
   ): Promise<ISupplier[]> {
     try {
       let whereClause: WhereOptions = {};
-      if (status) whereClause = { status };
+      if (status)
+        whereClause = {
+          status: {
+            [Op.eq]: status,
+            [Op.not]: 'inactive',
+          },
+        };
       const suppliers: any = await suppliersModel.findAll({
         where: whereClause,
         order: [[order, direction]],

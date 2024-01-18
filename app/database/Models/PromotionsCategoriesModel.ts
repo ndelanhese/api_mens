@@ -14,6 +14,7 @@ export default class PromotionsCategoriesModel extends Model<
 > {
   public id!: CreationOptional<number>;
   public name!: string;
+  public status!: CreationOptional<string>;
 }
 
 PromotionsCategoriesModel.init(
@@ -26,6 +27,10 @@ PromotionsCategoriesModel.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {
