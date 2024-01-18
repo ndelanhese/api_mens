@@ -90,7 +90,7 @@ export interface IProductsBrandsResponse {
 
 export interface IMonthlyData {
   month_name: string;
-  total_revenue: string;
+  total_revenue: number;
 }
 
 export interface ISaleData {
