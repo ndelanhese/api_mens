@@ -44,6 +44,7 @@ export default class BaseController {
   protected async deleteCache(key: string) {
     const cacheClient = this.createNewCacheClient();
     await deleteCache(cacheClient, key);
+    await deleteCache(cacheClient, 'summaries');
   }
 
   protected async flushCache() {
