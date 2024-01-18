@@ -87,3 +87,21 @@ export interface IProductsBrandsResponse {
     };
   };
 }
+
+export interface IMonthlyData {
+  month_name: string;
+  total_revenue: string;
+}
+
+export interface ISaleData {
+  id: number;
+  date: string;
+  observation: null | string;
+  total_value: number;
+  discount_amount: null | number;
+  discount_type: null | string;
+  final_value: number;
+  status: string;
+  customer_id: number;
+  user_id: number;
+}

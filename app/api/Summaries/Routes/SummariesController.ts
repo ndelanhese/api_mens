@@ -29,11 +29,15 @@ export default class SummariesRoute {
       this.summariesController.getTopProductsBrands.bind(
         this.summariesController,
       );
+    const getOverview = this.summariesController.getOverview.bind(
+      this.summariesController,
+    );
 
     this.summaryRoute.get('/top-selling-products', getTopProducts);
     this.summaryRoute.get('/top-payment-methods', getTopMethodsOfPayments);
     this.summaryRoute.get('/top-products-categories', getTopProductsCategories);
     this.summaryRoute.get('/top-products-brands', getTopProductsBrands);
+    this.summaryRoute.get('/overview', getOverview);
   }
 
   get summaryRoute() {
