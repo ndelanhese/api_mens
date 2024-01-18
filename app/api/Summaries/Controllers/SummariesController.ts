@@ -313,10 +313,7 @@ export default class SummariesController extends BaseController {
 
       monthlyData.push({
         month_name: `${monthNames[targetMonth].slice(0, 3)}`,
-        total_revenue: totalRevenue.toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }),
+        total_revenue: totalRevenue,
       });
     }
 
