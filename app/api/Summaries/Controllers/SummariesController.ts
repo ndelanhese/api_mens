@@ -277,6 +277,35 @@ export default class SummariesController extends BaseController {
     const currentMonth = currentDate.getMonth();
     const currentYear = currentDate.getFullYear();
 
+    const monthlyData: IMonthlyData[] = [];
+
+    for (let i = 12; i > 0; i--) {
+      const targetDate = new Date(currentYear, currentMonth - i + 1, 1);
+
+      const filteredData = data.filter(item => {
+        const itemDate = new Date(item.date);
+        return (
+          itemDate >= targetDate &&
+          itemDate <
+            new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 1)
+        );
+      });
+
+      const totalRevenue = filteredData.reduce(
+        (sum, item) => sum + item.final_value,
+        0,
+      );
+
+      monthlyData.push({
+        month_name: this.getMonthName(targetDate.getMonth()),
+        total_revenue: totalRevenue,
+      });
+    }
+
+    return monthlyData;
+  }
+
+  private getMonthName(monthIndex: number): string {
     const monthNames = [
       'Janeiro',
       'Fevereiro',
@@ -291,33 +320,7 @@ export default class SummariesController extends BaseController {
       'Novembro',
       'Dezembro',
     ];
-
-    const monthlyData: IMonthlyData[] = [];
-
-    for (let i = 12; i > 0; i--) {
-      const targetMonth = (currentMonth - i + 12) % 12;
-      const targetYear = currentYear - Math.floor((currentMonth - i + 12) / 12);
-
-      const filteredData = data.filter(item => {
-        const itemDate = new Date(item.date);
-        return (
-          itemDate.getMonth() === targetMonth &&
-          itemDate.getFullYear() === targetYear
-        );
-      });
-
-      const totalRevenue = filteredData.reduce(
-        (sum, item) => sum + item.final_value,
-        0,
-      );
-
-      monthlyData.push({
-        month_name: `${monthNames[targetMonth].slice(0, 3)}`,
-        total_revenue: totalRevenue,
-      });
-    }
-
-    return monthlyData;
+    return monthNames[monthIndex].slice(0, 3);
   }
 
   private calculatePercentage(totalValue: number, otherValue: number) {
