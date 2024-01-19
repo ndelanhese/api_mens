@@ -112,6 +112,7 @@ export default class UsersController extends BaseController {
       const userAction = new CreateUserAction();
       const userId = (await userAction.execute(userInputData)).getId();
       await this.deleteCache('users');
+      await this.deleteCache('admin-users-profile');
       return res.status(201).json(userId);
     } catch (error) {
       if (error instanceof HttpError) {
@@ -131,6 +132,7 @@ export default class UsersController extends BaseController {
       const userAction = new DeleteUserAction();
       await userAction.execute(userInputData);
       await this.deleteCache('users');
+      await this.deleteCache('admin-users-profile');
       return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
@@ -149,6 +151,7 @@ export default class UsersController extends BaseController {
       const userAction = new RestoreUserAction();
       await userAction.execute(userInputData);
       await this.deleteCache('users');
+      await this.deleteCache('admin-users-profile');
       return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
@@ -166,6 +169,7 @@ export default class UsersController extends BaseController {
       const userAction = new UpdateRolesAndPermissionsAction();
       await userAction.execute(userInputData);
       await this.deleteCache('users');
+      await this.deleteCache('admin-users-profile');
       return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
@@ -188,6 +192,7 @@ export default class UsersController extends BaseController {
         UpdateUserFactory.fromCurrentUser(currentUser);
       await userAction.execute(userInputData, currentUserInputData);
       await this.deleteCache('users');
+      await this.deleteCache('admin-users-profile');
       return res.status(204).send();
     } catch (error) {
       if (error instanceof HttpError) {
