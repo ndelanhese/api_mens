@@ -56,6 +56,7 @@ export default class AuthController extends BaseController {
               email,
             },
             expires_in: expiresIn,
+            permissions: await this.getUserPermissions(userData.id),
           });
         }
       }
@@ -118,6 +119,29 @@ export default class AuthController extends BaseController {
         return res.status(error.statusCode).send({ message: error.message });
       }
     }
+  }
+
+  private async getUserPermissions(userId: number) {
+    const userRoles = (await this.getRolesByUser(userId)) || [];
+    const isSuperAdmin = userRoles.find(role => role.name === 'superadmin');
+    if (isSuperAdmin) {
+      const permissions = await this.getPermissions();
+      return permissions;
+    }
+    const userPermissions = (await this.getPermissionsByUser(userId)) || [];
+    const permissionsByRoleId = userPermissions.map(
+      permissions => permissions.permission_id || 0,
+    );
+
+    const rolesId = userRoles.map(role => role.id);
+    const permissionsRoles = await this.getPermissionsByRole(rolesId);
+
+    const permissionsRolesAndPermissions = permissionsRoles?.concat(
+      permissionsByRoleId.filter(permission => permission !== 0),
+    );
+    const permissions = [...new Set(permissionsRolesAndPermissions)];
+
+    return await this.getPermissionsById(permissions);
   }
 
   private async getRolesByUser(
