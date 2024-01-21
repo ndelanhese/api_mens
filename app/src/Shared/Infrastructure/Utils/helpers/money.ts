@@ -7,6 +7,7 @@ export function formatMoneyByCurrencySymbol(
   currency: string | undefined = 'BRL',
   locale: 'pt-BR' | 'en-US' | undefined = 'pt-BR',
 ) {
+  if (value === 0) return 'R$ 0,00';
   if (!value) return '';
 
   return new Intl.NumberFormat(locale, {
