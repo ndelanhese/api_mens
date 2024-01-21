@@ -8,8 +8,20 @@ const getDate = (date?: Date | string): Date => {
   return date;
 };
 
-export const generateDateFromString = (date: string) => {
-  return new Date(date);
+export const generateDateFromString = (date: string): Date => {
+  const dateFormat = new Date(date);
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: 'UTC',
+    hour12: false,
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  };
+  const dateFormatter = new Intl.DateTimeFormat('en-US', options);
+  const dateStringInTargetTimeZone = dateFormatter.format(dateFormat);
+
+  const dateInTargetTimeZone = new Date(dateStringInTargetTimeZone);
+  return dateInTargetTimeZone;
 };
 
 export const getDateString = (dateInput?: Date): string => {
