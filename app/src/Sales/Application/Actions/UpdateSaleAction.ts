@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import HttpError from '@app/src/Shared/Domain/Exceptions/HttpError';
 
 import Customer from '../../Domain/Entities/Customer';
@@ -28,7 +29,7 @@ export default class UpdateSaleAction {
     const customer = await this.getCustomer(customerId);
     const user = await this.getUser(userId);
     const paymentMethods = this.preparePaymentMethods(input);
-    const products = await this.prepareProducts(input);
+    const products = await this.prepareProducts(input, currentSale);
     const sale = new Sale(
       currentSale.date,
       input.total_value ?? currentSale.total_value,
@@ -162,19 +163,24 @@ export default class UpdateSaleAction {
     return {};
   }
 
-  private async prepareProducts(input: UpdateSaleInputData) {
+  private async prepareProducts(input: UpdateSaleInputData, currentSale: any) {
     if (!input.sale_products) {
       return undefined;
     }
 
-    const productsPromise = input.sale_products.map(async product => {
+    const productsPromise = input.sale_products.map(async (product, index) => {
       const productData = await this.getProduct(product.id);
       const discount = await this.prepareProductDiscount(
         product.id,
         productData.price,
       );
 
-      if (productData.quantity < product.quantity) {
+      const { sales_products } = currentSale;
+
+      if (
+        productData.quantity < product.quantity &&
+        product.quantity > (sales_products?.[index]?.quantity ?? 0)
+      ) {
         throw new HttpError(400, 'Quantidade de produtos indisponível.');
       }
 

@@ -26,7 +26,7 @@ const createSupplierMiddleware = (
     address: joi
       .object({
         address: joi.string().required(),
-        number: joi.number().required(),
+        number: joi.string().required(),
         district: joi.string().required(),
         postal_code: joi.string().required(),
         city: joi.string().required(),
